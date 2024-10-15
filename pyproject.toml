@@ -1,10 +1,9 @@
 [project]
 dynamic = ["dependencies"]
+keywords = ['HaloPSA','HaloPSA API']
 name = "HaloPSA"
 version = "0.0.1"
-authors = [
-  { name="Fryan O", email="FryanO@proton.me" },
-]
+authors = [{ name="Fryan O", email="FryanO@proton.me" },]
 description = "Python package to interact with the HaloPSA API"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -16,10 +15,8 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/pypa/sampleproject"
-Issues = "https://github.com/pypa/sampleproject/issues"
-
-
+Homepage = "https://github.com/ItsJustAGitHubMichealWhosGonnaSeeIt5Ppl/HaloPSA-API"
+Issues = "https://github.com/ItsJustAGitHubMichealWhosGonnaSeeIt5Ppl/HaloPSA-API/issues"
 
 
 [build-system]
