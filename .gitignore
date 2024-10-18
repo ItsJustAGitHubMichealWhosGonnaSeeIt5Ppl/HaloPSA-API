@@ -3,3 +3,5 @@
 .DS_Store
 /src/HaloPSA.egg-info
 /dist
+Makefile
+make.bat
