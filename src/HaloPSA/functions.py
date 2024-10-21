@@ -7,10 +7,10 @@ import os
 class apiCaller:
     """All available functions, endpoint independant"""
     
-    def __init__(self, baseURL, function, endpoint, params, header,*payload):
+    def __init__(self, baseURL, function, endpoint, params, header, payload=None):
         self.allEndpoints = ['Action','Agent','Appointment','Asset','Attachment','Client','ClientContract','Invoice','Item','KBArticle','Opportunities','Projects','Quotation','Report','Site','Status','Supplier','Team','TicketType','Tickets','Users','RecurringInvoice','RecurringInvoice/UpdateLines'] # Endpoints function can be used with
         
-        if function.lower() not in ['search','get','update','delete','me']:
+        if function.lower() not in ['search','get','update','delete','me','queue']:
             raise Exception('Invalid function')
         elif endpoint not in self.allEndpoints:
             raise Exception('Invalid endpoint')
@@ -21,10 +21,9 @@ class apiCaller:
         self.validParams = [] # Placeholder for validation later
         self.header = header
         self.params = params
-        self.payload = '' if len(payload) == 0 else payload
+        self.payload = None if payload == None else payload
         
         self._formatter() # Format data
-        
         
         if function.lower() == 'search':
             query = urllib.parse.urlencode(self.formattedData)
@@ -39,12 +38,15 @@ class apiCaller:
             self._requester('get')
             
         elif function.lower() == 'update':
-            self.payload = json.dumps([self.formattedData],indent=4)
+            if payload == None:
+                self.payload = json.dumps([self.formattedData],indent=4)
+            else: 
+                self.payload = json.dumps(self.payload)
+                pass
             self._requester('post')
             
         elif function.lower() == 'delete':
             self.delete()
-
 
 
     def getData(self):
@@ -80,7 +82,7 @@ class apiCaller:
         
         # Success
         if code in [200,201]:
-            # 201 = Created
+            # 201 = Created/updated
             # 200 = OK
             self.responseData = content
 
@@ -91,9 +93,8 @@ class apiCaller:
                 print('The specified \'client_secret\' is invalid')
             else:
                 print(content["error_description"])
-        elif code in [400]:
-            print(f'{code} - Bad Request')
-            raise Exception( f'{code} - Bad Request')
+        elif code in [400]: # Bad reqeust 
+            raise Exception(f'{code} Bad Request - {content('ClassName')}: {content('message')}') # URL is good, but the request is no
                 
         # Add unique failures as found
         
@@ -126,4 +127,6 @@ def testFunc(test='word',b=2,**other):
 
 if __name__=="__main__":
     testFunc(data=2,otherData=3)
+
+
 

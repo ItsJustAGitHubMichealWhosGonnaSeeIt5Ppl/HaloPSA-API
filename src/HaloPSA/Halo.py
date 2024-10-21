@@ -9,7 +9,7 @@ import requests
 import urllib.parse
 import json
 import os
-from functions import apiCaller
+from src.HaloPSA.functions import apiCaller
 
 
 # CONSTANTS
@@ -76,6 +76,7 @@ class assets: # Change this to assets
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' +  token
             }
+        self.formattedParams = []
 
 
     def get(self,
@@ -172,6 +173,7 @@ class assets: # Change this to assets
         site_id:int=None,
         users:list=None,
         fields:list=None,
+        queueMode:str='disabled',
         **others
                ):
         """Creates or updates one or more assets.  If ID is included, asset(s) will be updated.  If ID is not included new asset(s) will be created.
@@ -181,16 +183,32 @@ class assets: # Change this to assets
             client_id (int, optional): Client ID. 
             site_id (int, optional): Site ID. 
             users (list, optional): User IDs. 
-            fields (list, optional): Fields to be updated. 
+            fields (list, optional): Fields to be updated.
+            queueMode (str, optional): Queue asset data to be sent as a batch update.  Valid modes: disabled - Default, will update asset immediately. queue
 
         Returns:
             _type_: I dont think it returns anything...
         """
+        if queueMode.lower() not in ['disabled','queue','update']:
+            raise AttributeError(f'{queueMode} is not a valid Queue Mode.')
         
         newVars = locals().copy()
-        request = apiCaller(HALO_API_URL,'update','Asset',newVars,self.headerJSON)
-        response = request.getData()
-        return response
+        
+        if queueMode == 'disabled': # Sent request immediately
+            request = apiCaller(HALO_API_URL,'update','Asset',newVars,self.headerJSON)
+            response = request.getData()
+            return response
+        
+        elif queueMode == 'queue': # Queue request.
+            self.formattedParams += [_formatter(newVars)]
+        
+        elif queueMode == 'update':
+            request = apiCaller(HALO_API_URL,'update','Asset',newVars,self.headerJSON, self.formattedParams)
+            response = request.getData()
+            self.formattedParams = [] # reset queue
+            return response
+            
+
     
 
 class clients:
@@ -644,6 +662,28 @@ def manualTokenUpdate(key,id):
     attemptUpdate = requests.post(HALO_API_URL+ '/CustomIntegration', headers = headers, data=payload)
     return attemptUpdate
 
+
+def _formatter(params):
+    formattedData = {}
+    paramsToAdd = params | params['others'] # Copy params and add any additional items
+    
+    # Remove Remove unneeded variables
+    paramsToAdd.pop('others') 
+    paramsToAdd.pop('self')
+    paramsToAdd.pop('queueMode')
+    
+    pageinateToggle = False
+    for item, value in paramsToAdd.items(): # Check params, add anything that isn't blank to the query
+
+        if item == 'pageinate' and value == True:
+            pageinateToggle = True
+
+        if pageinateToggle == False and item in ['page_size','page_no']: # Skip redundant values
+            continue
+        
+        if value !=None:
+            formattedData.update({item : value})
+    return formattedData
 
 
 ### OLD SHIT ###
