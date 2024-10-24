@@ -16,8 +16,6 @@ HALO_API_URL = os.getenv('HALO_API_URL')
 HALO_AUTH_URL = os.getenv('HALO_AUTH_URL')
 
 
-assetURL = HALO_API_URL+ '/asset/' # Deprecate/remove this
-
 
 # Confirm variables are present
 nodata = [None,'']
@@ -44,6 +42,8 @@ def createToken():
         return content['access_token']
     else:
         return print('Error')
+
+
 
 
 
