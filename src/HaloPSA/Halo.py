@@ -1,7 +1,4 @@
 # Entirely re-written with classes
-
-# Apparently this is very, very bad
-
 # Modules to interact with Halo.
 # Some modules use specifc IDs, will try to clean this up as I go.
 
@@ -9,7 +6,7 @@ import requests
 import urllib.parse
 import json
 import os
-from src.HaloPSA.functions import apiCaller
+from HaloPSA.functions import apiCaller
 
 
 # CONSTANTS
@@ -48,7 +45,6 @@ def createToken():
     else:
         return print('Error')
 
-mainToken = createToken() # Remove this
 
 
 #### Classes
@@ -99,7 +95,7 @@ class assets: # Change this to assets
         """
 
         newVars = locals().copy()
-        request = apiCaller(HALO_API_URL,'search','Asset',newVars,self.headerJSON)
+        request = apiCaller(HALO_API_URL,'get','Asset',newVars,self.headerJSON)
         response = request.getData()
         return response
     
@@ -207,9 +203,7 @@ class assets: # Change this to assets
             response = request.getData()
             self.formattedParams = [] # reset queue
             return response
-            
-
-    
+               
 
 class clients:
     """Client endpoint
@@ -576,94 +570,199 @@ class sites:
     def delete():
         pass
     
-    
-    
-class Users:
-    """Users enpdpoint.  NOT THE SAME AS CLIENT ENDPOINT!
 
+class softwareLicences:
+    """Software Licenscs endpoint.  
     """
-    def search():
-        """ Search users"""
+    def __init__(self):
+        token = createToken()
+        self.token = token
+        self.headerJSON = { # Header with token
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' +  token
+            }
+        self.url = HALO_API_URL + '/SoftwareLicence'
+    
+    def search(self,
+        pageinate:bool=False,
+        page_size:int=50,
+        page_no:int=1,
+        order:str =None,
+        orderdesc:bool=None,
+        search:str=None,
+        licence_type:int=None,
+        tenant_id:int=None,
+        toplevelid:int=None,
+        client_id:int=None,
+        site_id:int=None,
+        includeinactive:bool=None,
+        includeactive:bool=None,
+        count:int=None,
+        **others):
+        """Search (Software) Licenses.
+
+        Args:
+            pageinate (bool, optional): _description_. Defaults to False.
+            page_size (int, optional): _description_. Defaults to 50.
+            page_no (int, optional): _description_. Defaults to 1.
+            order (str, optional): _description_. Defaults to None.
+            orderdesc (bool, optional): _description_. Defaults to None.
+            search (str, optional): _description_. Defaults to None.
+            licence_type (int, optional): _description_. Defaults to None.
+            tenant_id (int, optional): _description_. Defaults to None.
+            toplevelid (int, optional): _description_. Defaults to None.
+            client_id (int, optional): _description_. Defaults to None.
+            site_id (int, optional): _description_. Defaults to None.
+            includeinactive (bool, optional): _description_. Defaults to None.
+            includeactive (bool, optional): _description_. Defaults to None.
+            count (int, optional): _description_. Defaults to None.
+
+        Returns:
+            _type_: _description_
+        """
+        newVars = locals().copy()
+        
+        request = apiCaller(HALO_API_URL,'search','SoftwareLicence',newVars,self.headerJSON)
+        response = request.getData()
+        return response
+        
+    
+    def get(self):
         pass
     
-    def get():
-        """Get specific user"""
-        pass
-    
-    def update():
-        """Update specific user"""
-        pass
+    def update(self,
+        client_id:int,
+        type:int,
+        name:str,
+        site_id:int=None,
+        count:int=None,
+        start_date:str=None,
+        end_date:str=None,
+        billing_cycle:str=None,
+        term_duration:str=None,
+        autorenew:bool=None,
+        status:str=None,
+        is_active:bool=None,
+        supplier_id:int=None,
+        manufacturer:str=None,
+        purchase_price:int=None,
+        price:int=None,
+        monthly_cost:int=None,
+        monthly_price:int=None,
+        notes:str=None,
+        **others,
+        ):
+        
+        newVars = locals().copy()
+        
+        request = apiCaller(HALO_API_URL,'update','SoftwareLicence',newVars,self.headerJSON)
+        response = request.getData()
+        return response
     
     def delete():
-        """Delete user"""
+        pass
+    
+    
+class users:
+    """Users endpoint.  
+    """
+    def __init__(self):
+        token = createToken()
+        self.token = token
+        self.headerJSON = { # Header with token
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' +  token
+            }
+        self.url = HALO_API_URL + '/Users'
+    
+    def search(self,
+        pageinate:bool=False,
+        page_size:int=50,
+        page_no:int=1,
+        order:str =None,
+        orderdesc:bool=None,
+        search:str=None,
+        search_phonenumbers:bool=None,
+        toplevel_id:int=None,
+        client_id:int=None,
+        site_id:int=None,
+        organisation_id:int=None,
+        department_id:int=None,
+        asset_id:int=None,
+        includeinactive:bool=None,
+        includeactive:bool=None,
+        approversonly:bool=None,
+        excludeagents:bool=None,
+        count:int=None,
+        **others
+               ):
+        """_summary_
+
+        Args:
+            paginate (bool, optional): Whether to use Pagination in the response. Defaults to False.
+            page_size (int, optional): When using Pagination, the size of the page. Defaults to 50.
+            page_no (int, optional): When using Pagination, the page number to return. Defaults to 1.
+            order (str, optional): The name of the field to order by.
+            orderdesc (bool, optional): Whether to order ascending or descending. Defaults to decending sort.
+            search (str, optional): Query to filter by.
+            search_phonenumbers (bool, optional): Filter by Users with a phone number like your search. Defaults to None.
+            toplevel_id (int, optional): Filter by Users belonging to a particular top level.            
+            client_id (int, optional): Filter by Users belonging to a particular customer.
+            site_id (int, optional): Filter by Users belonging to a particular site.
+            organisation_id (int, optional): Filter by Users belonging to a particular site.
+            department_id (int, optional): Filter by Users belonging to a particular department.
+            asset_id (int, optional): Filter by Users assigned to a particular asset.
+            includeinactive (bool, optional): Include inactive Users in response. Defaults to False.
+            includeactive (bool, optional): Include inactive Users in response. Defaults to True.
+            approversonly (bool, optional): Include only Users that can approve appoval processes response. Defaults to False.
+            excludeagents (bool, optional): Excluse Users that are linked to active agent accounts. Defaults to False.
+            count (int, optional): When not using pagination, the number of results to return.
+
+        Returns:
+            dict: Search results
+        """
+    
+        newVars = locals().copy()
+        
+        request = apiCaller(HALO_API_URL,'search','Users',newVars,self.headerJSON)
+        response = request.getData()
+        return response
+        
+    def get(self,
+            id:int,
+            includedetails:bool=None,
+            includeactivity:bool=None,
+            includepopups:bool=None,
+            **others
+            ):
+        """
+        Get a single user's details.
+        Supports all Halo parameters, even if not listed.  
+        Requires atleast ID to be provided
+        Args:
+            id (int): User ID
+            includedetails (bool, optional): Whether to include extra details in the response. Defaults to False.
+            includeactivity (bool, optional): Whether to include User's ticket activity in the response. Defaults to False.
+            includepopups (bool, optional): Whether to include customer pop ups in the response. Defaults to False.
+
+        Returns:
+            dict: Single users details
+        """
+        
+        newVars = locals().copy()
+        request = apiCaller(HALO_API_URL,'get','User',newVars,self.headerJSON)
+        response = request.getData()
+        return response
+        
+    def update():
+        """Update one or more users"""
+        pass
+    def delete():
         pass
 
 
 
-
-def userSearch(query):
-    """ Searches for a user """
-    headers = { # Header with token
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + mainToken
-        }
-    request = requests.get(HALO_API_URL+ '/users?' + urllib.parse.urlencode(query), headers = headers)
-    if request.status_code != 200:
-        return 'Failed to get users'
-    response = json.loads(request.content)
-    return response
-
-
-def invoiceActivator(ids=None):
-    """ Set invoices to Active
-    If no IDs are sent, all invoices will be set to Active """
-    headers = { # Header with token
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + mainToken
-        }
-    query = {
-        'type': 54,
-    }
-    request = requests.get(HALO_API_URL+ '/Template', headers = headers,params = query)
-    if request.status_code != 200:
-        return 'Failed to get Templates'
-    response = json.loads(request.content)
-    for invoice in response:
-        print(invoice['id'])
-        if invoice == 'more':
-            invoice = invoice['more']
-        if invoice['disabled'] == True:
-            data = json.dumps([{
-                'disabled': False,
-                'end_date': '1901-01-01T00:00:00.000Z',
-                'id':invoice['id']
-                
-            }])
-            updateAttempt = requests.post(HALO_API_URL+ '/Template', headers = headers,data = data)
-            if updateAttempt.status_code !=[200,201]:
-                print('Failed')
-            else:
-                print(f'Updated {invoice["id"]}')
-    return response
-
-
-def manualTokenUpdate(key,id):
-    """ Manually update tokens for halo integrations.
-
-    Make sure you have the integration type set to bearer token :)"""
-    headers = { # Header with token
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + mainToken
-        }
-    payload = json.dumps([{
-        "new_client_secret": str(key),
-        "id": id 
-    }])
-    attemptUpdate = requests.post(HALO_API_URL+ '/CustomIntegration', headers = headers, data=payload)
-    return attemptUpdate
-
-
-def _formatter(params):
+def _formatter(params): # Format user input for API requests
     formattedData = {}
     paramsToAdd = params | params['others'] # Copy params and add any additional items
     
@@ -684,46 +783,3 @@ def _formatter(params):
         if value !=None:
             formattedData.update({item : value})
     return formattedData
-
-
-### OLD SHIT ###
-
-def productUpdate(updateField,originalText,replacementText):
-    """ Update a halo product by value. 
-    Requires token, field to search on/update, text to search, text to replace with.
-    """
-    headers = { # Header with token
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + mainToken
-        }
-    def updateItemByID(ID,originalStr):
-        payload = json.dumps([{
-        updateField: originalStr.replace(originalText,replacementText),
-        "id": ID
-        }])
-        attemptUpdate = requests.post(HALO_API_URL+ '/item', headers = headers, data=payload)
-        return attemptUpdate.status_code
-
-    request = requests.get(HALO_API_URL+ '/item', headers = headers)
-    itemsList = json.loads(request.content)['items']
-    for item in itemsList:
-        if item == 'more': # Shows only 100 by default, this allows it to cycle through the remaining ones 
-            item = item['more']
-        if updateField in item:
-            if originalText in item[updateField]:
-                print(f'[{item["id"]}] {item["name"]}\n - {item[updateField]}') # Original string
-                attemptUpdate = updateItemByID(item["id"],item[updateField])
-                print(attemptUpdate) # Status of attempted assetUpdate
-                
-
-def productDB():
-    #TODO create DB for products to allow for easier searching, updating, etc.
-    sqlQuery = "INSERT OR UPDATE OR IGNORE INTO (tbd) values=()"
-    sqlData = ""
-    pass
-
-### Testing the above tool
-# originalText = 'for (contract start date) - (contract end date) - billed monthly'
-# newText = 'for contract period $CONTRACTSTARTDATE - $CONTRACTENDDATE (billed monthly)'
-# productUpdate(getHaloToken(),'description',originalText,newText)
-
