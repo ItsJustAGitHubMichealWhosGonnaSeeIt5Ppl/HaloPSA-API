@@ -2,7 +2,7 @@
 dynamic = ["dependencies"]
 keywords = ['HaloPSA','HaloPSA API']
 name = "HaloPSA"
-version = "0.0.4"
+version = "0.0.5"
 authors = [{ name="Fryan O", email="FryanO@proton.me" },]
 description = "Python frontend for the HaloPSA API"
 readme = "README.md"
