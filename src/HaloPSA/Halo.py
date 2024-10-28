@@ -45,11 +45,9 @@ def createToken():
 
 
 
-
-
 #### Classes
 
-class actions:
+class actions: # Placeholder
     def search():
         pass
     def get():
@@ -60,7 +58,6 @@ class actions:
     def delete():
         pass
     
-
 
 class assets: # Change this to assets
     """ Asset actions 
@@ -205,7 +202,54 @@ class assets: # Change this to assets
             return response
                
 
-class clients:
+class attachments: 
+    def __init__(self):
+        token = createToken()
+        self.token = token
+        self.headerJSON = { # Header with token
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' +  token
+            }
+        
+    def search(self,
+        ticket_id:int=None,
+        action_id:int=None,
+        type:int=None,
+        unique_id:int=None,
+        **others):
+        """Get list of attachment(s).
+
+        Args:
+            ticket_id (int, optional): Returns attachments from the ticket ID specified. 
+            action_id (int, optional): Returns attachments from the action ID specified (requires ticket_id). 
+            type (int, optional): Returns attachments of the specified type. 
+            unique_id (int, optional): Returns an attachment with the unique ID specified.
+        
+        Returns:
+            dict: Attachment(s) details and IDs (attachment will not be included, use get for that)
+        """
+        
+        newVars = locals().copy()
+        request = apiCaller(HALO_API_URL,'search','Attachment',newVars,self.headerJSON)
+        response = request.getData()
+        return response
+        
+    def get(self,
+            id:int,
+            includedetails:bool=False,
+            **others):
+        
+        newVars = locals().copy()
+        request = apiCaller(HALO_API_URL,'get','Attachment',newVars,self.headerJSON)
+        response = request.getData()
+        return response
+    def update():
+        pass
+    def delete():
+        pass
+
+
+class clients: # Not fully functional yet
     """Client endpoint
     """
     def __init__(self):
@@ -285,7 +329,7 @@ class clients:
         pass
 
 
-class ticket:
+class tickets: # Partially updated
     def __init__(self):
         token = createToken()
         self.token = token
@@ -306,6 +350,32 @@ class ticket:
         request = requests.get(HALO_API_URL+ '/tickets?' + query, headers = self.headerJSON)
 
         #return _responseParser(request)
+        
+    def get(self,
+        id:int,
+        includedetails:bool=False,
+        includelastaction:bool=False,
+        ticketidonly:bool=False,
+        **others
+        ):
+        """
+        Get a single ticket's details.
+        Supports all Halo parameters, even if not listed.  
+        Requires atleast ID to be provided
+        Args:
+            id (int): Ticket ID
+            includedetails (bool, optional): Whether to include extra details (objects) in the response. Defaults to False.
+            includelastaction (bool, optional): Whether to include the last action in the response. Defaults to False.
+            ticketidonly (bool, optional): Returns only the ID fields (Ticket ID, SLA ID, Status ID, Client ID and Name and Lastincomingemail date) of the Tickets. Defaults to False.
+
+        Returns:
+            dict: Single ticket details
+        """
+
+        newVars = locals().copy()
+        request = apiCaller(HALO_API_URL,'get','Ticket',newVars,self.headerJSON)
+        response = request.getData()
+        return response
     
     def merge(self,existingID,newID):
         """Merge two tickets
@@ -348,7 +418,7 @@ class ticket:
         return payloads
 
 
-class currency:
+class currency: # Not updated
     """ Check currency information
     
     Useful to convert pricing from secondary currency to primary currency.
@@ -369,7 +439,7 @@ class currency:
         #return _responseParser(request)
         
 
-class items:
+class items: # Partially updated
     """ Products (items) API 
     """
     def __init__(self):

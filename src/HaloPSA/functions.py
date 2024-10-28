@@ -8,12 +8,11 @@ class apiCaller:
     """All available functions, endpoint independant"""
     
     def __init__(self, baseURL, function, endpoint, params, header, payload=None):
+        # Currently not using this as there are so many endpoints and I'm not sure how a "invalid" endpoint could even be run in this.  Its not ever being interacted with directly by an end user, so any invalid endpoint would be my own mistake.
         self.allEndpoints = ['Action','Agent','Appointment','Asset','Attachment','Client','ClientContract','Invoice','Item','KBArticle','Opportunities','Projects','Quotation','Report','Site','Status','Supplier','Team','TicketType','Tickets','Users','RecurringInvoice','RecurringInvoice/UpdateLines'] # Endpoints function can be used with
         
         if function.lower() not in ['search','get','update','delete','me','queue']:
             raise Exception('Invalid function')
-        elif endpoint not in self.allEndpoints:
-            raise Exception('Invalid endpoint')
         else:
             pass # No issues, continue
         self.url = baseURL + '/' + endpoint
@@ -78,7 +77,12 @@ class apiCaller:
         # Invalid URL
         if code in [404]:
             print(f'404 -  The specified URL is invalid. URL: {self.url}')
-        content = json.loads(response.content)
+        try:
+            content = json.loads(response.content)
+        except UnicodeDecodeError: # bytes resposne.
+            self.responseData = response.content
+            return None
+            
         
         # Success
         if code in [200,201]:
