@@ -18,7 +18,6 @@ classifiers = [
 Homepage = "https://github.com/ItsJustAGitHubMichealWhosGonnaSeeIt5Ppl/HaloPSA-API"
 Issues = "https://github.com/ItsJustAGitHubMichealWhosGonnaSeeIt5Ppl/HaloPSA-API/issues"
 
-
 [build-system]
 requires = ["setuptools >= 61.0"]
 build-backend = "setuptools.build_meta"
