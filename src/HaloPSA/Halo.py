@@ -59,7 +59,7 @@ class actions: # Placeholder
         pass
     
 
-class assets: # Change this to assets
+class assets: 
     """ Asset actions 
     Initialize by running this once on its own, then run actions"""
     def __init__(self):
@@ -74,7 +74,7 @@ class assets: # Change this to assets
 
     def get(self,
             id:int,
-            includedetails:bool=False,
+            includedetails:bool=True,
             includediagramdetails:bool=False,
             **others
             ):
@@ -84,7 +84,7 @@ class assets: # Change this to assets
         Requires atleast ID to be provided
         Args:
             id (int): Asset ID
-            includedetails (bool, optional): Whether to include extra details (objects) in the response. Defaults to False.
+            includedetails (bool, optional): Whether to include extra details (objects) in the response. Defaults to True.
             includediagramdetails (bool, optional): Whether to include diagram details in the response. Defaults to False.
 
         Returns:
@@ -264,7 +264,7 @@ class clients: # Not fully functional yet
     
     def search(self,
         pageinate:bool=False,
-        page_size:int=50,
+        page_size:int=None, # Switched to none
         page_no:int=1,
         order:str =None,
         orderdesc:bool=None,
@@ -272,10 +272,12 @@ class clients: # Not fully functional yet
         toplevel_id:int=None,
         includeinactive:bool=None,
         includeactive:bool=None,
-        count:int=None,
+        count:int=50,
+        newFormat:bool=False,
         **others
                ):
         """Search clients.  Supports unlisted parameters 
+        By default, only the first 50 results are returned.  If more than 50 are needed, you must explicitely set count variable.  Leaving count blank will still return 50
 
         Args:
             paginate (bool, optional): Whether to use Pagination in the response. Defaults to False.
@@ -287,16 +289,25 @@ class clients: # Not fully functional yet
             toplevel_id (int, optional): Filter by Customers belonging to a particular top level.
             includeinactive (bool, optional): Include inactive Customers in the response. Defaults to False/No.
             includeactive (bool, optional): Include active Customers in the response. Defaults to True/Yes.
-            count (int, optional): When not using pagination, the number of results to return.
+            newFormat: (bool, optional): Send 
+            count (int, optional): When not using pagination, the number of results to return. Set to 50 by default (even if not included)
         
         Returns:
-            dict: Search results.
+            newFormat=False (default)
+                dict: Results and record count
+            newFormat=True
+                list: List of results
+                int: Record count (total number of responses)
+            
         """
         newVars = locals().copy()
-        
+        newVars.pop('newFormat') # Unneeded
         request = apiCaller(HALO_API_URL,'search','Client',newVars,self.headerJSON)
         response = request.getData()
-        return response
+        if newFormat==True:
+            return response['clients'], response['record_count']
+        else:
+            return response
         
     def get(self,
             id:int,
@@ -329,95 +340,6 @@ class clients: # Not fully functional yet
         pass
 
 
-class tickets: # Partially updated
-    def __init__(self):
-        token = createToken()
-        self.token = token
-        self.headerJSON = { # Header with token
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' +  token
-            }
-    
-    def update(self, payload):
-        """ Create a ticket 
-        Payload must be formatted for now, will create a formatting tool later"""
-        request = requests.post(HALO_API_URL+ '/tickets/', headers = self.headerJSON, data=payload)
-        #return _responseParser(request)
-
-    def search(self,query):
-        """ Search ticket using Query (Later query will be its own thing so its easier to use) """
-        query = urllib.parse.urlencode(query)
-        request = requests.get(HALO_API_URL+ '/tickets?' + query, headers = self.headerJSON)
-
-        #return _responseParser(request)
-        
-    def get(self,
-        id:int,
-        includedetails:bool=False,
-        includelastaction:bool=False,
-        ticketidonly:bool=False,
-        **others
-        ):
-        """
-        Get a single ticket's details.
-        Supports all Halo parameters, even if not listed.  
-        Requires atleast ID to be provided
-        Args:
-            id (int): Ticket ID
-            includedetails (bool, optional): Whether to include extra details (objects) in the response. Defaults to False.
-            includelastaction (bool, optional): Whether to include the last action in the response. Defaults to False.
-            ticketidonly (bool, optional): Returns only the ID fields (Ticket ID, SLA ID, Status ID, Client ID and Name and Lastincomingemail date) of the Tickets. Defaults to False.
-
-        Returns:
-            dict: Single ticket details
-        """
-
-        newVars = locals().copy()
-        request = apiCaller(HALO_API_URL,'get','Ticket',newVars,self.headerJSON)
-        response = request.getData()
-        return response
-    
-    def merge(self,existingID,newID):
-        """Merge two tickets
-
-        Args:
-            existingID (INT): ID of old ticket
-            newID (INT): ID of ticket old ticket should be merged into
-
-        Returns:
-            JOSN: JSON formatted payload (merges, no need to send this anywhere)
-        """        
-        payload = json.dumps([{
-        'id': existingID,# Marks ticket as completed.
-        'merged_into_id': newID 
-        }])
-        self.create(payload)
-        return payload
-    
-    def updateStatus(self,ID,statusID=20):
-        """Update ticket status(es)
-
-        Args:
-            ID (int,list): ID(s) of ticket to be updated
-            statusID (int, optional): ID of new status to be set. Defaults to 20 (this completes tickets for us).
-        
-        Returns:
-            List of payloads (these are sent, payload sent as record for now.)
-        """
-        payloads = []
-        if type(ID) is not list:
-            ID = [ID]
-        for ticID in ID:
-            payload = json.dumps([{
-                    'id': ticID,
-                    'status_id': str(statusID) # Mark ticket as completed.
-                    }])
-            self.create(payload)
-            payloads+= payload
-            
-        return payloads
-
-
 class currency: # Not updated
     """ Check currency information
     
@@ -439,7 +361,7 @@ class currency: # Not updated
         #return _responseParser(request)
         
 
-class items: # Partially updated
+class items: # OUTDATED
     """ Products (items) API 
     """
     def __init__(self):
@@ -480,19 +402,43 @@ class items: # Partially updated
     def create(self, payload):
         pass
     
-    def update(self, payload):
-        """ Update an existing item
+    def update(self,
+        id:int=None,
+        fields:list=None,
+        queueMode:str='disabled',
+        **others
+               ):
+        """Creates or updates one or more assets.  If ID is included, asset(s) will be updated.  If ID is not included new asset(s) will be created.
 
         Args:
-            payload DICT: Dictionary containing the fields that need updating
+            id (int, optional): Asset ID.
+            client_id (int, optional): Client ID. 
+            site_id (int, optional): Site ID. 
+            users (list, optional): User IDs. 
+            fields (list, optional): Fields to be updated.
+            queueMode (str, optional): Queue asset data to be sent as a batch update.  Valid modes: disabled - Default, will update asset immediately. queue
 
         Returns:
-            Im not sure: Hopefully just a code saying SUCCESS?
+            _type_: I dont think it returns anything...
         """
-        payload = json.dumps([payload])
+        if queueMode.lower() not in ['disabled','queue','update']:
+            raise AttributeError(f'{queueMode} is not a valid Queue Mode.')
         
-        postRequest = requests.post(HALO_API_URL+ '/item', headers = self.headerJSON, data = payload)
-        #return _responseParser(postRequest)
+        newVars = locals().copy()
+        
+        if queueMode == 'disabled': # Sent request immediately
+            request = apiCaller(HALO_API_URL,'update','Site',newVars,self.headerJSON)
+            response = request.getData()
+            return response
+        
+        elif queueMode == 'queue': # Queue request.
+            self.formattedParams += [_formatter(newVars)]
+        
+        elif queueMode == 'update':
+            request = apiCaller(HALO_API_URL,'update','Site',newVars,self.headerJSON, self.formattedParams)
+            response = request.getData()
+            self.formattedParams = [] # reset queue
+            return response
 
 
 class invoices:
@@ -581,7 +527,6 @@ class recurringInvoices:
     def delete():
         pass
     
-
     
 class sites:
     """Sites endpoint
@@ -731,8 +676,152 @@ class softwareLicences:
     
     def delete():
         pass
+
+
+class tickets: # Partially updated
+    """Tickets endpoint.  Official documentation: https://halo.halopsa.com/apidoc/resources/tickets
+    """
+    def __init__(self):
+        token = createToken()
+        self.token = token
+        self.headerJSON = { # Header with token
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' +  token
+            }
+        self.formattedParams = [] # create empty list
     
+    def update(self,
+        actioncode:int=None,
+        id:int=None,
+        dateoccurred:str=None,
+        summary:str=None,
+        details:str=None,
+        details_html:str=None,
+        status_id:int=None,
+        tickettype_id:int=None,
+        sla_id:int=None,
+        client_id:int=None,
+        client_name:str=None,
+        site_id:int=None,
+        site_name:str=None,
+        user_id:int=None,
+        user_name:str=None,
+        agent_id:int=None,
+        
+        queueMode:str='disabled',
+        **others
+        ):
+        """Creates or updates one or more tickets.  If ID is included, tickets(s) will be updated.  If ID is not included new ticket(s) will be created.
+        
+        Updating multiple tickets can be done by passing a list of tickets with relevant fields, or by passing individual updates with the queueMode set to 'queue'.
+        
+        Offical documentation including all possible fields https://halo.halopsa.com/apidoc/resources/tickets
+        
+
+        Args:
+            actioncode (int, optional): _description_. 
+            id (int, optional): Ticket ID. If none provided, new ticket will be created.
+            dateoccurred (str, optional): _description_. 
+            summary (str, optional): Ticket summary (subject). 
+            details (str, optional): Ticket details. 
+            details_html (str, optional): Details in HTML format. 
+            status_id (int, optional): Status ID. 
+            tickettype_id (int, optional): Ticket type ID. 
+            sla_id (int, optional): SLA ID. 
+            client_id (int, optional): Client ID.
+            client_name (str, optional): Client name. 
+            site_id (int, optional): Site ID. 
+            site_name (str, optional):Site Name. 
+            user_id (int, optional): User ID. 
+            user_name (str, optional): User name. 
+            agent_id (int, optional): Agent ID. 
+            queueMode (str, optional): Queue ticket data to be sent as a batch update.  This is done to reduce POST requests sent to Halo, by sending one POST request with all the needed updates
+                Modes: 
+                - disabled - (Default) Updates ticket
+                - queue - Queues a single item ready to be sent later.
+                - update - Sends queued tickets to be updated/created.
+
+        Returns:
+            _type_: I dont think it returns anything... #TODO make this return status
+        """
+        """
+
+
+
+        """
+        
+        queueMode=queueMode.lower()
+        
+        if queueMode not in ['disabled','queue','update']:
+            raise AttributeError(f'{queueMode} is not a valid Queue Mode.')
+        
+        newVars = locals().copy()
+        
+        if queueMode == 'queue': # Queue request.
+            self.formattedParams += [_formatter(newVars)]
+        
+        elif queueMode in ['update','disabled']:
+            request = apiCaller(HALO_API_URL,'update','Tickets',newVars,self.headerJSON, self.formattedParams if self.formattedParams!=[] else None)
+            response = request.getData()
+            self.formattedParams = [] # reset queue
+            return response
+
+    def search(self,query):
+        pass
+        
+    def get(self,
+        id:int,
+        includedetails:bool=False,
+        includelastaction:bool=False,
+        ticketidonly:bool=False,
+        **others
+        ):
+        """
+        Get a single ticket's details.
+        Supports all Halo parameters, even if not listed.  
+        Requires atleast ID to be provided
+        Args:
+            id (int): Ticket ID
+            includedetails (bool, optional): Whether to include extra details (objects) in the response. Defaults to False.
+            includelastaction (bool, optional): Whether to include the last action in the response. Defaults to False.
+            ticketidonly (bool, optional): Returns only the ID fields (Ticket ID, SLA ID, Status ID, Client ID and Name and Lastincomingemail date) of the Tickets. Defaults to False.
+
+        Returns:
+            dict: Single ticket details
+        """
+
+        newVars = locals().copy()
+        request = apiCaller(HALO_API_URL,'get','Ticket',newVars,self.headerJSON)
+        response = request.getData()
+        return response
     
+    def merge(self,existingID,newID):
+        pass
+    
+    def updateStatus(self,ID,statusID=20):
+        """Update ticket status(es)
+
+        Args:
+            ID (int,list): ID(s) of ticket to be updated
+            statusID (int, optional): ID of new status to be set. Defaults to 20 (this completes tickets for us).
+        
+        Returns:
+            List of payloads (these are sent, payload sent as record for now.)
+        """
+        payloads = []
+        if type(ID) is not list:
+            ID = [ID]
+        for ticID in ID:
+            payload = json.dumps([{
+                    'id': ticID,
+                    'status_id': str(statusID) # Mark ticket as completed.
+                    }])
+            self.create(payload)
+            payloads+= payload
+            
+        return payloads
+  
+  
 class users:
     """Users endpoint.  
     """
@@ -829,7 +918,6 @@ class users:
         pass
     def delete():
         pass
-
 
 
 def _formatter(params): # Format user input for API requests
