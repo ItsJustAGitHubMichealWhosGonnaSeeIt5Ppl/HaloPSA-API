@@ -66,10 +66,22 @@ Working, but planning to remove this as you can just use search with no variable
 #### Update (create)
 Creates or updates one or more assets.  If ID is included, asset(s) will be updated.  If ID is not included, new asset(s) will be created.
 - Working but requires "fields" to be sent in a specific JSON-like format.  Working on a better solution.  Has docstring.
+- Allows queuing multiple items so a single update can be sent, reducing calls to Halo
+#### Delete
+Not implemented.
+### Attachments
+Attachments on tickets.
+#### Get
+Working, needs docstring
+- Returns attachment in base64
+#### Search
+Working, has docstring but needs more updating
+#### Update
+Not implemented.
 #### Delete
 Not implemented.
 ### Clients
-You customers/clients
+Your customers/clients.
 #### Get
 Working, has docstring.
 #### Search
@@ -90,11 +102,32 @@ Not implemented.
 Technically working, needs documentation and docstring.
 #### Delete
 Not implemented.
-###Sites
+### Sites
 #### Get
 Not implemented.
 #### Search
 Implemented, has docstring.
+#### Update
+Not implemented.
+#### Delete
+Not implemented.
+### Tickets
+Halo tickets endpoint.
+#### Get
+Working, has docstring.
+#### Search
+Not implemented.
+#### Update
+Working, has docstring.
+- Allows queuing multiple items so a single update can be sent, reducing calls to Halo
+#### Delete
+Not implemented.
+### Users
+Halo users endpoint.
+#### Get
+Working, has docstring.
+#### Search
+Working, has docstring.
 #### Update
 Not implemented.
 #### Delete
@@ -104,9 +137,7 @@ Not implemented.
 ## Not implemented
 ### Planning to implement soon/Implemented in a previous version
 - Currency
-- Tickets
 - Items
 - Invoices
 ### Low Priority (if not listed, assume here)
 - Actions
-- Users
