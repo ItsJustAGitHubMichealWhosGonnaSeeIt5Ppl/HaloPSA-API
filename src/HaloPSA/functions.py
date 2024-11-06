@@ -1,7 +1,6 @@
 import requests
 import urllib.parse
 import json
-import os
 
 
 class apiCaller:
@@ -131,6 +130,3 @@ def testFunc(test='word',b=2,**other):
 
 if __name__=="__main__":
     testFunc(data=2,otherData=3)
-
-
-
