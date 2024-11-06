@@ -4,7 +4,7 @@ keywords = ['HaloPSA','HaloPSA API']
 name = "HaloPSA"
 version = "0.0.6"
 authors = [{ name="Fryan O", email="FryanO@proton.me" },]
-description = "Python frontend for the HaloPSA API"
+description = "Python wrapper for the HaloPSA API"
 readme = "README.md"
 requires-python = ">=3.10"
 classifiers = [
