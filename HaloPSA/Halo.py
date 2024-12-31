@@ -34,7 +34,8 @@ class HaloBase:
         url = self.apiURL if url == None else url # Fix URL
         # Set params or data depending on what type of request is being done
         params = payload if method == 'get' else None
-        data = payload if method == 'post' else None
+        data = json.dumps([payload]) if headers == None and method == 'post' else payload if  method == 'post' else None # Why is it this way?
+
         response = self.session.request(method, url, params=params,data=data)
         reason = response.reason
         code = response.status_code
@@ -63,16 +64,20 @@ class HaloBase:
             else:
                 print(content["error_description"])
         elif code in [400]: # Bad reqeust 
-            raise Exception(f'{code} Bad Request - {content('ClassName')}: {content('message')}') # URL is good, but the request is no
+            raise Exception(f'{code} Bad Request - {content('ClassName')}: {content('message')}') # URL is good, but the request is no #TODO fix this error
                 
         else:
             raise Exception( f'{code} - Other failure')
 
     def _requestFormatter(self,params):
-        paramsToAdd = params | params['others'] # Copy params and add any additional items
-        paramsToAdd.pop('others') # Remove 'others' dict item to avoid confusion
-        paramsToAdd.pop('self')
+        try:
+            paramsToAdd = params | params['others'] # Copy params and add any additional items
+            paramsToAdd.pop('others') # Remove 'others' dict item to avoid confusion
+
+        except KeyError: # Not all endpoints have "others"
+            paramsToAdd = params
         
+        paramsToAdd.pop('self')
         formattedData = {}
         
         pageinateToggle = False
@@ -303,6 +308,83 @@ class Attachments(HaloBase):
 class Clients(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
+        self.apiURL+='/Client'
+
+    def search(self,
+        pageinate:bool=False,
+        page_size:int=None, # Switched to none
+        page_no:int=1,
+        order:str =None,
+        orderdesc:bool=None,
+        search:str=None,
+        toplevel_id:int=None,
+        includeinactive:bool=None,
+        includeactive:bool=None,
+        count:int=50,
+        newFormat:bool=False,
+        **others
+               ):
+        """Search clients.  Supports unlisted parameters 
+        By default, only the first 50 results are returned.  If more than 50 are needed, you must explicitely set count variable.  Leaving count blank will still return 50
+
+        Args:
+            paginate (bool, optional): Whether to use Pagination in the response. Defaults to False.
+            page_size (int, optional): When using Pagination, the size of the page. Defaults to 50.
+            page_no (int, optional): When using Pagination, the page number to return. Defaults to 1.
+            order (str, optional): The name of the field to order by.
+            orderdesc (bool, optional): Whether to order ascending or descending. Defaults to decending sort.
+            search (str, optional): Filter by Customers like your search.
+            toplevel_id (int, optional): Filter by Customers belonging to a particular top level.
+            includeinactive (bool, optional): Include inactive Customers in the response. Defaults to False/No.
+            includeactive (bool, optional): Include active Customers in the response. Defaults to True/Yes.
+            newFormat: (bool, optional): Send 
+            count (int, optional): When not using pagination, the number of results to return. Set to 50 by default (even if not included)
+        
+        Returns:
+            newFormat=False (default)
+                dict: Results and record count
+            newFormat=True
+                list: List of results
+                int: Record count (total number of responses)
+            
+        """
+        rawParams = locals().copy()
+        response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
+        if newFormat==True:
+            return response['clients'], response['record_count']
+        else:
+            return response
+        
+    def get(self,
+            id:int,
+            includedetails:bool=False,
+            includediagramdetails:bool=False,
+            **others
+            ):
+        """
+        Get a single client's details.
+        Supports all Halo parameters, even if not listed.  
+        Requires atleast ID to be provided
+        Args:
+            id (int): Client ID
+            includedetails (bool, optional): Whether to include extra details (objects) in the response. Defaults to False.
+            includediagramdetails (bool, optional): Whether to include diagram details in the response. Defaults to False.
+
+        Returns:
+            dict: Single client details
+        """
+        
+        rawParams = locals().copy()
+        response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
+        return response
+        
+    def update():
+        """Update one or more clients"""
+        pass
+    def delete():
+        pass
+
+
 
 class Contracts(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
@@ -311,6 +393,76 @@ class Contracts(HaloBase):
 class Items(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
+        self.apiURL+='/Item'
+
+    def getAll(self):
+        pass
+    
+    def getDetails(self, item):
+        """ Get details about an item
+
+        Args:
+            item INT: Item ID
+
+        Returns:
+            Dictionay: Item details
+        """
+        request = requests.get(HALO_API_URL + '/item/' + str(item) + '?includedetails=true', headers = self.headerJSON)
+        #return _responseParser(request)
+        
+    def search(self, query):
+        """ Search for an item
+
+        Args:
+            query DICT: Query dictionary
+
+        Returns:
+            Dictionary: Hopefully a list of items?
+        """
+        query = urllib.parse.urlencode(query)
+        request = requests.get(HALO_API_URL+ '/item?' + query, headers = self.headerJSON)
+        #return _responseParser(request)
+    
+    def create(self, payload):
+        pass
+    
+    def update(self,
+        id:int=None,
+        fields:list=None,
+        queueMode:str='disabled',
+        **others
+               ):
+        """Creates or updates one or more assets.  If ID is included, asset(s) will be updated.  If ID is not included new asset(s) will be created.
+
+        Args:
+            id (int, optional): Asset ID.
+            client_id (int, optional): Client ID. 
+            site_id (int, optional): Site ID. 
+            users (list, optional): User IDs. 
+            fields (list, optional): Fields to be updated.
+            queueMode (str, optional): Queue asset data to be sent as a batch update.  Valid modes: disabled - Default, will update asset immediately. queue
+
+        Returns:
+            _type_: I dont think it returns anything...
+        """
+        if queueMode.lower() not in ['disabled','queue','update']:
+            raise AttributeError(f'{queueMode} is not a valid Queue Mode.')
+        
+        newVars = locals().copy()
+        
+        if queueMode == 'disabled': # Sent request immediately
+            request = apiCaller(HALO_API_URL,'update','Site',newVars,self.headerJSON)
+            response = request.getData()
+            return response
+        
+        elif queueMode == 'queue': # Queue request.
+            self.formattedParams += [_formatter(newVars)]
+        
+        elif queueMode == 'update':
+            request = apiCaller(HALO_API_URL,'update','Site',newVars,self.headerJSON, self.formattedParams)
+            response = request.getData()
+            self.formattedParams = [] # reset queue
+            return response
 
 class Invoices(HaloBase): #TODO add docstring here
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
@@ -380,3 +532,128 @@ class Tickets(HaloBase):
 class Users(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
+        self.apiURL+='/Users'
+    def search(self,
+        pageinate:bool=False,
+        page_size:int=50,
+        page_no:int=1,
+        order:str =None,
+        orderdesc:bool=None,
+        search:str=None,
+        search_phonenumbers:bool=None,
+        toplevel_id:int=None,
+        client_id:int=None,
+        site_id:int=None,
+        organisation_id:int=None,
+        department_id:int=None,
+        asset_id:int=None,
+        includeinactive:bool=None,
+        includeactive:bool=None,
+        approversonly:bool=None,
+        excludeagents:bool=None,
+        count:int=None,
+        **others
+               ):
+        """_summary_
+
+        Args:
+            paginate (bool, optional): Whether to use Pagination in the response. Defaults to False.
+            page_size (int, optional): When using Pagination, the size of the page. Defaults to 50.
+            page_no (int, optional): When using Pagination, the page number to return. Defaults to 1.
+            order (str, optional): The name of the field to order by.
+            orderdesc (bool, optional): Whether to order ascending or descending. Defaults to decending sort.
+            search (str, optional): Query to filter by.
+            search_phonenumbers (bool, optional): Filter by Users with a phone number like your search. Defaults to None.
+            toplevel_id (int, optional): Filter by Users belonging to a particular top level.            
+            client_id (int, optional): Filter by Users belonging to a particular customer.
+            site_id (int, optional): Filter by Users belonging to a particular site.
+            organisation_id (int, optional): Filter by Users belonging to a particular site.
+            department_id (int, optional): Filter by Users belonging to a particular department.
+            asset_id (int, optional): Filter by Users assigned to a particular asset.
+            includeinactive (bool, optional): Include inactive Users in response. Defaults to False.
+            includeactive (bool, optional): Include inactive Users in response. Defaults to True.
+            approversonly (bool, optional): Include only Users that can approve appoval processes response. Defaults to False.
+            excludeagents (bool, optional): Excluse Users that are linked to active agent accounts. Defaults to False.
+            count (int, optional): When not using pagination, the number of results to return.
+
+        Returns:
+            dict: Search results
+        """
+        
+        rawParams = locals().copy() 
+        response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
+        return response
+        
+    def get(self, # TODO test me
+            id:int,
+            includedetails:bool=None,
+            includeactivity:bool=None,
+            includepopups:bool=None,
+            **others
+            ):
+        """
+        Get a single user's details.
+        Supports all Halo parameters, even if not listed.  
+        Requires atleast ID to be provided
+        Args:
+            id (int): User ID
+            includedetails (bool, optional): Whether to include extra details in the response. Defaults to False.
+            includeactivity (bool, optional): Whether to include User's ticket activity in the response. Defaults to False.
+            includepopups (bool, optional): Whether to include customer pop ups in the response. Defaults to False.
+
+        Returns:
+            dict: Single users details
+        """
+        
+        rawParams = locals().copy()
+        response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
+        return response
+        
+    def update():
+        """Update one or more users"""
+        pass
+    def delete():
+        pass
+
+# NON STANDARD
+
+class DistributionLists(HaloBase): 
+    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
+        super().__init__(tenant,clientID,secret,scope,logLevel)
+        self.apiURL+='/DistributionLists'
+        
+    def getAll(self): # All distribution lists
+
+        rawParams = locals().copy()
+        response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
+        return response
+    
+    def get(self, # Only accepts one item #TODO check if there are any hidden params #TODO allow a way to get users?
+            id:int
+            ):
+
+        rawParams = locals().copy()
+        response = self._requester('get',self.apiURL+f'/{id}?includedetails=true',self._requestFormatter(rawParams))
+        return response
+    
+    def create(self,
+        name:str,
+        description:str="",
+        mailbox_from:int="",
+        mailbox_replyto:int="",
+        third_party_url:any="",
+        dynamic_members:bool="",
+        **others
+        ):
+        rawParams = locals().copy()
+        response = self._requester('post',self.apiURL,self._requestFormatter(rawParams))
+        return response
+    
+    
+    def update(self,
+        id:int,
+        addtheseusers:list=None,
+        removetheseusers:list=None): # TODO add docstring
+        rawParams = locals().copy()
+        response = self._requester('post',self.apiURL,self._requestFormatter(rawParams))
+        return response
