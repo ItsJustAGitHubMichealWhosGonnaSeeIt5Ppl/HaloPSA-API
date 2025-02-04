@@ -24,15 +24,14 @@ pip install HaloPSA
 0. Make sure that "Active" is ticked and click save (Not: this shouldn't be needed, but I have lost my progress too many times to risk it)
 0. Note your Client ID and Secret, you will need these later!
 0. Click on the integration/Application you just created and go to Permissions.
-0. Set permissions to either All or, if you know what you'll be using, enable just those permissions. (I recommend testing with All and then disabling permissions selectively, that way you know your connection is working before you start troubleshooting)
+0. Set permissions to either All or, if you know what you'll be using, enable just those permissions. (I recommend testing with `all:standard` and then disabling permissions selectively, that way you know your connection is working before you start troubleshooting)
 0. Click Save and move on to setting up your .env file.
 ## Setting up your .env file
 1. Create a .env file with the following lines
 ```
 HALO_CLIENT_ID = [Your Client ID]
 HALO_SECRET = [Your Secret]
-HALO_API_URL = https://[Your Halo Instance].halopsa.com/api
-HALO_AUTH_URL = https://[Your Halo Instance].halopsa.com/auth/token
+HALO_TENANT = [Your Halo Instance/tenant]  Eg: https://[THIS PART OF THE URL].halopsa.com
 ```
 Now you're ready to go!
 

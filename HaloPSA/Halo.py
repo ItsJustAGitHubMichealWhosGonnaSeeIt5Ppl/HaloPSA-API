@@ -8,15 +8,19 @@ import os
 #TODO start documentation
 #TODO fix changelog.md
 #TODO update readme.md
+#TODO add versioning
 #TODO implement all base endpoints (the ones in the main documentation)
 
-
+#TEMPLATE STRING FOR CLASSES
+"""[ENDPOINT NAME] Endpoint
+[Brief description]
+Official Documentation: https://halopsa.halopsa.com/apidoc/resources/[Endpoint] OR No official documentation
+Progress:
+"""
 class HaloBase:
     """Base halo class"""
-    #TODO test bad token
-    #TODO test bad URL
     def _createToken(self,clientid:str,secret:str,scope:str='all'):
-        # Return auth token from Halo. 
+        # Return auth token from Halo.
         authheader = { # Required by Halo, don't ask me why
         'Content-Type': 'application/x-www-form-urlencoded'
         }
@@ -35,20 +39,28 @@ class HaloBase:
         # Set params or data depending on what type of request is being done
         params = payload if method == 'get' else None
         data = json.dumps([payload]) if headers == None and method == 'post' else payload if  method == 'post' else None # Why is it this way?
-
+        
         response = self.session.request(method, url, params=params,data=data)
         reason = response.reason
         code = response.status_code
         
-        #TODO find errors here
-        # Invalid URL
-        if code in [404]: # Raise error here
-            print(f'404 -  The specified URL is invalid. URL: {self.url}')
-        try:
+        
+        # These responses usually don't have JSON content, so should be checked first.  Codes are in lists in case I find more later
+        if code in [403]: # Forbidden
+            raise PermissionError(f'{reason} - You do not have permission to do this. If this is unexpected, make sure you have set the right permissions in Halo.')
+        elif code in [404]:# Invalid URL
+           raise Exception(f'{code} - The specified URL is invalid. URL: {self.url}')
+        elif code in [500]: # Internal Server Error
+            raise Exception(f'{code} - {reason}.  Is your Tenant ID right?') # Got this when I gave it a bad tenant #TODO make this a custom error?
+        
+        
+        try: # Hopefully the data is JSON now
             content = json.loads(response.content)
         except UnicodeDecodeError: # bytes resposne.
             content = response.content
-            return content 
+            return content
+        except json.decoder.JSONDecodeError:
+            raise Exception('Uh oh I don\'t know how you got this.  Your JSON did not decode.') #TODO fix this error
         
         # Success
         if code in [200,201]:
@@ -57,14 +69,16 @@ class HaloBase:
             return content
 
         elif code in [401]:
-            # Return clearer errors
-            if content["error_description"] == 'The specified client credentials are invalid.':
-                # Specify it is the client secret that is wrong, not the client ID.
-                print('The specified \'client_secret\' is invalid')
+            if content['error'] == 'invalid_client': # Add some more helpful info to the error
+                error_desc = content['error_description'] + ' Make sure your client ID and secret are correct.'
             else:
-                print(content["error_description"])
+                error_desc = content['error_description']
+            
+            raise ValueError(f'{reason}. {error_desc}')
+        
+
         elif code in [400]: # Bad reqeust 
-            raise Exception(f'{code} Bad Request - {content('ClassName')}: {content('message')}') # URL is good, but the request is no #TODO fix this error
+            raise ValueError(f'{code} Bad Request - {content}') # URL is good, but the request is no #TODO maybe parse the error so its easier to read? #TODO custom errors!
                 
         else:
             raise Exception( f'{code} - Other failure')
@@ -98,8 +112,8 @@ class HaloBase:
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         
         self.session = requests.Session() # Create a session
-        
-        self.authURL = f'https://{tenant}.halopsa.com/auth/token' # auth URL used only once to get a token
+        #TODO handle a full URL being sent
+        self.authURL = f'https://{tenant}.halopsa.com/auth/token' # auth URL used only once to get a token 
         self.apiURL = f'https://{tenant}.halopsa.com/api' # API url used for everything else
         self.token = self._createToken(clientID,secret) # Create token
         self.session.headers.update({ # Header with token
@@ -128,19 +142,27 @@ class Actions(HaloBase):
 class Agents(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
+        self.apiURL+='/Agent'
         
 class Appointments(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
+        self.apiURL+='/Appointment'
 
-class Assets(HaloBase):
+
+class Assets(HaloBase): # TODO this is the only endpoint that actually works?
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
         self.apiURL+='/Asset'
         self.formattedParams = []
     #TODO add progress start in here somewhere
-    """ Asset actions 
-    Initialize by running this once on its own, then run actions"""
+    """
+    Assets Endpoint.
+    Get, update, and delete your Halo Assets
+    Official Documentation: https://halopsa.halopsa.com/apidoc/resources/assets
+    Progress: TBD
+    """
+    
     def get(self,
             id:int,
             includedetails:bool=True,
@@ -254,14 +276,14 @@ class Assets(HaloBase):
         
         if queueMode == 'disabled': # Sent request immediately
         
-            response = self._requester('post',self.apiURL+'/Asset',self._requestFormatter(rawParams))
+            response = self._requester('post',self.apiURL,self._requestFormatter(rawParams))
             return response
         
         elif queueMode == 'queue': # Queue request.
             self.formattedParams += [self._requestFormatter(rawParams)]
         
         elif queueMode == 'update':
-            response = self._requester('post',self.apiURL+'/Asset',self._requestFormatter(rawParams))
+            response = self._requester('post',self.apiURL,self._requestFormatter(rawParams))
             self.formattedParams = [] # reset queue
             return response
         
@@ -292,16 +314,26 @@ class Attachments(HaloBase):
         response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
         return response
         
-    def get(self,
+    def get(self, #TODO add docstring
             id:int,
             includedetails:bool=False,
             **others):
         
         rawParams = locals().copy()
-        response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
+        response = self._requester('get',self.apiURL+f'/{id}',self._requestFormatter(rawParams))
         return response
-    def update():
-        pass
+    def upload(self,
+            id:int=None,
+            filename:str=None,
+            ticket_id:int=None,
+            data_base64:str=None,
+            **others):
+        
+        rawParams = locals().copy()
+        response = self._requester('post',self.apiURL,self._requestFormatter(rawParams))
+        return response
+        
+
     def delete():
         pass
         
@@ -501,6 +533,112 @@ class Quotes(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
 
+class RecurringInvoices(HaloBase): #TODO should this be capitalised like it is now?
+    """
+    Recurring Invoices (RecurringInvoiceHeader) Endpoint.
+    Get, update, and delete your recurring invoices
+    Official Documentation: Not officially listed in documentation, listed under "RecurringInvoiceHeader" in swagger (link below)
+    Swagger: https://halo.halopsa.com/api/swagger/index.html
+    
+    Progress
+    - Search: Partially tested
+    - Get: Not implemented
+    - GetAll: Tested, needs docstring
+    - Update: Partially tested
+    - UpdateLines: Not tested
+    - Delete: Not implemented
+    """
+    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
+        super().__init__(tenant,clientID,secret,scope,logLevel)
+        self.apiURL+='/RecurringInvoice'
+
+    def search(self, #TODO add docstring #TODO figure out why page size is being returned at all if it isnt being used. #TODO add more relevant variables if any
+        pageinate:bool=False,
+        page_size:int=50,
+        page_no:int=1,
+        order:str =None,
+        orderdesc:bool=None,
+        search:str=None,
+        count:int=None,
+        client_id:int=None,
+        includelines:bool=False,
+        **others):
+        
+        
+        rawParams = locals().copy()
+        response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
+        return response
+    
+    def get(self,): 
+        pass
+    
+    def getAll(self, #TODO add docsting #TODO add any other potentially useful toggles
+        includelines:bool=False):
+        #This is literally just search but wrapped
+        response = self.search(includelines=includelines)
+        return response['invoices']
+    
+    def update(self, #TODO Test update #TODO fix docstring 
+        id:int=None,
+        due_date_type:int=None, #
+        due_date_int:int=None, # 
+        **others):
+        """Update or create a recurring invoice (Not used for updating line items)
+
+        Args:
+            id (int, optional): Recurring invoice ID.  If no ID is provided, a new recurring invoice will be created
+            due_date_type (int, optional): Set due date type to use. (see list below)
+            due_date_type (int, optional): Set due date count.  If using a days after, count will be taken as a number.  If using "of the _ month" will be taken as a date.  If date is larger than last day of month, last day of the month will be used instead.
+        
+        Due date types:
+        - 0: Day(s) after the invoice date.
+        - 1: Day(s) after the end of the invoice month. 
+        - 2: of the next month. 
+        - 3: of the current month.
+        
+        Returns:
+            dict: Updated invoice(s)
+        """
+        
+        queueMode = 'disabled' #TODO Implement and test queueMode
+        if queueMode.lower() not in ['disabled','queue','update']:
+            raise AttributeError(f'{queueMode} is not a valid Queue Mode.')
+        
+        rawParams = locals().copy()
+        
+        if queueMode == 'disabled': # Sent request immediately
+        
+            response = self._requester('post',self.apiURL,self._requestFormatter(rawParams)) #TODO should params be formatted later?
+            return response
+        
+        elif queueMode == 'queue': # Queue request.
+            self.formattedParams += [self._requestFormatter(rawParams)]
+        
+        elif queueMode == 'update':
+            response = self._requester('post',self.apiURL,self._requestFormatter(rawParams))
+            self.formattedParams = [] # reset queue
+            return response
+    
+    def updateLines(self, #TODO test updateLines #TODO fix docstring
+        id:int,
+        ihid:int,
+        **others):
+        """Update recurring invoice lineitem(s)
+
+        Args:
+            id (int): Recurring invoice line item ID (required)
+            ihid (int): Recurring invoice ID (required)
+
+        Returns:
+            _type_: _description_
+        """
+        
+        rawParams = locals().copy()
+        response = self._requester('get',self.apiURL+'/UpdateLines',self._requestFormatter(rawParams))
+        return response        
+
+    def delete():
+        pass
 class Reports(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
