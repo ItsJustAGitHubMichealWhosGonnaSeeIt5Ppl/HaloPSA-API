@@ -37,6 +37,7 @@ class HaloBase:
     def _requester(self, method, url:str=None, payload=None,headers=None):
         url = self.apiURL if url == None else url # Fix URL
         # Set params or data depending on what type of request is being done
+        #TODO allow method to be set to "Search" and use that rather than adding the ID directly into the main URL. May also require some tweaks to how request formatting is handled
         params = payload if method == 'get' else None
         data = json.dumps([payload]) if headers == None and method == 'post' else payload if  method == 'post' else None # Why is it this way?
         
@@ -292,7 +293,7 @@ class Attachments(HaloBase):
         super().__init__(tenant,clientID,secret,scope,logLevel)
         self.apiURL+='/Attachment'
     
-    def search(self,
+    def search(self, 
         ticket_id:int=None,
         action_id:int=None,
         type:int=None,
@@ -341,6 +342,7 @@ class Clients(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
         self.apiURL+='/Client'
+        self.formattedParams = []
 
     def search(self,
         pageinate:bool=False,
@@ -350,28 +352,28 @@ class Clients(HaloBase):
         orderdesc:bool=None,
         search:str=None,
         toplevel_id:int=None,
-        includeinactive:bool=None,
+        includeinactive:bool=None, #TODO should these be set to their defaults? instead of none
         includeactive:bool=None,
         count:int=50,
         newFormat:bool=False,
         **others
                ):
-        """Search clients.  Supports unlisted parameters 
-        By default, only the first 50 results are returned.  If more than 50 are needed, you must explicitely set count variable.  Leaving count blank will still return 50
+        """Search clients. Supports unlisted parameters.
+        By default, only the first 50 results are returned.  If more than 50 are needed, you must explicitely set count variable.  Leaving count blank will still return 50.
 
         Args:
             paginate (bool, optional): Whether to use Pagination in the response. Defaults to False.
-            page_size (int, optional): When using Pagination, the size of the page. Defaults to 50.
-            page_no (int, optional): When using Pagination, the page number to return. Defaults to 1.
+            page_size (int, optional): The size of the page if using pagination. Defaults to 50.
+            page_no (int, optional): The page number to return if using pagination. Defaults to 1.
+            count (int, optional): When not using pagination, the number of results to return. Set to 50 by default (even if not included).
             order (str, optional): The name of the field to order by.
             orderdesc (bool, optional): Whether to order ascending or descending. Defaults to decending sort.
             search (str, optional): Filter by Customers like your search.
             toplevel_id (int, optional): Filter by Customers belonging to a particular top level.
-            includeinactive (bool, optional): Include inactive Customers in the response. Defaults to False/No.
-            includeactive (bool, optional): Include active Customers in the response. Defaults to True/Yes.
-            newFormat: (bool, optional): Send 
-            count (int, optional): When not using pagination, the number of results to return. Set to 50 by default (even if not included)
-        
+            includeinactive (bool, optional): Include inactive Customers in the response. Defaults to False.
+            includeactive (bool, optional): Include active Customers in the response. Defaults to True.
+            newFormat: (bool, optional): Return clients and record count separately. Defaults to False.
+            
         Returns:
             newFormat=False (default)
                 dict: Results and record count
@@ -387,7 +389,15 @@ class Clients(HaloBase):
         else:
             return response
         
-    def get(self,
+    def getAll(self, #TODO add docsting #TODO add any other potentially useful toggles
+        includeinactive:bool=False,
+        includeactive:bool=True,):
+        #This is literally just search but wrapped
+        #TODO should include details be available here?  Would require separate calls for all clients, could get intensive
+        response = self.search(count=100000,includeinactive=includeinactive,includeactive=includeactive) #TODO make sure to note that the maximum here is 100000
+        return response['clients']
+        
+    def get(self, #TODO test Get
             id:int,
             includedetails:bool=False,
             includediagramdetails:bool=False,
@@ -407,12 +417,45 @@ class Clients(HaloBase):
         """
         
         rawParams = locals().copy()
-        response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
+        response = self._requester('get',self.apiURL+f'/{id}',self._requestFormatter(rawParams))
         return response
         
-    def update():
-        """Update one or more clients"""
-        pass
+    def update(self, #TODO update the docstring
+        id:int=None,
+        name:str=None,
+        toplevel_id:int=None,
+        due_date_type:int=None,
+        invoiceduedaysextraclient:int=None, # This is due date int in other places
+        queueMode:str='disabled',
+        **others
+            ):
+        """Create or update one or more clients.  If ID is included, client(s) will be updated.  If ID is not included new client(s) will be created.
+
+        Args:
+            id (int, optional): Client ID.
+            queueMode (str, optional): Queue asset data to be sent as a batch update.  Valid modes: disabled - Default, will update asset immediately. queue
+
+        Returns:
+            dict: Updated or created client(s).
+        """
+        if queueMode.lower() not in ['disabled','queue','update']:
+            raise AttributeError(f'{queueMode} is not a valid Queue Mode.')
+        
+        rawParams = locals().copy()
+        
+        if queueMode == 'disabled': # Sent request immediately
+        
+            response = self._requester('post',self.apiURL,self._requestFormatter(rawParams))
+            return response
+        
+        elif queueMode == 'queue': # Queue request.
+            self.formattedParams += [self._requestFormatter(rawParams)]
+        
+        elif queueMode == 'update':
+            response = self._requester('post',self.apiURL,self._requestFormatter(rawParams))
+            self.formattedParams = [] # reset queue
+            return response
+    
     def delete():
         pass
 
@@ -533,7 +576,7 @@ class Quotes(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
 
-class RecurringInvoices(HaloBase): #TODO should this be capitalised like it is now?
+class RecurringInvoices(HaloBase):
     """
     Recurring Invoices (RecurringInvoiceHeader) Endpoint.
     Get, update, and delete your recurring invoices
@@ -583,7 +626,7 @@ class RecurringInvoices(HaloBase): #TODO should this be capitalised like it is n
         due_date_type:int=None, #
         due_date_int:int=None, # 
         **others):
-        """Update or create a recurring invoice (Not used for updating line items)
+        """Update or create a recurring invoice (Not used for updating line items).
 
         Args:
             id (int, optional): Recurring invoice ID.  If no ID is provided, a new recurring invoice will be created
@@ -666,11 +709,13 @@ class TicketTypes(HaloBase):
 class Tickets(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
-
+    
+        
 class Users(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
         self.apiURL+='/Users'
+        
     def search(self,
         pageinate:bool=False,
         page_size:int=50,
@@ -795,3 +840,30 @@ class DistributionLists(HaloBase):
         rawParams = locals().copy()
         response = self._requester('post',self.apiURL,self._requestFormatter(rawParams))
         return response
+
+class TopLevel(HaloBase):
+    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
+        super().__init__(tenant,clientID,secret,scope,logLevel)
+        self.apiURL+='/TopLevel'
+
+    def search(self,
+        pageinate:bool=False,
+        page_size:int=50,
+        page_no:int=1,
+        order:str =None,
+        orderdesc:bool=None,
+        search:str=None,
+        count:int=None,
+        **others):
+        
+        rawParams = locals().copy()
+        response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
+        return response
+    
+    def get(self): 
+        pass
+    
+    def getAll(self): #TODO add docsting #TODO add any other potentially useful toggles
+        #This is literally just search but wrapped
+        response = self.search()
+        return response['tree']
