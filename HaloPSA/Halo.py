@@ -383,7 +383,7 @@ class Clients(HaloBase):
             
         """
         rawParams = locals().copy()
-        response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
+        response = self._requester('get',self.apiURL, self._requestFormatter(rawParams))
         if newFormat==True:
             return response['clients'], response['record_count']
         else:
@@ -469,9 +469,6 @@ class Items(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
         self.apiURL+='/Item'
-
-    def getAll(self):
-        pass
     
     def getDetails(self, item):
         """ Get details about an item
@@ -482,28 +479,57 @@ class Items(HaloBase):
         Returns:
             Dictionay: Item details
         """
-        request = requests.get(HALO_API_URL + '/item/' + str(item) + '?includedetails=true', headers = self.headerJSON)
-        #return _responseParser(request)
+
         
-    def search(self, query):
-        """ Search for an item
+    def search(self,
+        pageinate:bool=False,
+        page_size:int=50,
+        page_no:int=1,
+        order:str =None,
+        orderdesc:bool=None,
+        search:str=None,
+        count:int=None,
+        **others):
+        """Search items
 
         Args:
-            query DICT: Query dictionary
+            pageinate (bool, optional): _description_. Defaults to False.
+            page_size (int, optional): _description_. Defaults to 50.
+            page_no (int, optional): _description_. Defaults to 1.
+            order (str, optional): _description_. Defaults to None.
+            orderdesc (bool, optional): _description_. Defaults to None.
+            search (str, optional): _description_. Defaults to None.
+            count (int, optional): _description_. Defaults to None.
+
 
         Returns:
-            Dictionary: Hopefully a list of items?
-        """
-        query = urllib.parse.urlencode(query)
-        request = requests.get(HALO_API_URL+ '/item?' + query, headers = self.headerJSON)
-        #return _responseParser(request)
+            list: List of currency items
+        """         
+        
+        rawParams = locals().copy()
+        response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
+        return response
+    
+    def get(self): 
+        pass
+    
+    def getAll(self):
+        response = self.search()
+        return response #TODO figure out what the dict name is for this
+    
+
     
     def create(self, payload):
         pass
     
     def update(self,
         id:int=None,
-        fields:list=None,
+        costprice:float=None,
+        recurringcost:float=None,
+        baseprice:float=None,
+        recurringprice:float=None,
+        update_recurring_invoice_price:bool=None,
+        update_recurring_invoice_cost:bool=None,
         queueMode:str='disabled',
         **others
                ):
@@ -511,9 +537,6 @@ class Items(HaloBase):
 
         Args:
             id (int, optional): Asset ID.
-            client_id (int, optional): Client ID. 
-            site_id (int, optional): Site ID. 
-            users (list, optional): User IDs. 
             fields (list, optional): Fields to be updated.
             queueMode (str, optional): Queue asset data to be sent as a batch update.  Valid modes: disabled - Default, will update asset immediately. queue
 
@@ -523,19 +546,18 @@ class Items(HaloBase):
         if queueMode.lower() not in ['disabled','queue','update']:
             raise AttributeError(f'{queueMode} is not a valid Queue Mode.')
         
-        newVars = locals().copy()
+        rawParams = locals().copy()
         
         if queueMode == 'disabled': # Sent request immediately
-            request = apiCaller(HALO_API_URL,'update','Site',newVars,self.headerJSON)
-            response = request.getData()
+        
+            response = self._requester('post',self.apiURL,self._requestFormatter(rawParams))
             return response
         
         elif queueMode == 'queue': # Queue request.
-            self.formattedParams += [_formatter(newVars)]
+            self.formattedParams += [self._requestFormatter(rawParams)]
         
         elif queueMode == 'update':
-            request = apiCaller(HALO_API_URL,'update','Site',newVars,self.headerJSON, self.formattedParams)
-            response = request.getData()
+            response = self._requester('post',self.apiURL,self._requestFormatter(rawParams))
             self.formattedParams = [] # reset queue
             return response
 
@@ -867,3 +889,30 @@ class TopLevel(HaloBase):
         #This is literally just search but wrapped
         response = self.search()
         return response['tree']
+    
+    
+class Currency(HaloBase):
+    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
+        super().__init__(tenant,clientID,secret,scope,logLevel)
+        self.apiURL+='/Currency'
+
+    def search(self,
+        pageinate:bool=False,
+        page_size:int=50,
+        page_no:int=1,
+        order:str =None,
+        orderdesc:bool=None,
+        search:str=None,
+        count:int=None,
+        **others):
+        
+        rawParams = locals().copy()
+        response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
+        return response
+    
+    def get(self): 
+        pass
+    
+    def getAll(self):
+        pass
+    
