@@ -140,11 +140,13 @@ class Actions(HaloBase):
     def delete(): #TODO add actions delete
         pass
 
+
 class Agents(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
         self.apiURL+='/Agent'
-        
+
+
 class Appointments(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
@@ -152,18 +154,24 @@ class Appointments(HaloBase):
 
 
 class Assets(HaloBase): # TODO this is the only endpoint that actually works?
+    """Assets Endpoint
+    
+    Get, add, and update your assets.
+    
+    Official Documentation: https://halopsa.halopsa.com/apidoc/resources/assets
+    
+    Progress:
+    - Get: Working
+    - Search: Working
+    - getAll: Working
+    - Update: Partially working
+    - Delete: Not implemented
+    """
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
         self.apiURL+='/Asset'
         self.formattedParams = []
-    #TODO add progress start in here somewhere
-    """
-    Assets Endpoint.
-    Get, update, and delete your Halo Assets
-    Official Documentation: https://halopsa.halopsa.com/apidoc/resources/assets
-    Progress: TBD
-    """
-    
+
     def get(self,
             id:int,
             includedetails:bool=True,
@@ -171,16 +179,18 @@ class Assets(HaloBase): # TODO this is the only endpoint that actually works?
             **others
             ):
         """
-        Get a single asset's details.
+        Get a single asset's details. Requires atleast the asset ID.
+
         Supports all Halo parameters, even if not listed.  
-        Requires atleast ID to be provided
+        
         Args:
             id (int): Asset ID
             includedetails (bool, optional): Whether to include extra details (objects) in the response. Defaults to True.
             includediagramdetails (bool, optional): Whether to include diagram details in the response. Defaults to False.
-
+            others (any): Any other supported Halo parameters
+            
         Returns:
-            dict: Single asset details
+            dict: Asset information
         """
 
         rawParams = locals().copy()
@@ -208,9 +218,9 @@ class Assets(HaloBase): # TODO this is the only endpoint that actually works?
         contract_id:int=None,
         **others
     ):
-        """Search Assets.
+        """Search assets.  Running with no parameters will get all assets.
+        
         Supports all Halo parameters, even if not listed.  
-        Running with no parameters will get all assets.
 
         Args:
             paginate (bool, optional): Whether to use Pagination in the response. Defaults to False.
@@ -257,7 +267,9 @@ class Assets(HaloBase): # TODO this is the only endpoint that actually works?
         queueMode:str='disabled',
         **others
                ):
-        """Creates or updates one or more assets.  If ID is included, asset(s) will be updated.  If ID is not included new asset(s) will be created.
+        """Add or update asset(s).  If ID is included, asset(s) will be updated, if ID is not included asset(s) will be added.
+        
+        QUEUE MODE CURRENTLY NOT WORKING
 
         Args:
             id (int, optional): Asset ID.
@@ -265,7 +277,12 @@ class Assets(HaloBase): # TODO this is the only endpoint that actually works?
             site_id (int, optional): Site ID. 
             users (list, optional): User IDs. 
             fields (list, optional): Fields to be updated.
-            queueMode (str, optional): Queue asset data to be sent as a batch update.  Valid modes: disabled - Default, will update asset immediately. queue
+            queueMode (str, optional): Queue asset data to be sent as a single update update.  
+            
+            Queue modes: 
+                disabled: Default, will update asset immediately. 
+                queue: Queue the asset update to be sent later.
+                update: Send queued updates to Halo.
 
         Returns:
             _type_: I dont think it returns anything...
@@ -288,6 +305,7 @@ class Assets(HaloBase): # TODO this is the only endpoint that actually works?
             self.formattedParams = [] # reset queue
             return response
         
+
 class Attachments(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
@@ -480,7 +498,6 @@ class Items(HaloBase):
             Dictionay: Item details
         """
 
-        
     def search(self,
         pageinate:bool=False,
         page_size:int=50,
@@ -562,9 +579,17 @@ class Items(HaloBase):
             return response
 
 class Invoices(HaloBase): #TODO add docstring here
+    """Invoices Endpoint.
+    
+    Get, add, and update your invoices.
+
+    Official Documentation: https://halopsa.halopsa.com/apidoc/resources/invoices
+    
+    Progress:
+    """
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
-        
+        self.apiURL+='/Invoice'
     def search(self, #TODO fix this
         pageinate:bool=False,
         page_size:int=None,
@@ -573,14 +598,39 @@ class Invoices(HaloBase): #TODO add docstring here
         orderdesc:bool=None,
         search:str=None,
         count:int=None,
+        ticket_id:int=None,
         client_id:int=None,
+        site_id:int=None,
+        user_id:int=None,
+        postedonly:bool=None,
+        notpostedonly:bool=None,
         includelines:bool=None,
         **others):
         
         
         rawParams = locals().copy()
-        response = self._requester('get',self.apiURL+'/Invoice',self._requestFormatter(rawParams))
+        response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
         return response
+    
+    def get(self, #TODO test Get
+            id:int,
+            **others
+            ):
+        
+        rawParams = locals().copy()
+        response = self._requester('get',self.apiURL+f'/{id}',self._requestFormatter(rawParams))
+        return response
+    
+    def update(self,
+               id:int=None,
+               lines:list=None,
+               **others
+               ):
+        
+        rawParams = locals().copy()
+        response = self._requester('post',self.apiURL,self._requestFormatter(rawParams))
+        return response
+
 
 class KnowledgeBase(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
@@ -600,8 +650,8 @@ class Quotes(HaloBase):
 
 class RecurringInvoices(HaloBase):
     """
-    Recurring Invoices (RecurringInvoiceHeader) Endpoint.
-    Get, update, and delete your recurring invoices
+    Recurring Invoices (RecurringInvoiceHeader) Endpoint.  Get, update, and delete your recurring invoices
+    
     Official Documentation: Not officially listed in documentation, listed under "RecurringInvoiceHeader" in swagger (link below)
     Swagger: https://halo.halopsa.com/api/swagger/index.html
     
