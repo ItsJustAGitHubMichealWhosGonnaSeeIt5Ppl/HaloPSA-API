@@ -301,7 +301,7 @@ class Assets(HaloBase): # TODO this is the only endpoint that actually works?
             self.formattedParams += [self._requestFormatter(rawParams)]
         
         elif queueMode == 'update':
-            response = self._requester('post',self.apiURL,self._requestFormatter(rawParams))
+            response = self._requester('post',self.apiURL,self.formattedParams)
             self.formattedParams = [] # reset queue
             return response
         
