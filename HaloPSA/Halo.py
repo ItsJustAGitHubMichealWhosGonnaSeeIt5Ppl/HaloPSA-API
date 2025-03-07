@@ -84,19 +84,26 @@ class HaloBase:
         else:
             raise Exception( f'{code} - Other failure')
 
-    def _requestFormatter(self,params):
-        try:
-            paramsToAdd = params | params['others'] # Copy params and add any additional items
-            paramsToAdd.pop('others') # Remove 'others' dict item to avoid confusion
-
-        except KeyError: # Not all endpoints have "others"
-            paramsToAdd = params
+    def _requestFormatter(self,params,paramsToRemove:list=[]):
         
-        paramsToAdd.pop('self')
+        paramsToRemove += ['queueMode','self','others']
+        try:
+            paramsToFormat = params | params['others'] # Copy params and add any additional items
+        except KeyError: # Not all endpoints have "others" but they should
+            paramsToFormat = params
+            
+        
+        
+        for param in paramsToRemove: # Remove unneeded/unwanted parameters
+            try:
+                paramsToFormat.pop(param)
+            except KeyError:
+                pass
+            
         formattedData = {}
         
         pageinateToggle = False
-        for item, value in paramsToAdd.items(): # Check params, add anything that isn't blank to the query
+        for item, value in paramsToFormat.items(): # Check params, add anything that isn't blank to the query
 
             if item == 'pageinate' and value == True:
                 pageinateToggle = True
@@ -847,7 +854,7 @@ class Tickets(HaloBase):
         
         if queueMode == 'disabled': # Sent request immediately
         
-            response = self._requester('post',self.apiURL,self._requestFormatter(rawParams)) #TODO should params be formatted later?
+            response = self._requester('post',self.apiURL,self._requestFormatter(rawParams))
             return response
         
         elif queueMode == 'queue': # Queue request.
@@ -1019,7 +1026,7 @@ class Users(HaloBase):
         
     def get(self, # TODO test me
             id:int,
-            includedetails:bool=None,
+            includedetails:bool=True,
             includeactivity:bool=None,
             includepopups:bool=None,
             **others
@@ -1039,12 +1046,82 @@ class Users(HaloBase):
         """
         
         rawParams = locals().copy()
-        response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
+        response = self._requester('get',self.apiURL+f'/{id}',self._requestFormatter(rawParams))
         return response
+    
+    def getAll(self):
+        """Get all users.
+
+        Returns:
+            list: All your users
+        """
         
-    def update():
-        """Update one or more users"""
-        pass
+        response = self.search(count=1000000) #TODO make sure to note that the maximum here is 100000
+        return response['users']
+
+    def update(self,
+        id:int=None,
+        name:str=None,
+        site_id: int = None,
+        site_name: str = None,
+        client_name: str = None,
+        firstname: str = None,
+        surname: str = None,
+        initials: str = None,
+        title: str = None,
+        emailaddress: str = None,
+        phonenumber_preferred: str = None,
+        sitephonenumber: str = None,
+        phonenumber: str = None,
+        homenumber: str = None,
+        mobilenumber: str = None,
+        mobilenumber2: str = None,
+        fax: str = None,
+        telpref: int = None,
+        activedirectory_dn: str = None,
+        container_dn: str = None,
+        login: str = None,
+        inactive: bool = None,
+        colour: str = None,
+        isimportantcontact: bool = None,
+        other1: str = None,
+        other2: str = None,
+        other3: str = None,
+        other4: str = None,
+        other5: str = None,
+        neversendemails: bool = None,
+        roles:list = None,
+        queueMode = 'disabled',
+        **others):
+        """Update or create user(s).
+
+        Args:
+            id (int, optional): User ID.  If no ID is provided, a new user will be created
+            ILL ADD THE REST LATER ON GOD
+        
+        Returns:
+            dict: Updated/created user(s)
+        """
+        
+        queueMode = 'disabled' #TODO Implement and test queueMode
+        if queueMode.lower() not in ['disabled','queue','update']:
+            raise AttributeError(f'{queueMode} is not a valid Queue Mode.')
+        
+        rawParams = locals().copy()
+        
+        if queueMode == 'disabled': # Sent request immediately
+        
+            response = self._requester('post',self.apiURL,self._requestFormatter(rawParams)) #TODO should params be formatted later?
+            return response
+        
+        elif queueMode == 'queue': # Queue request.
+            self.formattedParams += [self._requestFormatter(rawParams)]
+        
+        elif queueMode == 'update':
+            response = self._requester('post',self.apiURL,self._requestFormatter(rawParams))
+            self.formattedParams = [] # reset queue
+            return response
+        
     def delete():
         pass
 
@@ -1144,3 +1221,37 @@ class Currency(HaloBase):
     def getAll(self):
         pass
     
+class UserRoles(HaloBase):
+    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
+        super().__init__(tenant,clientID,secret,scope,logLevel)
+        self.apiURL+='/UserRoles'
+
+    
+    def getAll(self):
+        """Get all User Roles.
+
+        Returns:
+            list: User Roles
+        """
+        
+        rawParams = locals().copy()
+        response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
+        return response
+    
+    def get(self,
+            id:int,
+            includedetails:bool=True
+            ):
+        """Get a single User Role by ID.  Using this currently requires the API permission "all", not just "all:standard"
+
+        Args:
+            id (int): User Role ID
+            includedetails (bool, optional): Include additional details/information. Defaults to True.
+
+        Returns:
+            dict: User Role information
+        """
+        
+        rawParams = locals().copy()
+        response = self._requester('get',self.apiURL+f'/{id}',self._requestFormatter(rawParams))
+        return response
