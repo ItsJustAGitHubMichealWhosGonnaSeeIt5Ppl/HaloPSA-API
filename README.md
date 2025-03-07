@@ -41,11 +41,11 @@ Because of the way Halo is designed, anything you can do in the web interface, c
 You can either import every endpoint
 
 ```
-import HaloPSA.Halo
+import HaloPSA
 ```
 Or import only the ones you need (Full list below)
 ```
-from HaloPSA.Halo import clients, invoices
+from HaloPSA import Clients, Invoices
 ```
 I highly recommend you check the official Halo API documentation here: https://halo.halopsa.com/apidoc/info and for an even more in depth list, check out the swagger file here: https://halo.halopsa.com/api/swagger/index.html
 
