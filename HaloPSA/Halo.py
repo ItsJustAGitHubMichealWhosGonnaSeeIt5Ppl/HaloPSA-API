@@ -194,7 +194,7 @@ class Assets(HaloBase): # TODO this is the only endpoint that actually works?
         """
 
         rawParams = locals().copy()
-        response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
+        response = self._requester('get',self.apiURL+f'/{id}',self._requestFormatter(rawParams))
         return response
     
     
@@ -590,6 +590,7 @@ class Invoices(HaloBase): #TODO add docstring here
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
         self.apiURL+='/Invoice'
+        
     def search(self, #TODO fix this
         pageinate:bool=False,
         page_size:int=None,
@@ -781,6 +782,183 @@ class TicketTypes(HaloBase):
 class Tickets(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
+        self.apiURL+='/Tickets'
+    
+    def update(self,
+        actioncode:int=None,
+        id:int=None,
+        dateoccurred:str=None,
+        summary:str=None,
+        details:str=None,
+        details_html:str=None,
+        status_id:int=None,
+        tickettype_id:int=None,
+        sla_id:int=None,
+        client_id:int=None,
+        client_name:str=None,
+        site_id:int=None,
+        site_name:str=None,
+        user_id:int=None,
+        user_name:str=None,
+        agent_id:int=None,
+        
+        queueMode:str='disabled',
+        **others
+        ):
+        """Creates or updates one or more tickets.  If ID is included, tickets(s) will be updated.  If ID is not included new ticket(s) will be created.
+        
+        Updating multiple tickets can be done by passing a list of tickets with relevant fields, or by passing individual updates with the queueMode set to 'queue'.
+        
+        Offical documentation including all possible fields https://halo.halopsa.com/apidoc/resources/tickets
+        
+
+        Args:
+            actioncode (int, optional): _description_. 
+            id (int, optional): Ticket ID. If none provided, new ticket will be created.
+            dateoccurred (str, optional): _description_. 
+            summary (str, optional): Ticket summary (subject). 
+            details (str, optional): Ticket details. 
+            details_html (str, optional): Details in HTML format. 
+            status_id (int, optional): Status ID. 
+            tickettype_id (int, optional): Ticket type ID. 
+            sla_id (int, optional): SLA ID. 
+            client_id (int, optional): Client ID.
+            client_name (str, optional): Client name. 
+            site_id (int, optional): Site ID. 
+            site_name (str, optional):Site Name. 
+            user_id (int, optional): User ID. 
+            user_name (str, optional): User name. 
+            agent_id (int, optional): Agent ID. 
+            queueMode (str, optional): Queue ticket data to be sent as a batch update.  This is done to reduce POST requests sent to Halo, by sending one POST request with all the needed updates
+                Modes: 
+                - disabled - (Default) Updates ticket
+                - queue - Queues a single item ready to be sent later.
+                - update - Sends queued tickets to be updated/created.
+
+        Returns:
+            _type_: I dont think it returns anything... #TODO make this return status
+        """
+        
+        queueMode = 'disabled' #TODO Implement and test queueMode
+        if queueMode.lower() not in ['disabled','queue','update']:
+            raise AttributeError(f'{queueMode} is not a valid Queue Mode.')
+        
+        rawParams = locals().copy()
+        
+        if queueMode == 'disabled': # Sent request immediately
+        
+            response = self._requester('post',self.apiURL,self._requestFormatter(rawParams)) #TODO should params be formatted later?
+            return response
+        
+        elif queueMode == 'queue': # Queue request.
+            self.formattedParams += [self._requestFormatter(rawParams)]
+        
+        elif queueMode == 'update':
+            response = self._requester('post',self.apiURL,self._requestFormatter(rawParams))
+            self.formattedParams = [] # reset queue
+            return response
+
+    def search(self,
+        pageinate:bool=False,
+        page_size:int=50,
+        page_no:int=1,
+        order:str =None,
+        orderdesc:bool=None,
+        search:str=None,
+        ticketidonly:bool=None,
+        view_id:int=None,
+        columns_id:int=None,
+        includecolumns:bool=None,
+        includeslaactiondate:bool=None,
+        includeslatimer:bool=None,
+        includetimetaken:bool=None,
+        includesupplier:bool=None,
+        includerelease1:bool=None,
+        includerelease2:bool=None,
+        includerelease3:bool=None,
+        includechildids:bool=None,
+        includenextactivitydate:bool=None,
+        includefirstresponse:bool=None,
+        include_custom_fields:str=None,
+        list_id:int=None,
+        agent_id:int=None,
+        status_id:int=None,
+        requesttype_id:int=None,
+        supplier_id:int=None,
+        client_id:int=None,
+        site:int=None,
+        username:str=None,
+        user_id:int=None,
+        release_id:int=None,
+        asset_id:int=None,
+        itil_requesttype_id:int=None,
+        open_only:bool=None,
+        closed_only:bool=None,
+        unlinked_only:bool=None,
+        contract_id:int=None,
+        withattachments:bool=None,
+        team:int=None,
+        agent:int=None,
+        status:int=None,
+        requesttype:int=None,
+        itil_requesttype:int=None,
+        category_1:int=None,
+        category_2:int=None,
+        category_3:int=None,
+        category_4:int=None,
+        sla:int=None,
+        priority:int=None,
+        products:int=None,
+        flagged:int=None,
+        excludethese:int=None,
+        searchactions:bool=None,
+        datesearch:str=None,
+        startdate:str=None,
+        enddate:str=None,
+        search_user_name:str=None,
+        search_summary:str=None,
+        search_details:str=None,
+        search_reportedby:str=None,
+        search_version:str=None,
+        search_release1:str=None,
+        search_release2:str=None,
+        search_release3:str=None,
+        search_releasenote:str=None,
+        search_inventory_number:str=None,
+        search_oppcontactname:str=None,
+        search_oppcompanyname:str=None,
+        count:int=None,
+        **others
+               ):
+
+        rawParams = locals().copy() 
+        response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
+        return response
+        
+    def get(self,
+        id:int,
+        includedetails:bool=False,
+        includelastaction:bool=False,
+        ticketidonly:bool=False,
+        **others
+        ):
+        """
+        Get a single ticket's details.
+        Supports all Halo parameters, even if not listed.  
+        Requires atleast ID to be provided
+        Args:
+            id (int): Ticket ID
+            includedetails (bool, optional): Whether to include extra details (objects) in the response. Defaults to False.
+            includelastaction (bool, optional): Whether to include the last action in the response. Defaults to False.
+            ticketidonly (bool, optional): Returns only the ID fields (Ticket ID, SLA ID, Status ID, Client ID and Name and Lastincomingemail date) of the Tickets. Defaults to False.
+
+        Returns:
+            dict: Single ticket details
+        """
+
+        rawParams = locals().copy()
+        response = self._requester('get',self.apiURL+f'/{id}',self._requestFormatter(rawParams))
+        return response
     
         
 class Users(HaloBase):
