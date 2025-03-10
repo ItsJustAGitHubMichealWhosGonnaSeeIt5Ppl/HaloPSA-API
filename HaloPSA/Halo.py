@@ -134,11 +134,37 @@ class Actions(HaloBase):
         super().__init__(tenant,clientID,secret,scope,logLevel)
         self.apiURL+='/Actions'
     
-    def search(self): #TODO add actions search
-        pass
+    def get(self,
+            id:int,
+            ticket_id:int,
+            includeemail:bool=None,
+            includedetails:bool=True,
+            mostrecent:bool=None,
+            agentonly:bool=None,
+            emailonly:bool=None,
+            nonsystem:bool=None,
+            **others
+            ):
+
+        rawParams = locals().copy()
+        response = self._requester('get',self.apiURL+f'/{id}',self._requestFormatter(rawParams))
+        return response
     
-    def get(self): #TODO add actions get
-        pass
+    
+    def search(self,
+        count:int=None,
+        ticket_id:int=None,
+        startdate:str=None,
+        enddate:str=None,
+        excludesys:bool=False,
+        agentonly:bool=False,
+        
+        **others
+        ):
+        rawParams = locals().copy()
+        response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
+        return response
+    
     
     def update(self): #TODO add actions update
         """Update one or more actions"""
