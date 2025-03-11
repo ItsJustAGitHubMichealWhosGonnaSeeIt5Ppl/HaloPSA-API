@@ -102,21 +102,50 @@ class HaloBase:
             
         formattedData = {}
         
-        pageinateToggle = False
+        #TODO figure out how to handle pageinate toggle
+        #pageinateToggle = False
         for item, value in paramsToFormat.items(): # Check params, add anything that isn't blank to the query
 
-            if item == 'pageinate' and value == True:
-                pageinateToggle = True
+            #if item == 'pageinate' and value == True:
+            #    pageinateToggle = True
 
-            if pageinateToggle == False and item in ['page_size','page_no']: # Skip redundant values
-                continue
+            #if pageinateToggle == False and item in ['page_size','page_no']: # Skip redundant values
+            #    continue
             
             if value !=None:
                 formattedData.update({item : value})
             
         return formattedData
-
-
+    
+    # Another new response system that needs testing
+    def _get(self, id:any, **allvars): # New get system
+        response = self._requester('get',self.apiURL+f'/{id}',self._requestFormatter(allvars))
+        return response
+    
+    def _search(self, **allvars):
+        response = self._requester('get',self.apiURL,self._requestFormatter(allvars))
+        return response
+    
+    def _update(self, queue_mode:str, **allvars):
+        if queue_mode.lower() not in ['disabled','queue','update']:
+            raise AttributeError(f'{queue_mode} is not a valid Queue Mode.')
+        
+        if queue_mode == 'disabled': # Sent request immediately
+            response = self._requester('post',self.apiURL,self._requestFormatter(allvars))
+            return response
+        
+        elif queue_mode == 'queue': # Queue request.
+            self.formattedParams += [self._requestFormatter(allvars)]
+            return "Item queued"
+        
+        elif queue_mode == 'update': # Add the last request, then send
+            self.formattedParams += [self._requestFormatter(allvars)]
+            response = self._requester('post',self.apiURL,self.formattedParams)
+            self.formattedParams = [] # reset queue
+            return response
+    
+    
+    
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         
         self.session = requests.Session() # Create a session
@@ -128,9 +157,10 @@ class HaloBase:
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' +  self.token
             })
+        self.formattedParams = [] 
 
 class Actions(HaloBase):
-    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
+    def __init__(self, tenant:str, clientID:str, secret:str, scope:str='all', logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
         self.apiURL+='/Actions'
     
@@ -145,7 +175,6 @@ class Actions(HaloBase):
             nonsystem:bool=None,
             **others
             ):
-
         rawParams = locals().copy()
         response = self._requester('get',self.apiURL+f'/{id}',self._requestFormatter(rawParams))
         return response
@@ -337,7 +366,6 @@ class Assets(HaloBase): # TODO this is the only endpoint that actually works?
             response = self._requester('post',self.apiURL,self.formattedParams)
             self.formattedParams = [] # reset queue
             return response
-        
 
 class Attachments(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
@@ -466,10 +494,9 @@ class Clients(HaloBase):
         Returns:
             dict: Single client details
         """
-        
-        rawParams = locals().copy()
-        response = self._requester('get',self.apiURL+f'/{id}',self._requestFormatter(rawParams))
-        return response
+
+        resp = self._get(id=id, includedetails=includedetails,includediagramdetails=includediagramdetails,others=others) # Testing a new get system
+        return resp
         
     def update(self, #TODO update the docstring
         id:int=None,
@@ -512,24 +539,39 @@ class Clients(HaloBase):
 
 
 
-class Contracts(HaloBase):
+class Contracts(HaloBase): # UNTESTED!!!! 
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
-        super().__init__(tenant,clientID,secret,scope,logLevel)     
+        super().__init__(tenant,clientID,secret,scope,logLevel)
+        self.apiURL+='/ClientContract'
+        
+    def get(self,id:int, **others): #TODO test me
+        
+        resp = self._get(id=id, others=others)
+        return resp
+    
+    def search(self, 
+        pageinate:bool=False,
+        page_size:int=None,
+        page_no:int=None,
+        order:str =None,
+        orderdesc:bool=None,
+        search:str=None,
+        count:int=None,
+        **others):
+        
+        resp = self._search(pageinate=pageinate, page_size=page_size, page_no=page_no, order=order, orderdesc=orderdesc, search=search, count=count, others=others)
+        return resp
+    
+    def update(self, queue_mode:str='disabled', **others): #TODO test me
+        
+        resp = self._update(queue_mode=queue_mode, others=others)
+        return resp
+    
 
 class Items(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
         self.apiURL+='/Item'
-    
-    def getDetails(self, item):
-        """ Get details about an item
-
-        Args:
-            item INT: Item ID
-
-        Returns:
-            Dictionay: Item details
-        """
 
     def search(self,
         pageinate:bool=False,
@@ -560,17 +602,14 @@ class Items(HaloBase):
         response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
         return response
     
-    def get(self): 
-        pass
+    def get(self,id:int, includedetails:bool=False, **others): #TODO test me
+        
+        resp = self._get(id=id, includedetails=includedetails, others=others)
+        return resp
     
     def getAll(self):
         response = self.search()
         return response #TODO figure out what the dict name is for this
-    
-
-    
-    def create(self, payload):
-        pass
     
     def update(self,
         id:int=None,
@@ -669,14 +708,62 @@ class Invoices(HaloBase): #TODO add docstring here
 class KnowledgeBase(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
+        self.apiURL+='/KBArticle'
+
+    def get(self,id:int, includedetails:bool=False, **others): #TODO test me
+        
+        resp = self._get(id=id, includedetails=includedetails, others=others)
+        return resp
+    
+    def search(self, **others): #TODO test me
+        
+        resp = self._search(others=others)
+        return resp
+    
+    def update(self, queue_mode:str='disabled', **others): #TODO test me
+        
+        resp = self._update(queue_mode=queue_mode, others=others)
+        return resp
 
 class Opportunities(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
+        self.apiURL+='/Opportunities'
+        
+    def get(self,id:int, includedetails:bool=False, **others): #TODO test me
+        
+        resp = self._get(id=id, includedetails=includedetails, others=others)
+        return resp
+    
+    def search(self, **others): #TODO test me
+        
+        resp = self._search(others=others)
+        return resp
+    
+    def update(self, queue_mode:str='disabled', **others): #TODO test me
+        
+        resp = self._update(queue_mode=queue_mode, others=others)
+        return resp
 
 class Projects(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
+        self.apiURL+='/Projects'
+        
+    def get(self,id:int, includedetails:bool=False, includelastaction:bool=False, ticketidonly:bool=False, **others): #TODO test me
+        
+        resp = self._get(id=id, includedetails=includedetails, includelastaction=includelastaction, ticketidonly=ticketidonly, others=others)
+        return resp
+    
+    def search(self, **others): #TODO test me
+        
+        resp = self._search(others=others)
+        return resp
+    
+    def update(self, queue_mode:str='disabled', **others): #TODO test me
+        
+        resp = self._update(queue_mode=queue_mode, others=others)
+        return resp
 
 class Quotes(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
@@ -718,8 +805,10 @@ class RecurringInvoices(HaloBase):
         response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
         return response
     
-    def get(self,): 
-        pass
+    def get(self,id:int, includedetails:bool=False, **others): #TODO test me
+        
+        resp = self._get(id=id, includedetails=includedetails, others=others)
+        return resp
     
     def getAll(self, #TODO add docsting #TODO add any other potentially useful toggles
         includelines:bool=False):
@@ -788,6 +877,7 @@ class RecurringInvoices(HaloBase):
 
     def delete():
         pass
+
 class Reports(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
@@ -1281,3 +1371,4 @@ class UserRoles(HaloBase):
         rawParams = locals().copy()
         response = self._requester('get',self.apiURL+f'/{id}',self._requestFormatter(rawParams))
         return response
+    
