@@ -185,19 +185,53 @@ class Actions(HaloBase):
         ticket_id:int=None,
         startdate:str=None,
         enddate:str=None,
-        excludesys:bool=False,
-        agentonly:bool=False,
-        
+        agentonly:bool=None,
+        conversationonly:bool=None,
+        supplieronly:bool=None,
+        importantonly:bool=None,
+        slaonly:bool=None,
+        excludesys:bool=None,
+        excludeprivate:bool=None,
+        includehtmlnote:bool=None,
+        includehtmlemail:bool=None,
+        includeattachments:bool=None,
+        ischildnotes:bool=None,
         **others
         ):
+        """Search/filter Actions.  Requires Ticket ID, or start and end date.  If neither are provided, nothing will be returned.
+        
+        Date range can be 1 day at most
+
+        Args:
+            count (int, optional): Maximum actions to return.
+            ticket_id (int, optional): Ticket ID.
+            startdate (str, optional): Start Date (format 2025-03-04T12:53:05) Time is optional.
+            enddate (str, optional): End Date (format 2025-03-04T12:53:05) Time is optional.
+            agentonly (bool, optional): _description_. Defaults to None.
+            conversationonly (bool, optional): _description_. Defaults to None.
+            supplieronly (bool, optional): _description_. Defaults to None.
+            importantonly (bool, optional): _description_. Defaults to None.
+            slaonly (bool, optional): _description_. Defaults to None.
+            excludesys (bool, optional): _description_. Defaults to None.
+            excludeprivate (bool, optional): _description_. Defaults to None.
+            includehtmlnote (bool, optional): _description_. Defaults to None.
+            includehtmlemail (bool, optional): _description_. Defaults to None.
+            includeattachments (bool, optional): _description_. Defaults to None.
+            ischildnotes (bool, optional): _description_. Defaults to None.
+
+        Returns:
+            list: List of actions.
+        """
+
         rawParams = locals().copy()
         response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
         return response
     
     
-    def update(self): #TODO add actions update
-        """Update one or more actions"""
-        pass
+    def update(self, queue_mode:str='disabled', **others): #TODO test me
+        
+        resp = self._update(queue_mode=queue_mode, others=others)
+        return resp
     
     def delete(): #TODO add actions delete
         pass
@@ -207,12 +241,42 @@ class Agents(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
         self.apiURL+='/Agent'
+        
+    def get(self,id:int, includedetails:bool=False, **others): #TODO test me
+        
+        resp = self._get(id=id, includedetails=includedetails, others=others)
+        return resp
+    
+    def search(self, **others): #TODO test me
+        
+        resp = self._search(others=others)
+        return resp
+    
+    def update(self, queue_mode:str='disabled', **others): #TODO test me
+        
+        resp = self._update(queue_mode=queue_mode, others=others)
+        return resp
 
 
 class Appointments(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
         self.apiURL+='/Appointment'
+
+    def get(self,id:int, includedetails:bool=False, **others): #TODO test me
+        
+        resp = self._get(id=id, includedetails=includedetails, others=others)
+        return resp
+    
+    def search(self, **others): #TODO test me
+        
+        resp = self._search(others=others)
+        return resp
+    
+    def update(self, queue_mode:str='disabled', **others): #TODO test me
+        
+        resp = self._update(queue_mode=queue_mode, others=others)
+        return resp
 
 
 class Assets(HaloBase): # TODO this is the only endpoint that actually works?
@@ -533,9 +597,6 @@ class Clients(HaloBase):
             response = self._requester('post',self.apiURL,self._requestFormatter(rawParams))
             self.formattedParams = [] # reset queue
             return response
-    
-    def delete():
-        pass
 
 
 
@@ -768,6 +829,22 @@ class Projects(HaloBase):
 class Quotes(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
+        self.apiURL+='/Quotation'
+        
+    def get(self,id:int, includedetails:bool=False, **others): #TODO test me
+        
+        resp = self._get(id=id, includedetails=includedetails, others=others)
+        return resp
+    
+    def search(self, **others): #TODO test me
+        
+        resp = self._search(others=others)
+        return resp
+    
+    def update(self, queue_mode:str='disabled', **others): #TODO test me
+        
+        resp = self._update(queue_mode=queue_mode, others=others)
+        return resp
 
 class RecurringInvoices(HaloBase):
     """
@@ -874,9 +951,6 @@ class RecurringInvoices(HaloBase):
         rawParams = locals().copy()
         response = self._requester('get',self.apiURL+'/UpdateLines',self._requestFormatter(rawParams))
         return response        
-
-    def delete():
-        pass
 
 class Reports(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
