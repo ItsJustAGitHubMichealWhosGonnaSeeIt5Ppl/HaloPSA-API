@@ -4,24 +4,62 @@ import json
 import os
 
 #TODO create parent/child system for all the classes in here, so API key is not needed each time
-#TODO track progress per "endpoint"
 #TODO start documentation
 #TODO fix changelog.md
 #TODO update readme.md
 #TODO add versioning
 #TODO implement all base endpoints (the ones in the main documentation)
+#TODO replace camelCase with snake_case
+
+# # # FORMATTING GUIDELINES # # #
+
+# General
+## Stick to US english as that is what Halo uses
+## Leave Halo variables/params unchanged unless there is an extremely good reason to make it different.  If changed, make sure its documented clearly
+## use_snake_case, notCamelCase
+
+
+# Classes
+## Capitalize AllWordsLikeThis, dontUse camelCase
+
+
+# # # DOC STRING TEMPLATES # # # (is it docstring or doc string)
 
 #TEMPLATE STRING FOR CLASSES
-"""[ENDPOINT NAME] Endpoint
+"""[ENDPOINT NAME] Endpoint.
+
 [Brief description]
+
 Official Documentation: https://halopsa.halopsa.com/apidoc/resources/[Endpoint] OR No official documentation
-Progress:
+
+Requires _ permission
+
+Progress (Temporary)
+- Get:
+- GetAll: (should this be removed?)
+- Search:
+- Update:
+- Delete: 
 """
+
+#METHOD TEMPLATE/FORMATTING
+"""[METHOD] [Brief description]
+
+Requires _ permission [ONLY INCLUDE IF PERMISSION DIFFERS FROM OVERALL ENDPOINT]
+
+Last tested: YYYY/MM/DD, V[HALO VERSION]
+"""
+
+#variable descriptions (to keep them as consistent as possible)
+"""Try to keep them sorted alphabetically
+
+"""
+# # # CODE # # #
+
 class HaloBase:
     """Base halo class"""
-    def _createToken(self,clientid:str,secret:str,scope:str='all'):
-        # Return auth token from Halo.
-        authheader = { # Required by Halo, don't ask me why
+    def _createToken(self,clientid:str, secret:str, scope:str='all'): # Return auth token from Halo.
+        authheader = { # Required by Halo, I don't know why
         'Content-Type': 'application/x-www-form-urlencoded'
         }
         payload = { # Create payload for Halo auth
@@ -34,11 +72,9 @@ class HaloBase:
         return request['access_token']
 
         
-    def _requester(self, method, url:str=None, payload=None,headers=None):
-        url = self.apiURL if url == None else url # Fix URL
-        # Set params or data depending on what type of request is being done
+    def _requester(self, method, url:str, payload=None,headers=None):
         #TODO allow method to be set to "Search" and use that rather than adding the ID directly into the main URL. May also require some tweaks to how request formatting is handled
-        params = payload if method == 'get' else None
+        params = payload if method == 'get' else None # Set params or data depending on what type of request is being done
         data = json.dumps([payload]) if headers == None and method == 'post' else payload if  method == 'post' else None # Why is it this way?
         
         response = self.session.request(method, url, params=params,data=data)
@@ -92,7 +128,7 @@ class HaloBase:
         except KeyError: # Not all endpoints have "others" but they should
             paramsToFormat = params
             
-        
+        #TODO snake_case_all_this
         
         for param in paramsToRemove: # Remove unneeded/unwanted parameters
             try:
@@ -102,15 +138,16 @@ class HaloBase:
             
         formattedData = {}
         
-        #TODO figure out how to handle pageinate toggle
-        #pageinateToggle = False
+        #TODO maybe there is a better way to do this
+        if 'pageinate' in paramsToFormat and paramsToFormat['paramsToFormat']:
+            pageinateToggle = True
+        else:
+            pageinateToggle = False
+            
         for item, value in paramsToFormat.items(): # Check params, add anything that isn't blank to the query
 
-            #if item == 'pageinate' and value == True:
-            #    pageinateToggle = True
-
-            #if pageinateToggle == False and item in ['page_size','page_no']: # Skip redundant values
-            #    continue
+            if pageinateToggle == False and item in ['page_size','page_no']: # Skip redundant values
+                continue
             
             if value !=None:
                 formattedData.update({item : value})
@@ -159,7 +196,22 @@ class HaloBase:
             })
         self.formattedParams = [] 
 
-class Actions(HaloBase):
+class Actions(HaloBase): #TODO what permissions are required here
+    """Actions Endpoint.
+    
+    Get, add, and update actions.
+    
+    Requires ? permission
+    
+    Official Documentation: https://halopsa.halopsa.com/apidoc/resources/actions
+
+    Progress (Temporary)
+    - Get: Working, no docstring
+    - GetAll: Not implemented
+    - Search: Working, partial docstring
+    - Update: Untested, no docstring
+    - Delete: Not implemented
+    """
     def __init__(self, tenant:str, clientID:str, secret:str, scope:str='all', logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
         self.apiURL+='/Actions'
@@ -200,7 +252,9 @@ class Actions(HaloBase):
         ):
         """Search/filter Actions.  Requires Ticket ID, or start and end date.  If neither are provided, nothing will be returned.
         
-        Date range can be 1 day at most
+        Date range can be 1 day at most.
+        
+        Last tested: YYYY/MM/DD, V[HALO VERSION]
 
         Args:
             count (int, optional): Maximum actions to return.
@@ -232,15 +286,26 @@ class Actions(HaloBase):
         
         resp = self._update(queue_mode=queue_mode, others=others)
         return resp
-    
-    def delete(): #TODO add actions delete
-        pass
 
 
 class Agents(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
         self.apiURL+='/Agent'
+    """Agent Endpoint.
+
+    Interact with agents endpoint
+
+    Official Documentation: https://halopsa.halopsa.com/apidoc/resources/agents
+
+    Requires ? permission
+
+    Progress (Temporary)
+    - Get: Untested, no docstring
+    - Search: Untested, no docstring
+    - Update: Untested, no docstring
+    - Delete: Not implemented
+    """
         
     def get(self,id:int, includedetails:bool=False, **others): #TODO test me
         
@@ -283,6 +348,8 @@ class Assets(HaloBase): # TODO this is the only endpoint that actually works?
     """Assets Endpoint
     
     Get, add, and update your assets.
+    
+    Requires _ permission
     
     Official Documentation: https://halopsa.halopsa.com/apidoc/resources/assets
     
@@ -955,26 +1022,123 @@ class RecurringInvoices(HaloBase):
 class Reports(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
+        self.apiURL+='/'#TODO Add link
+        
+    def get(self,id:int, includedetails:bool=False, **others): #TODO Confirm variables
+        
+        resp = self._get(id=id, includedetails=includedetails, others=others)
+        return resp
+    
+    def search(self, **others): #TODO test me
+        
+        resp = self._search(others=others)
+        return resp
+    
+    def update(self, queue_mode:str='disabled', **others): #TODO test me
+        
+        resp = self._update(queue_mode=queue_mode, others=others)
+        return resp
         
 class Sites(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
+        self.apiURL+='/'#TODO Add link
+        
+    def get(self,id:int, includedetails:bool=False, **others): #TODO Confirm variables
+        
+        resp = self._get(id=id, includedetails=includedetails, others=others)
+        return resp
+    
+    def search(self, **others): #TODO test me
+        
+        resp = self._search(others=others)
+        return resp
+    
+    def update(self, queue_mode:str='disabled', **others): #TODO test me
+        
+        resp = self._update(queue_mode=queue_mode, others=others)
+        return resp
+        
 
 class Status(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
+        self.apiURL+='/'#TODO Add link
+        
+    def get(self,id:int, includedetails:bool=False, **others): #TODO Confirm variables
+        
+        resp = self._get(id=id, includedetails=includedetails, others=others)
+        return resp
+    
+    def search(self, **others): #TODO test me
+        
+        resp = self._search(others=others)
+        return resp
+    
+    def update(self, queue_mode:str='disabled', **others): #TODO test me
+        
+        resp = self._update(queue_mode=queue_mode, others=others)
+        return resp
 
 class Suppliers(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
+        self.apiURL+='/'#TODO Add link
+        
+    def get(self,id:int, includedetails:bool=False, **others): #TODO Confirm variables
+        
+        resp = self._get(id=id, includedetails=includedetails, others=others)
+        return resp
+    
+    def search(self, **others): #TODO test me
+        
+        resp = self._search(others=others)
+        return resp
+    
+    def update(self, queue_mode:str='disabled', **others): #TODO test me
+        
+        resp = self._update(queue_mode=queue_mode, others=others)
+        return resp
 
 class Teams(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
+        self.apiURL+='/'#TODO Add link
+        
+    def get(self,id:int, includedetails:bool=False, **others): #TODO Confirm variables
+        
+        resp = self._get(id=id, includedetails=includedetails, others=others)
+        return resp
+    
+    def search(self, **others): #TODO test me
+        
+        resp = self._search(others=others)
+        return resp
+    
+    def update(self, queue_mode:str='disabled', **others): #TODO test me
+        
+        resp = self._update(queue_mode=queue_mode, others=others)
+        return resp
 
 class TicketTypes(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
         super().__init__(tenant,clientID,secret,scope,logLevel)
+        self.apiURL+='/TicketType'
+        
+    def get(self,id:int, includedetails:bool=False, **others): #TODO Confirm variables
+        
+        resp = self._get(id=id, includedetails=includedetails, others=others)
+        return resp
+    
+    def search(self, client_id:int=None, showcounts:bool=None, domain:str=None, view_id:int=None, showinactive:bool=None, **others): #TODO test me
+
+        resp = self._search(client_id=client_id, showcounts=showcounts, domain=domain, view_id=view_id, showinactive=showinactive, others=others)
+        return resp
+    
+    def update(self, queue_mode:str='disabled', **others): #TODO test me
+        
+        resp = self._update(queue_mode=queue_mode, others=others)
+        return resp
 
 class Tickets(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
@@ -1377,8 +1541,10 @@ class TopLevel(HaloBase):
         response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
         return response
     
-    def get(self): 
-        pass
+    def get(self,id:int, includedetails:bool=False, **others): #TODO Confirm variables
+        
+        resp = self._get(id=id, includedetails=includedetails, others=others)
+        return resp
     
     def getAll(self): #TODO add docsting #TODO add any other potentially useful toggles
         #This is literally just search but wrapped
@@ -1405,11 +1571,10 @@ class Currency(HaloBase):
         response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
         return response
     
-    def get(self): 
-        pass
-    
-    def getAll(self):
-        pass
+    def get(self,id:int, includedetails:bool=False, **others): #TODO Confirm variables
+        
+        resp = self._get(id=id, includedetails=includedetails, others=others)
+        return resp
     
 class UserRoles(HaloBase):
     def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
@@ -1445,4 +1610,3 @@ class UserRoles(HaloBase):
         rawParams = locals().copy()
         response = self._requester('get',self.apiURL+f'/{id}',self._requestFormatter(rawParams))
         return response
-    
