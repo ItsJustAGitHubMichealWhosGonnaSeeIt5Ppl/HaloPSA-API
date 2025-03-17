@@ -139,7 +139,7 @@ class HaloBase:
         formattedData = {}
         
         #TODO maybe there is a better way to do this
-        if 'pageinate' in paramsToFormat and paramsToFormat['paramsToFormat']:
+        if 'pageinate' in paramsToFormat and paramsToFormat['pageinate']:
             pageinateToggle = True
         else:
             pageinateToggle = False
@@ -1172,7 +1172,6 @@ class Tickets(HaloBase):
         
         Offical documentation including all possible fields https://halo.halopsa.com/apidoc/resources/tickets
         
-
         Args:
             actioncode (int, optional): _description_. 
             id (int, optional): Ticket ID. If none provided, new ticket will be created.
