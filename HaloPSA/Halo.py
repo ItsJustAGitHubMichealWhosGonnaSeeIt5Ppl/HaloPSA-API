@@ -1,3 +1,4 @@
+
 import requests
 import urllib.parse
 import json
@@ -10,6 +11,7 @@ import os
 #TODO add versioning
 #TODO implement all base endpoints (the ones in the main documentation)
 #TODO replace camelCase with snake_case
+#TODO implement dataclasses
 
 # # # FORMATTING GUIDELINES # # #
 
@@ -36,7 +38,7 @@ Requires _ permission
 
 Progress (Temporary)
 - Get:
-- GetAll: (should this be removed?)
+- get_all: (should this be removed?)
 - Search:
 - Update:
 - Delete: 
@@ -54,11 +56,13 @@ Last tested: YYYY/MM/DD, V[HALO VERSION]
 """Try to keep them sorted alphabetically
 
 """
+
 # # # CODE # # #
+
 
 class HaloBase:
     """Base halo class"""
-    def _createToken(self,clientid:str, secret:str, scope:str='all'): # Return auth token from Halo.
+    def _create_token(self, clientid:str, secret:str, scope:str='all'): # Return auth token from Halo.
         authheader = { # Required by Halo, I don't know why
         'Content-Type': 'application/x-www-form-urlencoded'
         }
@@ -66,13 +70,13 @@ class HaloBase:
         'grant_type': 'client_credentials',
         'client_id': clientid,
         'client_secret': secret,
-        'scope': scope 
+        'scope': scope
         }
-        request = self._requester('post', self.authURL, headers=authheader, payload=payload)
+        request = self._requester('post', self.auth_url, headers=authheader, payload=payload)
         return request['access_token']
 
         
-    def _requester(self, method, url:str, payload=None,headers=None):
+    def _requester(self, method:str, url:str, payload=None,headers=None):
         #TODO allow method to be set to "Search" and use that rather than adding the ID directly into the main URL. May also require some tweaks to how request formatting is handled
         params = payload if method == 'get' else None # Set params or data depending on what type of request is being done
         data = json.dumps([payload]) if headers == None and method == 'post' else payload if  method == 'post' else None # Why is it this way?
@@ -120,47 +124,45 @@ class HaloBase:
         else:
             raise Exception( f'{code} - Other failure')
 
-    def _requestFormatter(self,params,paramsToRemove:list=[]):
+    def _format_requests(self, params, params_to_pop:list=[]):
         
-        paramsToRemove += ['queueMode','self','others']
+        params_to_pop += ['queue_mode','self','others']
         try:
-            paramsToFormat = params | params['others'] # Copy params and add any additional items
+            unformatted_params = params | params['others'] # Copy params and add any additional items
         except KeyError: # Not all endpoints have "others" but they should
-            paramsToFormat = params
+            unformatted_params = params
             
-        #TODO snake_case_all_this
-        
-        for param in paramsToRemove: # Remove unneeded/unwanted parameters
+        for param in params_to_pop: # Remove unneeded/unwanted parameters
             try:
-                paramsToFormat.pop(param)
+                unformatted_params.pop(param)
             except KeyError:
                 pass
             
-        formattedData = {}
+        formatted_params = {}
         
         #TODO maybe there is a better way to do this
-        if 'pageinate' in paramsToFormat and paramsToFormat['pageinate']:
-            pageinateToggle = True
+        if 'pageinate' in unformatted_params and unformatted_params['pageinate']:
+            toggle_pageinate = True
         else:
-            pageinateToggle = False
+            toggle_pageinate = False
             
-        for item, value in paramsToFormat.items(): # Check params, add anything that isn't blank to the query
+        for item, value in unformatted_params.items(): # Check params, add anything that isn't blank to the query
 
-            if pageinateToggle == False and item in ['page_size','page_no']: # Skip redundant values
+            if toggle_pageinate == False and item in ['page_size','page_no']: # Skip redundant values
                 continue
             
             if value !=None:
-                formattedData.update({item : value})
+                formatted_params.update({item : value})
             
-        return formattedData
+        return formatted_params
     
     # Another new response system that needs testing
     def _get(self, id:any, **allvars): # New get system
-        response = self._requester('get',self.apiURL+f'/{id}',self._requestFormatter(allvars))
+        response = self._requester('get',self.url+f'/{id}',self._format_requests(allvars))
         return response
     
     def _search(self, **allvars):
-        response = self._requester('get',self.apiURL,self._requestFormatter(allvars))
+        response = self._requester('get',self.url,self._format_requests(allvars))
         return response
     
     def _update(self, queue_mode:str, **allvars):
@@ -168,33 +170,42 @@ class HaloBase:
             raise AttributeError(f'{queue_mode} is not a valid Queue Mode.')
         
         if queue_mode == 'disabled': # Sent request immediately
-            response = self._requester('post',self.apiURL,self._requestFormatter(allvars))
+            response = self._requester('post',self.url,self._format_requests(allvars))
             return response
         
         elif queue_mode == 'queue': # Queue request.
-            self.formattedParams += [self._requestFormatter(allvars)]
+            self.formatted_params += [self._format_requests(allvars)]
             return "Item queued"
         
         elif queue_mode == 'update': # Add the last request, then send
-            self.formattedParams += [self._requestFormatter(allvars)]
-            response = self._requester('post',self.apiURL,self.formattedParams)
-            self.formattedParams = [] # reset queue
+            self.formatted_params += [self._format_requests(allvars)]
+            response = self._requester('post',self.url,self.formatted_params)
+            self.formatted_params = [] # reset queue
             return response
     
     
     
-    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
-        
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        """Halo Base Class
+
+        Args:
+            tenant (str): Your Tenant
+            clientid (str): Your API client iD
+            secret (str): Your API secret
+            tenant_type (str, optional): Your tenant type.  Valid options ['psa', 'itsm']. Defaults to psa. 
+            scope (str, optional): _description_. Defaults to 'all'.
+            logLevel (str, optional): Does nothing. Defaults to 'Normal'.
+        """
         self.session = requests.Session() # Create a session
         #TODO handle a full URL being sent
-        self.authURL = f'https://{tenant}.halopsa.com/auth/token' # auth URL used only once to get a token 
-        self.apiURL = f'https://{tenant}.halopsa.com/api' # API url used for everything else
-        self.token = self._createToken(clientID,secret) # Create token
+        self.auth_url = f'https://{tenant}.halo{tenant_type}.com/auth/token' # auth URL used only once to get a token 
+        self.url = f'https://{tenant}.halo{tenant_type}.com/api' # API url used for everything else
+        self.token = self._create_token(clientid, secret, scope) # Create token
         self.session.headers.update({ # Header with token
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' +  self.token
             })
-        self.formattedParams = [] 
+        self.formatted_params = [] 
 
 class Actions(HaloBase): #TODO what permissions are required here
     """Actions Endpoint.
@@ -207,14 +218,14 @@ class Actions(HaloBase): #TODO what permissions are required here
 
     Progress (Temporary)
     - Get: Working, no docstring
-    - GetAll: Not implemented
+    - get_all: Not implemented
     - Search: Working, partial docstring
     - Update: Untested, no docstring
     - Delete: Not implemented
     """
-    def __init__(self, tenant:str, clientID:str, secret:str, scope:str='all', logLevel:str='Normal'):
-        super().__init__(tenant,clientID,secret,scope,logLevel)
-        self.apiURL+='/Actions'
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
+        self.url+='/Actions'
     
     def get(self,
             id:int,
@@ -228,7 +239,7 @@ class Actions(HaloBase): #TODO what permissions are required here
             **others
             ):
         rawParams = locals().copy()
-        response = self._requester('get',self.apiURL+f'/{id}',self._requestFormatter(rawParams))
+        response = self._requester('get',self.url+f'/{id}',self._format_requests(rawParams))
         return response
     
     
@@ -237,7 +248,7 @@ class Actions(HaloBase): #TODO what permissions are required here
         ticket_id:int=None,
         startdate:str=None,
         enddate:str=None,
-        agentonly:bool=None,
+        agentonly:bool=False,
         conversationonly:bool=None,
         supplieronly:bool=None,
         importantonly:bool=None,
@@ -261,13 +272,13 @@ class Actions(HaloBase): #TODO what permissions are required here
             ticket_id (int, optional): Ticket ID.
             startdate (str, optional): Start Date (format 2025-03-04T12:53:05) Time is optional.
             enddate (str, optional): End Date (format 2025-03-04T12:53:05) Time is optional.
-            agentonly (bool, optional): _description_. Defaults to None.
-            conversationonly (bool, optional): _description_. Defaults to None.
-            supplieronly (bool, optional): _description_. Defaults to None.
-            importantonly (bool, optional): _description_. Defaults to None.
-            slaonly (bool, optional): _description_. Defaults to None.
-            excludesys (bool, optional): _description_. Defaults to None.
-            excludeprivate (bool, optional): _description_. Defaults to None.
+            agentonly (bool, optional): Only get actions done by Agents. Defaults to False.
+            conversationonly (bool, optional): Only get actions relating to the Agent to End User conversation. Defaults to None.
+            supplieronly (bool, optional): Only get actions relating to Suppliers. Defaults to None.
+            importantonly (bool, optional): Only get important actions. Defaults to None.
+            slaonly (bool, optional): Only get SLA hold and release actions. Defaults to None.
+            excludesys (bool, optional): Exclude system actions. Defaults to None.
+            excludeprivate (bool, optional): Exclude prviate actions. Defaults to None.
             includehtmlnote (bool, optional): _description_. Defaults to None.
             includehtmlemail (bool, optional): _description_. Defaults to None.
             includeattachments (bool, optional): _description_. Defaults to None.
@@ -278,20 +289,21 @@ class Actions(HaloBase): #TODO what permissions are required here
         """
 
         rawParams = locals().copy()
-        response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
-        return response
+        
+        resp = self._search(others=rawParams)
+        return resp
     
     
-    def update(self, queue_mode:str='disabled', **others): #TODO test me
+    def update(self, queue_mode:str='disabled', **others): #TODO test update
         
         resp = self._update(queue_mode=queue_mode, others=others)
         return resp
 
 
 class Agents(HaloBase):
-    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
-        super().__init__(tenant,clientID,secret,scope,logLevel)
-        self.apiURL+='/Agent'
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
+        self.url+='/Agent'
     """Agent Endpoint.
 
     Interact with agents endpoint
@@ -307,38 +319,38 @@ class Agents(HaloBase):
     - Delete: Not implemented
     """
         
-    def get(self,id:int, includedetails:bool=False, **others): #TODO test me
+    def get(self,id:int, includedetails:bool=False, **others): #TODO test get
         
         resp = self._get(id=id, includedetails=includedetails, others=others)
         return resp
     
-    def search(self, **others): #TODO test me
+    def search(self, team:str=None, **others):
         
         resp = self._search(others=others)
         return resp
     
-    def update(self, queue_mode:str='disabled', **others): #TODO test me
+    def update(self, queue_mode:str='disabled', **others): #TODO test update
         
         resp = self._update(queue_mode=queue_mode, others=others)
         return resp
 
 
 class Appointments(HaloBase):
-    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
-        super().__init__(tenant,clientID,secret,scope,logLevel)
-        self.apiURL+='/Appointment'
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
+        self.url+='/Appointment'
 
-    def get(self,id:int, includedetails:bool=False, **others): #TODO test me
+    def get(self,id:int, includedetails:bool=False, **others): #TODO test get
         
         resp = self._get(id=id, includedetails=includedetails, others=others)
         return resp
     
-    def search(self, **others): #TODO test me
+    def search(self, **others): #TODO test search
         
         resp = self._search(others=others)
         return resp
     
-    def update(self, queue_mode:str='disabled', **others): #TODO test me
+    def update(self, queue_mode:str='disabled', **others): #TODO test update
         
         resp = self._update(queue_mode=queue_mode, others=others)
         return resp
@@ -356,14 +368,14 @@ class Assets(HaloBase): # TODO this is the only endpoint that actually works?
     Progress:
     - Get: Working
     - Search: Working
-    - getAll: Working
+    - get_all: Working
     - Update: Partially working
     - Delete: Not implemented
     """
-    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
-        super().__init__(tenant,clientID,secret,scope,logLevel)
-        self.apiURL+='/Asset'
-        self.formattedParams = []
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
+        self.url+='/Asset'
+        self.formatted_params = []
 
     def get(self,
             id:int,
@@ -387,31 +399,32 @@ class Assets(HaloBase): # TODO this is the only endpoint that actually works?
         """
 
         rawParams = locals().copy()
-        response = self._requester('get',self.apiURL+f'/{id}',self._requestFormatter(rawParams))
+        response = self._requester('get',self.url+f'/{id}',self._format_requests(rawParams))
         return response
     
     
     def search(self,
-        pageinate:bool=False,
-        page_size:int=50,
-        page_no:int=1,
-        order:str =None,
-        orderdesc:bool=None,
-        search:str=None,
-        ticket_id:int=None,
-        client_id:int=None,
-        site_id:int=None,
-        username:str=None,
-        assetgroup_id:int=None,
-        assettype_id:int=None,
-        linkedto_id:int=None,
-        includeinactive:bool=None,
-        includeactive:bool=None,
-        includechildren:bool=None,
-        contract_id:int=None,
-        **others
-    ):
-        """Search assets.  Running with no parameters will get all assets.
+    pageinate:bool=False,
+    page_size:int=50,
+    page_no:int=1,
+    order:str =None,
+    orderdesc:bool=None,
+    search:str | None = None,
+    ticket_id:int=None,
+    client_id:int=None,
+    site_id:int=None,
+    username:str | None = None,
+    assetgroup_id:int=None,
+    assettype_id:int=None,
+    linkedto_id:int=None,
+    includeinactive:bool=None,
+    includeactive:bool=None,
+    includechildren:bool=None,
+    contract_id:int=None,
+    **others
+    ) -> dict:
+        """
+        Search assets.  Running with no parameters will get all assets.
         
         Supports all Halo parameters, even if not listed.  
 
@@ -438,17 +451,18 @@ class Assets(HaloBase): # TODO this is the only endpoint that actually works?
             dict: Search results.
         """
         rawParams = locals().copy()
-        response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
-        return response
+        
+        resp = self._search(others=rawParams)
+        return resp
     
-    def getAll(self):
+    def get_all(self):
         """Get all halo assets
 
         Returns:
             list: List of assets OR error
         """
         print('Removing this, use search with no parameters instead')
-        response = self._requester('get',self.apiURL)
+        response = self._requester('get',self.url)
         return response
         
     def update(self,
@@ -457,7 +471,7 @@ class Assets(HaloBase): # TODO this is the only endpoint that actually works?
         site_id:int=None,
         users:list=None,
         fields:list=None,
-        queueMode:str='disabled',
+        queue_mode:str='disabled',
         **others
                ):
         """Add or update asset(s).  If ID is included, asset(s) will be updated, if ID is not included asset(s) will be added.
@@ -470,7 +484,7 @@ class Assets(HaloBase): # TODO this is the only endpoint that actually works?
             site_id (int, optional): Site ID. 
             users (list, optional): User IDs. 
             fields (list, optional): Fields to be updated.
-            queueMode (str, optional): Queue asset data to be sent as a single update update.  
+            queue_mode (str, optional): Queue asset data to be sent as a single update update.  
             
             Queue modes: 
                 disabled: Default, will update asset immediately. 
@@ -480,28 +494,28 @@ class Assets(HaloBase): # TODO this is the only endpoint that actually works?
         Returns:
             _type_: I dont think it returns anything...
         """
-        if queueMode.lower() not in ['disabled','queue','update']:
-            raise AttributeError(f'{queueMode} is not a valid Queue Mode.')
+        if queue_mode.lower() not in ['disabled','queue','update']:
+            raise AttributeError(f'{queue_mode} is not a valid Queue Mode.')
         
         rawParams = locals().copy()
         
-        if queueMode == 'disabled': # Sent request immediately
+        if queue_mode == 'disabled': # Sent request immediately
         
-            response = self._requester('post',self.apiURL,self._requestFormatter(rawParams))
+            response = self._requester('post',self.url,self._format_requests(rawParams))
             return response
         
-        elif queueMode == 'queue': # Queue request.
-            self.formattedParams += [self._requestFormatter(rawParams)]
+        elif queue_mode == 'queue': # Queue request.
+            self.formatted_params += [self._format_requests(rawParams)]
         
-        elif queueMode == 'update':
-            response = self._requester('post',self.apiURL,self.formattedParams)
-            self.formattedParams = [] # reset queue
+        elif queue_mode == 'update':
+            response = self._requester('post',self.url,self.formatted_params)
+            self.formatted_params = [] # reset queue
             return response
 
 class Attachments(HaloBase):
-    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
-        super().__init__(tenant,clientID,secret,scope,logLevel)
-        self.apiURL+='/Attachment'
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
+        self.url+='/Attachment'
     
     def search(self, 
         ticket_id:int=None,
@@ -522,8 +536,9 @@ class Attachments(HaloBase):
         """
         
         rawParams = locals().copy()
-        response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
-        return response
+        
+        resp = self._search(others=rawParams)
+        return resp
         
     def get(self, #TODO add docstring
             id:int,
@@ -531,7 +546,7 @@ class Attachments(HaloBase):
             **others):
         
         rawParams = locals().copy()
-        response = self._requester('get',self.apiURL+f'/{id}',self._requestFormatter(rawParams))
+        response = self._requester('get',self.url+f'/{id}',self._format_requests(rawParams))
         return response
     def upload(self,
             id:int=None,
@@ -541,7 +556,7 @@ class Attachments(HaloBase):
             **others):
         
         rawParams = locals().copy()
-        response = self._requester('post',self.apiURL,self._requestFormatter(rawParams))
+        response = self._requester('post',self.url,self._format_requests(rawParams))
         return response
         
 
@@ -549,10 +564,10 @@ class Attachments(HaloBase):
         pass
         
 class Clients(HaloBase):
-    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
-        super().__init__(tenant,clientID,secret,scope,logLevel)
-        self.apiURL+='/Client'
-        self.formattedParams = []
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
+        self.url+='/Client'
+        self.formatted_params = []
 
     def search(self,
         pageinate:bool=False,
@@ -565,7 +580,6 @@ class Clients(HaloBase):
         includeinactive:bool=None, #TODO should these be set to their defaults? instead of none
         includeactive:bool=None,
         count:int=50,
-        newFormat:bool=False,
         **others
                ):
         """Search clients. Supports unlisted parameters.
@@ -581,25 +595,18 @@ class Clients(HaloBase):
             search (str, optional): Filter by Customers like your search.
             toplevel_id (int, optional): Filter by Customers belonging to a particular top level.
             includeinactive (bool, optional): Include inactive Customers in the response. Defaults to False.
-            includeactive (bool, optional): Include active Customers in the response. Defaults to True.
-            newFormat: (bool, optional): Return clients and record count separately. Defaults to False.
-            
+            includeactive (bool, optional): Include active Customers in the response. Defaults to True.     
+                   
         Returns:
-            newFormat=False (default)
-                dict: Results and record count
-            newFormat=True
-                list: List of results
-                int: Record count (total number of responses)
+            dict: Results and record count
             
         """
         rawParams = locals().copy()
-        response = self._requester('get',self.apiURL, self._requestFormatter(rawParams))
-        if newFormat==True:
-            return response['clients'], response['record_count']
-        else:
-            return response
         
-    def getAll(self, #TODO add docsting #TODO add any other potentially useful toggles
+        resp = self._search(others=rawParams)
+        return resp
+        
+    def get_all(self, #TODO add docsting #TODO add any other potentially useful toggles
         includeinactive:bool=False,
         includeactive:bool=True,):
         #This is literally just search but wrapped
@@ -635,42 +642,42 @@ class Clients(HaloBase):
         toplevel_id:int=None,
         due_date_type:int=None,
         invoiceduedaysextraclient:int=None, # This is due date int in other places
-        queueMode:str='disabled',
+        queue_mode:str='disabled',
         **others
             ):
         """Create or update one or more clients.  If ID is included, client(s) will be updated.  If ID is not included new client(s) will be created.
 
         Args:
             id (int, optional): Client ID.
-            queueMode (str, optional): Queue asset data to be sent as a batch update.  Valid modes: disabled - Default, will update asset immediately. queue
+            queue_mode (str, optional): Queue asset data to be sent as a batch update.  Valid modes: disabled - Default, will update asset immediately. queue
 
         Returns:
             dict: Updated or created client(s).
         """
-        if queueMode.lower() not in ['disabled','queue','update']:
-            raise AttributeError(f'{queueMode} is not a valid Queue Mode.')
+        if queue_mode.lower() not in ['disabled','queue','update']:
+            raise AttributeError(f'{queue_mode} is not a valid Queue Mode.')
         
         rawParams = locals().copy()
         
-        if queueMode == 'disabled': # Sent request immediately
+        if queue_mode == 'disabled': # Sent request immediately
         
-            response = self._requester('post',self.apiURL,self._requestFormatter(rawParams))
+            response = self._requester('post',self.url,self._format_requests(rawParams))
             return response
         
-        elif queueMode == 'queue': # Queue request.
-            self.formattedParams += [self._requestFormatter(rawParams)]
+        elif queue_mode == 'queue': # Queue request.
+            self.formatted_params += [self._format_requests(rawParams)]
         
-        elif queueMode == 'update':
-            response = self._requester('post',self.apiURL,self._requestFormatter(rawParams))
-            self.formattedParams = [] # reset queue
+        elif queue_mode == 'update':
+            response = self._requester('post',self.url,self._format_requests(rawParams))
+            self.formatted_params = [] # reset queue
             return response
 
 
 
 class Contracts(HaloBase): # UNTESTED!!!! 
-    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
-        super().__init__(tenant,clientID,secret,scope,logLevel)
-        self.apiURL+='/ClientContract'
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
+        self.url+='/ClientContract'
         
     def get(self,id:int, **others): #TODO test me
         
@@ -687,7 +694,9 @@ class Contracts(HaloBase): # UNTESTED!!!!
         count:int=None,
         **others):
         
-        resp = self._search(pageinate=pageinate, page_size=page_size, page_no=page_no, order=order, orderdesc=orderdesc, search=search, count=count, others=others)
+        rawParams = locals().copy()
+        
+        resp = self._search(others=rawParams)
         return resp
     
     def update(self, queue_mode:str='disabled', **others): #TODO test me
@@ -697,9 +706,9 @@ class Contracts(HaloBase): # UNTESTED!!!!
     
 
 class Items(HaloBase):
-    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
-        super().__init__(tenant,clientID,secret,scope,logLevel)
-        self.apiURL+='/Item'
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
+        self.url+='/Item'
 
     def search(self,
         pageinate:bool=False,
@@ -727,15 +736,16 @@ class Items(HaloBase):
         """         
         
         rawParams = locals().copy()
-        response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
-        return response
+        
+        resp = self._search(others=rawParams)
+        return resp
     
     def get(self,id:int, includedetails:bool=False, **others): #TODO test me
         
         resp = self._get(id=id, includedetails=includedetails, others=others)
         return resp
     
-    def getAll(self):
+    def get_all(self):
         response = self.search()
         return response #TODO figure out what the dict name is for this
     
@@ -747,7 +757,7 @@ class Items(HaloBase):
         recurringprice:float=None,
         update_recurring_invoice_price:bool=None,
         update_recurring_invoice_cost:bool=None,
-        queueMode:str='disabled',
+        queue_mode:str='disabled',
         **others
                ):
         """Creates or updates one or more assets.  If ID is included, asset(s) will be updated.  If ID is not included new asset(s) will be created.
@@ -755,27 +765,27 @@ class Items(HaloBase):
         Args:
             id (int, optional): Asset ID.
             fields (list, optional): Fields to be updated.
-            queueMode (str, optional): Queue asset data to be sent as a batch update.  Valid modes: disabled - Default, will update asset immediately. queue
+            queue_mode (str, optional): Queue asset data to be sent as a batch update.  Valid modes: disabled - Default, will update asset immediately. queue
 
         Returns:
             _type_: I dont think it returns anything...
         """
-        if queueMode.lower() not in ['disabled','queue','update']:
-            raise AttributeError(f'{queueMode} is not a valid Queue Mode.')
+        if queue_mode.lower() not in ['disabled','queue','update']:
+            raise AttributeError(f'{queue_mode} is not a valid Queue Mode.')
         
         rawParams = locals().copy()
         
-        if queueMode == 'disabled': # Sent request immediately
+        if queue_mode == 'disabled': # Sent request immediately
         
-            response = self._requester('post',self.apiURL,self._requestFormatter(rawParams))
+            response = self._requester('post',self.url,self._format_requests(rawParams))
             return response
         
-        elif queueMode == 'queue': # Queue request.
-            self.formattedParams += [self._requestFormatter(rawParams)]
+        elif queue_mode == 'queue': # Queue request.
+            self.formatted_params += [self._format_requests(rawParams)]
         
-        elif queueMode == 'update':
-            response = self._requester('post',self.apiURL,self._requestFormatter(rawParams))
-            self.formattedParams = [] # reset queue
+        elif queue_mode == 'update':
+            response = self._requester('post',self.url,self._format_requests(rawParams))
+            self.formatted_params = [] # reset queue
             return response
 
 class Invoices(HaloBase): #TODO add docstring here
@@ -787,9 +797,9 @@ class Invoices(HaloBase): #TODO add docstring here
     
     Progress:
     """
-    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
-        super().__init__(tenant,clientID,secret,scope,logLevel)
-        self.apiURL+='/Invoice'
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
+        self.url+='/Invoice'
         
     def search(self, #TODO fix this
         pageinate:bool=False,
@@ -808,10 +818,10 @@ class Invoices(HaloBase): #TODO add docstring here
         includelines:bool=None,
         **others):
         
-        
         rawParams = locals().copy()
-        response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
-        return response
+        
+        resp = self._search(others=rawParams)
+        return resp
     
     def get(self, #TODO test Get
             id:int,
@@ -819,7 +829,7 @@ class Invoices(HaloBase): #TODO add docstring here
             ):
         
         rawParams = locals().copy()
-        response = self._requester('get',self.apiURL+f'/{id}',self._requestFormatter(rawParams))
+        response = self._requester('get',self.url+f'/{id}',self._format_requests(rawParams))
         return response
     
     def update(self,
@@ -829,14 +839,14 @@ class Invoices(HaloBase): #TODO add docstring here
                ):
         
         rawParams = locals().copy()
-        response = self._requester('post',self.apiURL,self._requestFormatter(rawParams))
+        response = self._requester('post',self.url,self._format_requests(rawParams))
         return response
 
 
 class KnowledgeBase(HaloBase):
-    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
-        super().__init__(tenant,clientID,secret,scope,logLevel)
-        self.apiURL+='/KBArticle'
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
+        self.url+='/KBArticle'
 
     def get(self,id:int, includedetails:bool=False, **others): #TODO test me
         
@@ -854,9 +864,9 @@ class KnowledgeBase(HaloBase):
         return resp
 
 class Opportunities(HaloBase):
-    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
-        super().__init__(tenant,clientID,secret,scope,logLevel)
-        self.apiURL+='/Opportunities'
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
+        self.url+='/Opportunities'
         
     def get(self,id:int, includedetails:bool=False, **others): #TODO test me
         
@@ -874,9 +884,9 @@ class Opportunities(HaloBase):
         return resp
 
 class Projects(HaloBase):
-    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
-        super().__init__(tenant,clientID,secret,scope,logLevel)
-        self.apiURL+='/Projects'
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
+        self.url+='/Projects'
         
     def get(self,id:int, includedetails:bool=False, includelastaction:bool=False, ticketidonly:bool=False, **others): #TODO test me
         
@@ -894,9 +904,9 @@ class Projects(HaloBase):
         return resp
 
 class Quotes(HaloBase):
-    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
-        super().__init__(tenant,clientID,secret,scope,logLevel)
-        self.apiURL+='/Quotation'
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
+        self.url+='/Quotation'
         
     def get(self,id:int, includedetails:bool=False, **others): #TODO test me
         
@@ -923,14 +933,14 @@ class RecurringInvoices(HaloBase):
     Progress
     - Search: Partially tested
     - Get: Not implemented
-    - GetAll: Tested, needs docstring
+    - get_all: Tested, needs docstring
     - Update: Partially tested
     - UpdateLines: Not tested
     - Delete: Not implemented
     """
-    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
-        super().__init__(tenant,clientID,secret,scope,logLevel)
-        self.apiURL+='/RecurringInvoice'
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
+        self.url+='/RecurringInvoice'
 
     def search(self, #TODO add docstring #TODO figure out why page size is being returned at all if it isnt being used. #TODO add more relevant variables if any
         pageinate:bool=False,
@@ -944,17 +954,17 @@ class RecurringInvoices(HaloBase):
         includelines:bool=False,
         **others):
         
-        
         rawParams = locals().copy()
-        response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
-        return response
+        
+        resp = self._search(others=rawParams)
+        return resp
     
     def get(self,id:int, includedetails:bool=False, **others): #TODO test me
         
         resp = self._get(id=id, includedetails=includedetails, others=others)
         return resp
     
-    def getAll(self, #TODO add docsting #TODO add any other potentially useful toggles
+    def get_all(self, #TODO add docsting #TODO add any other potentially useful toggles
         includelines:bool=False):
         #This is literally just search but wrapped
         response = self.search(includelines=includelines)
@@ -982,23 +992,23 @@ class RecurringInvoices(HaloBase):
             dict: Updated invoice(s)
         """
         
-        queueMode = 'disabled' #TODO Implement and test queueMode
-        if queueMode.lower() not in ['disabled','queue','update']:
-            raise AttributeError(f'{queueMode} is not a valid Queue Mode.')
+        queue_mode = 'disabled' #TODO Implement and test queue_mode
+        if queue_mode.lower() not in ['disabled','queue','update']:
+            raise AttributeError(f'{queue_mode} is not a valid Queue Mode.')
         
         rawParams = locals().copy()
         
-        if queueMode == 'disabled': # Sent request immediately
+        if queue_mode == 'disabled': # Sent request immediately
         
-            response = self._requester('post',self.apiURL,self._requestFormatter(rawParams)) #TODO should params be formatted later?
+            response = self._requester('post',self.url,self._format_requests(rawParams)) #TODO should params be formatted later?
             return response
         
-        elif queueMode == 'queue': # Queue request.
-            self.formattedParams += [self._requestFormatter(rawParams)]
+        elif queue_mode == 'queue': # Queue request.
+            self.formatted_params += [self._format_requests(rawParams)]
         
-        elif queueMode == 'update':
-            response = self._requester('post',self.apiURL,self._requestFormatter(rawParams))
-            self.formattedParams = [] # reset queue
+        elif queue_mode == 'update':
+            response = self._requester('post',self.url,self._format_requests(rawParams))
+            self.formatted_params = [] # reset queue
             return response
     
     def updateLines(self, #TODO test updateLines #TODO fix docstring
@@ -1016,13 +1026,13 @@ class RecurringInvoices(HaloBase):
         """
         
         rawParams = locals().copy()
-        response = self._requester('get',self.apiURL+'/UpdateLines',self._requestFormatter(rawParams))
+        response = self._requester('get',self.url+'/UpdateLines',self._format_requests(rawParams))
         return response        
 
 class Reports(HaloBase):
-    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
-        super().__init__(tenant,clientID,secret,scope,logLevel)
-        self.apiURL+='/'#TODO Add link
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
+        self.url+='/'#TODO Add link
         
     def get(self,id:int, includedetails:bool=False, **others): #TODO Confirm variables
         
@@ -1040,9 +1050,9 @@ class Reports(HaloBase):
         return resp
         
 class Sites(HaloBase):
-    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
-        super().__init__(tenant,clientID,secret,scope,logLevel)
-        self.apiURL+='/'#TODO Add link
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
+        self.url+='/'#TODO Add link
         
     def get(self,id:int, includedetails:bool=False, **others): #TODO Confirm variables
         
@@ -1061,9 +1071,9 @@ class Sites(HaloBase):
         
 
 class Status(HaloBase):
-    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
-        super().__init__(tenant,clientID,secret,scope,logLevel)
-        self.apiURL+='/'#TODO Add link
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
+        self.url+='/'#TODO Add link
         
     def get(self,id:int, includedetails:bool=False, **others): #TODO Confirm variables
         
@@ -1081,9 +1091,9 @@ class Status(HaloBase):
         return resp
 
 class Suppliers(HaloBase):
-    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
-        super().__init__(tenant,clientID,secret,scope,logLevel)
-        self.apiURL+='/'#TODO Add link
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
+        self.url+='/'#TODO Add link
         
     def get(self,id:int, includedetails:bool=False, **others): #TODO Confirm variables
         
@@ -1101,9 +1111,9 @@ class Suppliers(HaloBase):
         return resp
 
 class Teams(HaloBase):
-    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
-        super().__init__(tenant,clientID,secret,scope,logLevel)
-        self.apiURL+='/'#TODO Add link
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
+        self.url+='/'#TODO Add link
         
     def get(self,id:int, includedetails:bool=False, **others): #TODO Confirm variables
         
@@ -1121,18 +1131,20 @@ class Teams(HaloBase):
         return resp
 
 class TicketTypes(HaloBase):
-    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
-        super().__init__(tenant,clientID,secret,scope,logLevel)
-        self.apiURL+='/TicketType'
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
+        self.url+='/TicketType'
         
-    def get(self,id:int, includedetails:bool=False, **others): #TODO Confirm variables
+    def get(self,id:int, includedetails:bool=False, **others):
         
         resp = self._get(id=id, includedetails=includedetails, others=others)
         return resp
     
-    def search(self, client_id:int=None, showcounts:bool=None, domain:str=None, view_id:int=None, showinactive:bool=None, **others): #TODO test me
+    def search(self, client_id:int=None, showcounts:bool=None, domain:str=None, view_id:int=None, showinactive:bool=None, **others):
 
-        resp = self._search(client_id=client_id, showcounts=showcounts, domain=domain, view_id=view_id, showinactive=showinactive, others=others)
+        rawParams = locals().copy()
+        
+        resp = self._search(others=rawParams)
         return resp
     
     def update(self, queue_mode:str='disabled', **others): #TODO test me
@@ -1141,9 +1153,9 @@ class TicketTypes(HaloBase):
         return resp
 
 class Tickets(HaloBase):
-    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
-        super().__init__(tenant,clientID,secret,scope,logLevel)
-        self.apiURL+='/Tickets'
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
+        self.url+='/Tickets'
     
     def update(self,
         actioncode:int=None,
@@ -1162,13 +1174,12 @@ class Tickets(HaloBase):
         user_id:int=None,
         user_name:str=None,
         agent_id:int=None,
-        
-        queueMode:str='disabled',
+        queue_mode:str='disabled',
         **others
         ):
         """Creates or updates one or more tickets.  If ID is included, tickets(s) will be updated.  If ID is not included new ticket(s) will be created.
         
-        Updating multiple tickets can be done by passing a list of tickets with relevant fields, or by passing individual updates with the queueMode set to 'queue'.
+        Updating multiple tickets can be done by passing a list of tickets with relevant fields, or by passing individual updates with the queue_mode set to 'queue'.
         
         Offical documentation including all possible fields https://halo.halopsa.com/apidoc/resources/tickets
         
@@ -1189,7 +1200,7 @@ class Tickets(HaloBase):
             user_id (int, optional): User ID. 
             user_name (str, optional): User name. 
             agent_id (int, optional): Agent ID. 
-            queueMode (str, optional): Queue ticket data to be sent as a batch update.  This is done to reduce POST requests sent to Halo, by sending one POST request with all the needed updates
+            queue_mode (str, optional): Queue ticket data to be sent as a batch update.  This is done to reduce POST requests sent to Halo, by sending one POST request with all the needed updates
                 Modes: 
                 - disabled - (Default) Updates ticket
                 - queue - Queues a single item ready to be sent later.
@@ -1199,23 +1210,23 @@ class Tickets(HaloBase):
             _type_: I dont think it returns anything... #TODO make this return status
         """
         
-        queueMode = 'disabled' #TODO Implement and test queueMode
-        if queueMode.lower() not in ['disabled','queue','update']:
-            raise AttributeError(f'{queueMode} is not a valid Queue Mode.')
+        queue_mode = 'disabled' #TODO Implement and test queue_mode
+        if queue_mode.lower() not in ['disabled','queue','update']:
+            raise AttributeError(f'{queue_mode} is not a valid Queue Mode.')
         
         rawParams = locals().copy()
         
-        if queueMode == 'disabled': # Sent request immediately
+        if queue_mode == 'disabled': # Sent request immediately
         
-            response = self._requester('post',self.apiURL,self._requestFormatter(rawParams))
+            response = self._requester('post',self.url,self._format_requests(rawParams))
             return response
         
-        elif queueMode == 'queue': # Queue request.
-            self.formattedParams += [self._requestFormatter(rawParams)]
+        elif queue_mode == 'queue': # Queue request.
+            self.formatted_params += [self._format_requests(rawParams)]
         
-        elif queueMode == 'update':
-            response = self._requester('post',self.apiURL,self._requestFormatter(rawParams))
-            self.formattedParams = [] # reset queue
+        elif queue_mode == 'update':
+            response = self._requester('post',self.url,self._format_requests(rawParams))
+            self.formatted_params = [] # reset queue
             return response
 
     def search(self,
@@ -1287,13 +1298,15 @@ class Tickets(HaloBase):
         search_inventory_number:str=None,
         search_oppcontactname:str=None,
         search_oppcompanyname:str=None,
-        count:int=None,
+        count:int=50,
         **others
                ):
 
-        rawParams = locals().copy() 
-        response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
-        return response
+        rawParams = locals().copy()
+        
+        resp = self._search(others=rawParams)
+        return resp
+
         
     def get(self,
         id:int,
@@ -1317,14 +1330,14 @@ class Tickets(HaloBase):
         """
 
         rawParams = locals().copy()
-        response = self._requester('get',self.apiURL+f'/{id}',self._requestFormatter(rawParams))
+        response = self._requester('get',self.url+f'/{id}',self._format_requests(rawParams))
         return response
     
         
 class Users(HaloBase):
-    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
-        super().__init__(tenant,clientID,secret,scope,logLevel)
-        self.apiURL+='/Users'
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
+        self.url+='/Users'
         
     def search(self,
         pageinate:bool=False,
@@ -1345,9 +1358,8 @@ class Users(HaloBase):
         approversonly:bool=None,
         excludeagents:bool=None,
         count:int=None,
-        **others
-               ):
-        """_summary_
+        **others):
+        """Search Users
 
         Args:
             paginate (bool, optional): Whether to use Pagination in the response. Defaults to False.
@@ -1374,8 +1386,8 @@ class Users(HaloBase):
         """
         
         rawParams = locals().copy() 
-        response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
-        return response
+        resp = self._search(others=rawParams)
+        return resp
         
     def get(self, # TODO test me
             id:int,
@@ -1384,13 +1396,13 @@ class Users(HaloBase):
             includepopups:bool=None,
             **others
             ):
-        """
-        Get a single user's details.
+        """Get a single user's details.  Requires atleast ID to be provided.
+        
         Supports all Halo parameters, even if not listed.  
-        Requires atleast ID to be provided
+        
         Args:
             id (int): User ID
-            includedetails (bool, optional): Whether to include extra details in the response. Defaults to False.
+            includedetails (bool, optional): Whether to include extra details in the response. Defaults to True.
             includeactivity (bool, optional): Whether to include User's ticket activity in the response. Defaults to False.
             includepopups (bool, optional): Whether to include customer pop ups in the response. Defaults to False.
 
@@ -1399,10 +1411,10 @@ class Users(HaloBase):
         """
         
         rawParams = locals().copy()
-        response = self._requester('get',self.apiURL+f'/{id}',self._requestFormatter(rawParams))
+        response = self._requester('get',self.url+f'/{id}',self._format_requests(rawParams))
         return response
     
-    def getAll(self):
+    def get_all(self):
         """Get all users.
 
         Returns:
@@ -1444,7 +1456,7 @@ class Users(HaloBase):
         other5: str = None,
         neversendemails: bool = None,
         roles:list = None,
-        queueMode = 'disabled',
+        queue_mode = 'disabled',
         **others):
         """Update or create user(s).
 
@@ -1456,23 +1468,23 @@ class Users(HaloBase):
             dict: Updated/created user(s)
         """
         
-        queueMode = 'disabled' #TODO Implement and test queueMode
-        if queueMode.lower() not in ['disabled','queue','update']:
-            raise AttributeError(f'{queueMode} is not a valid Queue Mode.')
+        queue_mode = 'disabled' #TODO Implement and test queue_mode
+        if queue_mode.lower() not in ['disabled','queue','update']:
+            raise AttributeError(f'{queue_mode} is not a valid Queue Mode.')
         
         rawParams = locals().copy()
         
-        if queueMode == 'disabled': # Sent request immediately
+        if queue_mode == 'disabled': # Sent request immediately
         
-            response = self._requester('post',self.apiURL,self._requestFormatter(rawParams)) #TODO should params be formatted later?
+            response = self._requester('post',self.url,self._format_requests(rawParams)) #TODO should params be formatted later?
             return response
         
-        elif queueMode == 'queue': # Queue request.
-            self.formattedParams += [self._requestFormatter(rawParams)]
+        elif queue_mode == 'queue': # Queue request.
+            self.formatted_params += [self._format_requests(rawParams)]
         
-        elif queueMode == 'update':
-            response = self._requester('post',self.apiURL,self._requestFormatter(rawParams))
-            self.formattedParams = [] # reset queue
+        elif queue_mode == 'update':
+            response = self._requester('post',self.url,self._format_requests(rawParams))
+            self.formatted_params = [] # reset queue
             return response
         
     def delete():
@@ -1481,14 +1493,14 @@ class Users(HaloBase):
 # NON STANDARD
 
 class DistributionLists(HaloBase): 
-    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
-        super().__init__(tenant,clientID,secret,scope,logLevel)
-        self.apiURL+='/DistributionLists'
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
+        self.url+='/DistributionLists'
         
-    def getAll(self): # All distribution lists
+    def get_all(self): # All distribution lists
 
         rawParams = locals().copy()
-        response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
+        response = self._requester('get',self.url,self._format_requests(rawParams))
         return response
     
     def get(self, # Only accepts one item #TODO check if there are any hidden params #TODO allow a way to get users?
@@ -1496,7 +1508,7 @@ class DistributionLists(HaloBase):
             ):
 
         rawParams = locals().copy()
-        response = self._requester('get',self.apiURL+f'/{id}?includedetails=true',self._requestFormatter(rawParams))
+        response = self._requester('get',self.url+f'/{id}?includedetails=true',self._format_requests(rawParams))
         return response
     
     def create(self,
@@ -1509,7 +1521,7 @@ class DistributionLists(HaloBase):
         **others
         ):
         rawParams = locals().copy()
-        response = self._requester('post',self.apiURL,self._requestFormatter(rawParams))
+        response = self._requester('post',self.url,self._format_requests(rawParams))
         return response
     
     
@@ -1518,13 +1530,13 @@ class DistributionLists(HaloBase):
         addtheseusers:list=None,
         removetheseusers:list=None): # TODO add docstring
         rawParams = locals().copy()
-        response = self._requester('post',self.apiURL,self._requestFormatter(rawParams))
+        response = self._requester('post',self.url,self._format_requests(rawParams))
         return response
 
 class TopLevel(HaloBase):
-    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
-        super().__init__(tenant,clientID,secret,scope,logLevel)
-        self.apiURL+='/TopLevel'
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
+        self.url+='/TopLevel'
 
     def search(self,
         pageinate:bool=False,
@@ -1537,24 +1549,25 @@ class TopLevel(HaloBase):
         **others):
         
         rawParams = locals().copy()
-        response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
-        return response
+        
+        resp = self._search(others=rawParams)
+        return resp
     
     def get(self,id:int, includedetails:bool=False, **others): #TODO Confirm variables
         
         resp = self._get(id=id, includedetails=includedetails, others=others)
         return resp
     
-    def getAll(self): #TODO add docsting #TODO add any other potentially useful toggles
+    def get_all(self): #TODO add docsting #TODO add any other potentially useful toggles
         #This is literally just search but wrapped
         response = self.search()
         return response['tree']
     
     
 class Currency(HaloBase):
-    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
-        super().__init__(tenant,clientID,secret,scope,logLevel)
-        self.apiURL+='/Currency'
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
+        self.url+='/Currency'
 
     def search(self,
         pageinate:bool=False,
@@ -1567,8 +1580,9 @@ class Currency(HaloBase):
         **others):
         
         rawParams = locals().copy()
-        response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
-        return response
+        
+        resp = self._search(others=rawParams)
+        return resp
     
     def get(self,id:int, includedetails:bool=False, **others): #TODO Confirm variables
         
@@ -1576,12 +1590,12 @@ class Currency(HaloBase):
         return resp
     
 class UserRoles(HaloBase):
-    def __init__(self,tenant:str,clientID:str,secret:str,scope:str='all',logLevel:str='Normal'):
-        super().__init__(tenant,clientID,secret,scope,logLevel)
-        self.apiURL+='/UserRoles'
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
+        self.url+='/UserRoles'
 
     
-    def getAll(self):
+    def get_all(self):
         """Get all User Roles.
 
         Returns:
@@ -1589,7 +1603,7 @@ class UserRoles(HaloBase):
         """
         
         rawParams = locals().copy()
-        response = self._requester('get',self.apiURL,self._requestFormatter(rawParams))
+        response = self._requester('get',self.url,self._format_requests(rawParams))
         return response
     
     def get(self,
@@ -1607,5 +1621,5 @@ class UserRoles(HaloBase):
         """
         
         rawParams = locals().copy()
-        response = self._requester('get',self.apiURL+f'/{id}',self._requestFormatter(rawParams))
+        response = self._requester('get',self.url+f'/{id}',self._format_requests(rawParams))
         return response
