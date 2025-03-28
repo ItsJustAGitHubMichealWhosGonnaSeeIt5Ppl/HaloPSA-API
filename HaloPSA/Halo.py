@@ -935,7 +935,7 @@ class RecurringInvoices(HaloBase):
     - Get: Not implemented
     - get_all: Tested, needs docstring
     - Update: Partially tested
-    - UpdateLines: Not tested
+    - update_lines: Not tested
     - Delete: Not implemented
     """
     def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
@@ -1011,7 +1011,7 @@ class RecurringInvoices(HaloBase):
             self.formatted_params = [] # reset queue
             return response
     
-    def updateLines(self, #TODO test updateLines #TODO fix docstring
+    def update_lines(self, #TODO test update_lines #TODO fix docstring
         id:int,
         ihid:int,
         **others):
@@ -1052,7 +1052,7 @@ class Reports(HaloBase):
 class Sites(HaloBase):
     def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
         super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
-        self.url+='/'#TODO Add link
+        self.url+='/Site'#TODO Add link
         
     def get(self,id:int, includedetails:bool=False, **others): #TODO Confirm variables
         
@@ -1587,6 +1587,45 @@ class Currency(HaloBase):
     def get(self,id:int, includedetails:bool=False, **others): #TODO Confirm variables
         
         resp = self._get(id=id, includedetails=includedetails, others=others)
+        return resp
+    
+
+class SoftwareLicences(HaloBase):
+    """Software Licences/Subscriptions Endpoint.
+
+    Get, create, update, and delete customer software licenses or subscriptions
+
+    No official documentation
+
+    Requires ? permission
+
+    Progress (Temporary)
+    - Get: Working
+    - Search: Untested
+    - Update: Untested
+    - Delete: Not implemented
+    """
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
+        self.url+='/SoftwareLicence'
+        
+        
+    def get(self,id:int, client_id:int=None, search:str=None, **others): #TODO Confirm variables
+        """Get all software licenses/subscriptions (No I won't change it to licence)
+
+        Last tested: 2025/03/28, V2.184.45
+        """
+        resp = self._get(id=id, others=others)
+        return resp
+    
+    def search(self, **others): #TODO test me
+        
+        resp = self._search(others=others)
+        return resp
+    
+    def update(self, queue_mode:str='disabled', **others): #TODO test me
+        
+        resp = self._update(queue_mode=queue_mode, others=others)
         return resp
     
 class UserRoles(HaloBase):
