@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - Template
+
+### Added
+
+- All base endpoints are now atleast partially implemented and usable.
+
+### Fixed
+
+### Changed
+
+### Removed
+
 ## [0.0.0] - Template
 
 ### Added
