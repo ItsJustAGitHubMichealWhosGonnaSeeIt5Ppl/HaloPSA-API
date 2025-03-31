@@ -1,7 +1,7 @@
 # HaloPSA API package for Python
-EXTREMELY EARLY STAGE DEVELOPMENT.  READ CURRENTLY WORKING ENDPOINTS BEFORE TRYING ANYTHING!
+Inspired by [homotechsual's Powershell library for HaloPSA](https://docs.homotechsual.dev/modules/haloapi/)
 
-For everyone's safety, none of the delete functions currently work.  This will be fixed/updated later.
+All base endpoints are currently implemented to some extent.  No endpoints have delete functionality yet, as I was worried I would accidentally delete something while testing.
 
 # Installation and setup
 ## Requirements
@@ -25,118 +25,48 @@ pip install HaloPSA
 0. Note your Client ID and Secret, you will need these later!
 0. Click on the integration/Application you just created and go to Permissions.
 0. Set permissions to either All or, if you know what you'll be using, enable just those permissions. (I recommend testing with `all:standard` and then disabling permissions selectively, that way you know your connection is working before you start troubleshooting)
-0. Click Save and move on to setting up your .env file.
-## Setting up your .env file
-1. Create a .env file with the following lines
+0. Click Save and move on to the next step.
+## Getting Started in Python
+Now that you have your API information, you can get up and running in Python!
+
+1. Add your API credentials (Highly recommend putting this in a .env file, or literally anywhere other than hardcoded into your script)
+
 ```
 HALO_CLIENT_ID = [Your Client ID]
 HALO_SECRET = [Your Secret]
 HALO_TENANT = [Your Halo Instance/tenant]  Eg: https://[THIS PART OF THE URL].halopsa.com
 ```
-Now you're ready to go!
-
-## Usage
-Because of the way Halo is designed, anything you can do in the web interface, can be done from the API (and hopefully one day from this Python package too).
-
-You can either import every endpoint
+2. Import the HaloPSA package
 
 ```
-import HaloPSA
+from HaloPSA import *
 ```
-Or import only the ones you need (Full list below)
+Or import only the ones you need (Recommended)
 ```
 from HaloPSA import Clients, Invoices
 ```
+3. Run your first request!
+
+```
+users = Users(HALO_TENANT,HALO_ID,HALO_SECRET)
+all_users = users.search() # Get all users
+for single_user in all_users: # Print each user, one by one
+    print(single_user)
+```
+
+## Further reading
 I highly recommend you check the official Halo API documentation here: https://halo.halopsa.com/apidoc/info and for an even more in depth list, check out the swagger file here: https://halo.halopsa.com/api/swagger/index.html
 
 Feel free to ask questions in the github issues area, I will try my best to answer.
 # Endpoints
-I am implementing these as I need them, and trying to keep them as consistent and easy to understand as possible.
 
-## Partially implemented
-### Assets
-You Halo assets
-#### Get
-Working, has docstring.
-### Search
-Working, has docstring.
-#### GetAll 
-Working, but planning to remove this as you can just use search with no variables to get the same result.
-#### Update (create)
-Creates or updates one or more assets.  If ID is included, asset(s) will be updated.  If ID is not included, new asset(s) will be created.
-- Working but requires "fields" to be sent in a specific JSON-like format.  Working on a better solution.  Has docstring.
-- Allows queuing multiple items so a single update can be sent, reducing calls to Halo
-#### Delete
-Not implemented.
-### Attachments
-Attachments on tickets.
-#### Get
-Working, needs docstring
-- Returns attachment in base64
-#### Search
-Working, has docstring but needs more updating
-#### Update
-Not implemented.
-#### Delete
-Not implemented.
-### Clients
-Your customers/clients.
-#### Get
-Working, has docstring.
-#### Search
-Working, has docstring.
-#### Update
-Not implemented.
-#### Delete
-Not implemented.
-### Recurring Invoices*
-*Not in official documentation, found in Swagger + checking API calls from browser.
-#### Get
-Not implemented.
-#### Search
-Working, needs better docstring.
-#### Update
-Not implemented.
-#### UpdateLines
-Technically working, needs documentation and docstring.
-#### Delete
-Not implemented.
-### Sites
-#### Get
-Not implemented.
-#### Search
-Implemented, has docstring.
-#### Update
-Not implemented.
-#### Delete
-Not implemented.
-### Tickets
-Halo tickets endpoint.
-#### Get
-Working, has docstring.
-#### Search
-Not implemented.
-#### Update
-Working, has docstring.
-- Allows queuing multiple items so a single update can be sent, reducing calls to Halo
-#### Delete
-Not implemented.
-### Users
-Halo users endpoint.
-#### Get
-Working, has docstring.
-#### Search
-Working, has docstring.
-#### Update
-Not implemented.
-#### Delete
-Not implemented.
+## Base/Officially documented Endpoints
+All base endpoints are now implemented at some level. No endpoints have delete functionality yet.
 
-
-## Not implemented
-### Planning to implement soon/Implemented in a previous version
+## Unofficial endpoints
+In addition to the base endpoints, the following unofficial endpoints (from the swagger) are implemented at some level
+- Distribution Lists
+- TopLevel
 - Currency
-- Items
-- Invoices
-### Low Priority (if not listed, assume here)
-- Actions
+- SoftwareLicences (Subscriptions)
+- UserRoles
