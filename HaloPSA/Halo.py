@@ -1,8 +1,6 @@
 
 import requests
-import urllib.parse
 import json
-import os
 
 #TODO create parent/child system for all the classes in here, so API key is not needed each time
 #TODO start documentation
@@ -516,6 +514,21 @@ class Attachments(HaloBase):
     def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
         super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
         self.url+='/Attachment'
+        """Attachments Endpoint.
+
+        [Brief description]
+
+        Official Documentation: https://halopsa.halopsa.com/apidoc/resources/attachments
+
+        Requires ? permission
+
+        Progress (Temporary)
+        - Get: Working
+        - Search: Working
+        - Update: Not implemented
+        - Upload: In progress
+        - Delete: Not implemented
+        """
     
     def search(self, 
         ticket_id:int=None,
@@ -548,6 +561,7 @@ class Attachments(HaloBase):
         rawParams = locals().copy()
         response = self._requester('get',self.url+f'/{id}',self._format_requests(rawParams))
         return response
+    
     def upload(self,
             id:int=None,
             filename:str=None,
@@ -569,7 +583,7 @@ class Clients(HaloBase):
         self.url+='/Client'
         self.formatted_params = []
 
-    def search(self,
+    def search(self, # Test client_ids and client_id
         pageinate:bool=False,
         page_size:int=None, # Switched to none
         page_no:int=1,
@@ -586,7 +600,7 @@ class Clients(HaloBase):
         By default, only the first 50 results are returned.  If more than 50 are needed, you must explicitely set count variable.  Leaving count blank will still return 50.
 
         Args:
-            paginate (bool, optional): Whether to use Pagination in the response. Defaults to False.
+            pageinate (bool, optional): Whether to use Pagination in the response. Defaults to False.
             page_size (int, optional): The size of the page if using pagination. Defaults to 50.
             page_no (int, optional): The page number to return if using pagination. Defaults to 1.
             count (int, optional): When not using pagination, the number of results to return. Set to 50 by default (even if not included).
@@ -1032,7 +1046,7 @@ class RecurringInvoices(HaloBase):
 class Reports(HaloBase):
     def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
         super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
-        self.url+='/'#TODO Add link
+        self.url+='/Report'
         
     def get(self,id:int, includedetails:bool=False, **others): #TODO Confirm variables
         
@@ -1052,7 +1066,7 @@ class Reports(HaloBase):
 class Sites(HaloBase):
     def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
         super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
-        self.url+='/Site'#TODO Add link
+        self.url+='/Site'
         
     def get(self,id:int, includedetails:bool=False, **others): #TODO Confirm variables
         
@@ -1073,16 +1087,16 @@ class Sites(HaloBase):
 class Status(HaloBase):
     def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
         super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
-        self.url+='/'#TODO Add link
+        self.url+='/Status'
         
-    def get(self,id:int, includedetails:bool=False, **others): #TODO Confirm variables
+    def get(self,id:int, includedetails:bool=False, **others): #TODO Test me
         
         resp = self._get(id=id, includedetails=includedetails, others=others)
         return resp
     
-    def search(self, **others): #TODO test me
+    def search(self, type:str=None, showcounts:bool=None, domain:str=None, view_id:int=None, excludepending:bool=None, excludeclosed:bool=None, **others): #TODO test me
         
-        resp = self._search(others=others)
+        resp = self._search(type=type, showcounts=showcounts, domain=domain, view_id=view_id, excludepending=excludepending, excludeclosed=excludeclosed, others=others)
         return resp
     
     def update(self, queue_mode:str='disabled', **others): #TODO test me
@@ -1093,7 +1107,7 @@ class Status(HaloBase):
 class Suppliers(HaloBase):
     def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
         super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
-        self.url+='/'#TODO Add link
+        self.url+='/Supplier'
         
     def get(self,id:int, includedetails:bool=False, **others): #TODO Confirm variables
         
@@ -1113,7 +1127,7 @@ class Suppliers(HaloBase):
 class Teams(HaloBase):
     def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
         super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
-        self.url+='/'#TODO Add link
+        self.url+='/Team'
         
     def get(self,id:int, includedetails:bool=False, **others): #TODO Confirm variables
         
