@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Endpoint template
+- InvoiceChange endpoint
+
+### Fixed
+
+### Changed
+
+- Added warning in update_lines() method for RecurringInvoices.
+- Formatting guidelines 
+
+### Removed
+
 ## [1.0.0]
 
 ### Added

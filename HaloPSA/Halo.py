@@ -8,23 +8,75 @@ import json
 #TODO update readme.md
 #TODO add versioning
 #TODO implement all base endpoints (the ones in the main documentation)
-#TODO replace camelCase with snake_case
 #TODO implement dataclasses
 
 # # # FORMATTING GUIDELINES # # #
 
-# General
-## Stick to US english as that is what Halo uses
-## Leave Halo variables/params unchanged unless there is an extremely good reason to make it different.  If changed, make sure its documented clearly
-## use_snake_case, notCamelCase
+## General
+# Stick to US english as that is what Halo uses
+# Leave Halo variables/params unchanged unless there is an extremely good reason to make it different.  If changed, make sure its documented clearly
+# use_snake_case, notCamelCase
 
 
-# Classes
-## Capitalize AllWordsLikeThis, dontUse camelCase
+## Classes
+# Capitalize AllWordsLikeThis, dontUse camelCase
 
 
-# # # DOC STRING TEMPLATES # # # (is it docstring or doc string)
+# # # TEMPLATES # # # (is it docstring or doc string)
 
+#TEMPLATE FOR ENDPOINT
+'''
+class EndpointName(HaloBase):
+    """[ENDPOINT NAME] Endpoint.
+
+    [Brief description]
+
+    Official Documentation: https://halopsa.halopsa.com/apidoc/resources/[Endpoint] OR No official documentation
+
+    Requires _ permission
+
+    Progress (Temporary)
+    - Get:
+    - get_all: (should this be removed?)
+    - Search:
+    - Update:
+    - Delete: 
+    """
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
+        self.url+='/EndpointLink'
+        
+        
+    def get(self, id:int, **others): #TODO test me #TODO Confirm variables
+        """Get [Brief description]
+
+        Requires _ permission [ONLY INCLUDE IF PERMISSION DIFFERS FROM OVERALL ENDPOINT]
+
+        Last tested: YYYY/MM/DD, V[HALO VERSION]
+        """
+        resp = self._get(id=id, others=others)
+        return resp
+    
+    def search(self, **others): #TODO test me
+        """Search [Brief description]
+
+        Requires _ permission [ONLY INCLUDE IF PERMISSION DIFFERS FROM OVERALL ENDPOINT]
+
+        Last tested: YYYY/MM/DD, V[HALO VERSION]
+        """
+        resp = self._search(others=others)
+        return resp
+    
+    def update(self, queue_mode:str='disabled', **others): #TODO test me
+        """Update or create [Brief description]
+
+        Requires _ permission [ONLY INCLUDE IF PERMISSION DIFFERS FROM OVERALL ENDPOINT]
+
+        Last tested: YYYY/MM/DD, V[HALO VERSION]
+        """
+        resp = self._update(queue_mode=queue_mode, others=others)
+        return resp
+'''
 #TEMPLATE STRING FOR CLASSES
 """[ENDPOINT NAME] Endpoint.
 
@@ -1029,7 +1081,9 @@ class RecurringInvoices(HaloBase):
         id:int,
         ihid:int,
         **others):
-        """Update recurring invoice lineitem(s)
+        """Update recurring invoice lineitem(s).   
+        
+        WARNING: Ceej from TechPulse says this can cause issues.  Recommendation: Instead of using update_lines, copy all existing lines, add or make changes as needed, send ALL lines back using lines[<Your Lines Here>] with update method.
 
         Args:
             id (int): Recurring invoice line item ID (required)
@@ -1642,6 +1696,7 @@ class SoftwareLicences(HaloBase):
         resp = self._update(queue_mode=queue_mode, others=others)
         return resp
     
+
 class UserRoles(HaloBase):
     def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
         super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
@@ -1676,3 +1731,48 @@ class UserRoles(HaloBase):
         rawParams = locals().copy()
         response = self._requester('get',self.url+f'/{id}',self._format_requests(rawParams))
         return response
+    
+    
+class InvoiceChange(HaloBase):
+    """Invoice Change endpoint
+
+    Get, create, and update invoice change information.  Includes recurring invoices.
+
+    No official documentation
+
+    Requires ? permission
+
+    Progress (Temporary)
+    - Get: No option to get a single item, use search with filters instead. 
+    - Search: Working
+    - Update: Untested
+    """
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
+        self.url+='/InvoiceChange'
+    
+    def search(self, search:str=None, invoice_id:int=None, line_id:int=None, idonly:bool=None, type_id:int=None, count:int=None, **others):
+        """Search Invoice Changes.
+
+        Last tested: 2025/04/01, V2.184.45
+
+        Args:
+            search (str, optional): Filter by string.
+            invoice_id (int, optional):Filter by invoice ID.
+            line_id (int, optional): Filter by invoice line ID.
+            idonly (bool, optional): Whether to return only the ID.
+            type_id (int, optional): Filter by type ID.
+            count (int, optional): Maximum items to return.
+
+        Returns:
+            list: List of matching changes
+        """
+        
+        resp = self._search(search=search, count=count, invoice_id=invoice_id, line_id=line_id, idonly=idonly, type_id=type_id, others=others)
+        return resp
+    
+    def update(self, queue_mode:str='disabled', **others): #TODO test me
+        
+        resp = self._update(queue_mode=queue_mode, others=others)
+        return resp
+
