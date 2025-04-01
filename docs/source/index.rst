@@ -10,8 +10,19 @@ Add your content using ``reStructuredText`` syntax. See the
 `reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
 documentation for details.
 
+:mod:`HaloPSA` Module
+=======================
+
+.. automodule:: NAbleAPI.Halo
+    :members:
+    :undoc-members:
+    :special-members: __init__
+    :show-inheritance:
+   
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+
+
 
