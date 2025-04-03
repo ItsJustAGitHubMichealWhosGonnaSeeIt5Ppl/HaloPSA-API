@@ -289,8 +289,9 @@ class Actions(HaloBase): #TODO what permissions are required here
             **others
             ):
         rawParams = locals().copy()
-        response = self._requester('get',self.url+f'/{id}',self._format_requests(rawParams))
-        return response
+        
+        resp = self._get(id=id, others=rawParams)
+        return resp
     
     
     def search(self,
@@ -356,7 +357,7 @@ class Agents(HaloBase):
         self.url+='/Agent'
     """Agent Endpoint.
 
-    Interact with agents endpoint
+    Interact with agents endpoint.
 
     Official Documentation: https://halopsa.halopsa.com/apidoc/resources/agents
 
@@ -633,7 +634,21 @@ class Clients(HaloBase):
     def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
         super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
         self.url+='/Client'
-        self.formatted_params = []
+        """Clients Endpoint.
+
+        Get, create, update, and delete clients.
+
+        Official Documentation: https://halopsa.halopsa.com/apidoc/resources/clients
+
+        Requires _ permission
+
+        Progress (Temporary)
+        - Get: Working
+        - get_all: Working, no docstring
+        - Search: Working
+        - Update: Working, partial docstring
+        - Delete: Not implemented
+        """
 
     def search(self, # Test client_ids and client_id
         pageinate:bool=False,
@@ -651,6 +666,8 @@ class Clients(HaloBase):
         """Search clients. Supports unlisted parameters.
         By default, only the first 50 results are returned.  If more than 50 are needed, you must explicitely set count variable.  Leaving count blank will still return 50.
 
+        Last tested: YYYY/MM/DD, V[HALO VERSION]
+        
         Args:
             pageinate (bool, optional): Whether to use Pagination in the response. Defaults to False.
             page_size (int, optional): The size of the page if using pagination. Defaults to 50.
@@ -690,6 +707,9 @@ class Clients(HaloBase):
         Get a single client's details.
         Supports all Halo parameters, even if not listed.  
         Requires atleast ID to be provided
+        
+        Last tested: YYYY/MM/DD, V[HALO VERSION]
+        
         Args:
             id (int): Client ID
             includedetails (bool, optional): Whether to include extra details (objects) in the response. Defaults to False.
@@ -712,7 +732,8 @@ class Clients(HaloBase):
         **others
             ):
         """Create or update one or more clients.  If ID is included, client(s) will be updated.  If ID is not included new client(s) will be created.
-
+        
+        Last tested: YYYY/MM/DD, V[HALO VERSION]
         Args:
             id (int, optional): Client ID.
             queue_mode (str, optional): Queue asset data to be sent as a batch update.  Valid modes: disabled - Default, will update asset immediately. queue
@@ -722,21 +743,9 @@ class Clients(HaloBase):
         """
         if queue_mode.lower() not in ['disabled','queue','update']:
             raise AttributeError(f'{queue_mode} is not a valid Queue Mode.')
-        
         rawParams = locals().copy()
-        
-        if queue_mode == 'disabled': # Sent request immediately
-        
-            response = self._requester('post',self.url,self._format_requests(rawParams))
-            return response
-        
-        elif queue_mode == 'queue': # Queue request.
-            self.formatted_params += [self._format_requests(rawParams)]
-        
-        elif queue_mode == 'update':
-            response = self._requester('post',self.url,self._format_requests(rawParams))
-            self.formatted_params = [] # reset queue
-            return response
+        resp = self._update(queue_mode=queue_mode, others=rawParams)
+        return resp
 
 
 
@@ -1224,6 +1233,20 @@ class Tickets(HaloBase):
     def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
         super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
         self.url+='/Tickets'
+    """Tickets Endpoint.
+
+    Get, create, update, and delete tickets.
+
+    Official Documentation: https://halopsa.halopsa.com/apidoc/resources/tickets
+
+    Requires _ permission
+
+    Progress (Temporary)
+    - Get: Working
+    - Search: Working
+    - Update: Working
+    - Delete: Not implemented
+    """
     
     def update(self,
         actioncode:int=None,
@@ -1242,6 +1265,7 @@ class Tickets(HaloBase):
         user_id:int=None,
         user_name:str=None,
         agent_id:int=None,
+        parent_id:int=None,
         queue_mode:str='disabled',
         **others
         ):
@@ -1249,11 +1273,11 @@ class Tickets(HaloBase):
         
         Updating multiple tickets can be done by passing a list of tickets with relevant fields, or by passing individual updates with the queue_mode set to 'queue'.
         
-        Offical documentation including all possible fields https://halo.halopsa.com/apidoc/resources/tickets
+        Last tested: 2025/04/03, V2.186.9
         
         Args:
             actioncode (int, optional): _description_. 
-            id (int, optional): Ticket ID. If none provided, new ticket will be created.
+            id (int, optional): Ticket ID. If not provided, a new ticket will be created.
             dateoccurred (str, optional): _description_. 
             summary (str, optional): Ticket summary (subject). 
             details (str, optional): Ticket details. 
@@ -1267,35 +1291,25 @@ class Tickets(HaloBase):
             site_name (str, optional):Site Name. 
             user_id (int, optional): User ID. 
             user_name (str, optional): User name. 
-            agent_id (int, optional): Agent ID. 
-            queue_mode (str, optional): Queue ticket data to be sent as a batch update.  This is done to reduce POST requests sent to Halo, by sending one POST request with all the needed updates
+            agent_id (int, optional): Agent ID.
+            parent_id (int, optional): Parent ticket ID.
+            queue_mode (str, optional): Queue ticket data to be sent as a batch update.  This is done to reduce POST requests sent to Halo, by sending one POST request with all the needed updates.
                 Modes: 
                 - disabled - (Default) Updates ticket
                 - queue - Queues a single item ready to be sent later.
                 - update - Sends queued tickets to be updated/created.
 
         Returns:
-            _type_: I dont think it returns anything... #TODO make this return status
+            list: Created/updated ticket(s).
         """
         
-        queue_mode = 'disabled' #TODO Implement and test queue_mode
+        queue_mode = 'disabled'
         if queue_mode.lower() not in ['disabled','queue','update']:
             raise AttributeError(f'{queue_mode} is not a valid Queue Mode.')
         
         rawParams = locals().copy()
-        
-        if queue_mode == 'disabled': # Sent request immediately
-        
-            response = self._requester('post',self.url,self._format_requests(rawParams))
-            return response
-        
-        elif queue_mode == 'queue': # Queue request.
-            self.formatted_params += [self._format_requests(rawParams)]
-        
-        elif queue_mode == 'update':
-            response = self._requester('post',self.url,self._format_requests(rawParams))
-            self.formatted_params = [] # reset queue
-            return response
+        resp = self._update(queue_mode=queue_mode, others=rawParams)
+        return resp
 
     def search(self,
         pageinate:bool=False,
@@ -1384,9 +1398,8 @@ class Tickets(HaloBase):
         **others
         ):
         """
-        Get a single ticket's details.
-        Supports all Halo parameters, even if not listed.  
-        Requires atleast ID to be provided
+        Get a single ticket.  Requires atleast ID to be provided.
+        
         Args:
             id (int): Ticket ID
             includedetails (bool, optional): Whether to include extra details (objects) in the response. Defaults to False.
@@ -1394,7 +1407,7 @@ class Tickets(HaloBase):
             ticketidonly (bool, optional): Returns only the ID fields (Ticket ID, SLA ID, Status ID, Client ID and Name and Lastincomingemail date) of the Tickets. Defaults to False.
 
         Returns:
-            dict: Single ticket details
+            dict: Ticket information/details
         """
 
         rawParams = locals().copy()

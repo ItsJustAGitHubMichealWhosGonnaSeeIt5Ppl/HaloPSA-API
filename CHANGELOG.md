@@ -10,16 +10,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Endpoint template
-- InvoiceChange endpoint
+- InvoiceChange endpoint with Search and Update method
+- Added warning in update_lines() method for RecurringInvoices.
+- Docstring for Clients and Tickets endpoints
+- 
 
 ### Fixed
 
 ### Changed
 
-- Added warning in update_lines() method for RecurringInvoices.
-- Formatting guidelines 
+- Formatting guidelines
+- Actions endpoint now uses updated request system in all methods
+- Clients.update() and Tickets.update() now use new request system
 
 ### Removed
+
+- Overly verbose docstrings for some endpoints/methods
 
 ## [1.0.0]
 
