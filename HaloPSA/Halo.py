@@ -109,7 +109,47 @@ Last tested: YYYY/MM/DD, V[HALO VERSION]
 """
 
 # # # CODE # # #
+class Halo:
+    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
+        """Halo Base Class
 
+        Args:
+            tenant (str): Your Tenant
+            clientid (str): Your API client iD
+            secret (str): Your API secret
+            tenant_type (str, optional): Your tenant type.  Valid options ['psa', 'itsm']. Defaults to psa. 
+            scope (str, optional): _description_. Defaults to 'all'.
+            logLevel (str, optional): Does nothing. Defaults to 'Normal'.
+        """
+        self.actions = Actions(tenant=tenant, clientid=clientid, secret=secret, scope=scope,tenant_type=tenant_type, log_level=log_level)
+        self.agents = Agents(tenant=tenant, clientid=clientid, secret=secret, scope=scope,tenant_type=tenant_type, log_level=log_level)
+        self.appointments = Appointments(tenant=tenant, clientid=clientid, secret=secret, scope=scope,tenant_type=tenant_type, log_level=log_level)
+        self.assets = Assets(tenant=tenant, clientid=clientid, secret=secret, scope=scope,tenant_type=tenant_type, log_level=log_level)
+        self.attachments = Attachments(tenant=tenant, clientid=clientid, secret=secret, scope=scope,tenant_type=tenant_type, log_level=log_level)
+        self.clients = Clients(tenant=tenant, clientid=clientid, secret=secret, scope=scope,tenant_type=tenant_type, log_level=log_level)
+        self.contracts = Contracts(tenant=tenant, clientid=clientid, secret=secret, scope=scope,tenant_type=tenant_type, log_level=log_level)
+        self.items = Items(tenant=tenant, clientid=clientid, secret=secret, scope=scope,tenant_type=tenant_type, log_level=log_level)
+        self.invoices= Invoices(tenant=tenant, clientid=clientid, secret=secret, scope=scope,tenant_type=tenant_type, log_level=log_level)
+        self.knowledgebase = KnowledgeBase(tenant=tenant, clientid=clientid, secret=secret, scope=scope,tenant_type=tenant_type, log_level=log_level)
+        self.opportunities = Opportunities(tenant=tenant, clientid=clientid, secret=secret, scope=scope,tenant_type=tenant_type, log_level=log_level)
+        self.projects = Projects(tenant=tenant, clientid=clientid, secret=secret, scope=scope,tenant_type=tenant_type, log_level=log_level)
+        self.quotes = Quotes(tenant=tenant, clientid=clientid, secret=secret, scope=scope,tenant_type=tenant_type, log_level=log_level)
+        self.recurringinvoices = RecurringInvoices(tenant=tenant, clientid=clientid, secret=secret, scope=scope,tenant_type=tenant_type, log_level=log_level)
+        self.reports = Reports(tenant=tenant, clientid=clientid, secret=secret, scope=scope,tenant_type=tenant_type, log_level=log_level)
+        self.sites = Sites(tenant=tenant, clientid=clientid, secret=secret, scope=scope,tenant_type=tenant_type, log_level=log_level)
+        self.status = Status(tenant=tenant, clientid=clientid, secret=secret, scope=scope,tenant_type=tenant_type, log_level=log_level)
+        self.suppliers = Suppliers(tenant=tenant, clientid=clientid, secret=secret, scope=scope,tenant_type=tenant_type, log_level=log_level)
+        self.teams= Teams(tenant=tenant, clientid=clientid, secret=secret, scope=scope,tenant_type=tenant_type, log_level=log_level)
+        self.tickettypes = TicketTypes(tenant=tenant, clientid=clientid, secret=secret, scope=scope,tenant_type=tenant_type, log_level=log_level)
+        self.tickets = Tickets(tenant=tenant, clientid=clientid, secret=secret, scope=scope,tenant_type=tenant_type, log_level=log_level)
+        self.users = Users(tenant=tenant, clientid=clientid, secret=secret, scope=scope,tenant_type=tenant_type, log_level=log_level)
+        self.distributionlists = DistributionLists(tenant=tenant, clientid=clientid, secret=secret, scope=scope,tenant_type=tenant_type, log_level=log_level)
+        self.toplevel = TopLevel(tenant=tenant, clientid=clientid, secret=secret, scope=scope,tenant_type=tenant_type, log_level=log_level)
+        self.currency = Currency(tenant=tenant, clientid=clientid, secret=secret, scope=scope,tenant_type=tenant_type, log_level=log_level)
+        self.softwarelicences = SoftwareLicences(tenant=tenant, clientid=clientid, secret=secret, scope=scope,tenant_type=tenant_type, log_level=log_level)
+        self.userroles = UserRoles(tenant=tenant, clientid=clientid, secret=secret, scope=scope,tenant_type=tenant_type, log_level=log_level)
+        self.invoicechange = InvoiceChange(tenant=tenant, clientid=clientid, secret=secret, scope=scope,tenant_type=tenant_type, log_level=log_level)
+        
 
 class HaloBase:
     """Base halo class"""
