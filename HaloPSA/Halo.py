@@ -1,6 +1,7 @@
 
 import requests
 import json
+from typing import Optional
 
 #TODO create parent/child system for all the classes in here, so API key is not needed each time
 #TODO start documentation
@@ -131,7 +132,7 @@ class HaloBase:
         params = payload if method == 'get' else None # Set params or data depending on what type of request is being done
         data = json.dumps([payload]) if headers == None and method == 'post' else payload if  method == 'post' else None # Why is it this way?
         
-        response = self.session.request(method, url, params=params,data=data)
+        response = self.session.request(method, url, params=params, data=data)
         reason = response.reason
         code = response.status_code
         
@@ -144,11 +145,10 @@ class HaloBase:
         elif code in [500]: # Internal Server Error
             raise Exception(f'{code} - {reason}.  Is your Tenant ID right?') # Got this when I gave it a bad tenant #TODO make this a custom error?
         
-        
         try: # Hopefully the data is JSON now
-            content = json.loads(response.content)
+            content:dict = json.loads(response.content)
         except UnicodeDecodeError: # bytes resposne.
-            content = response.content
+            content: bytes = response.content
             return content
         except json.decoder.JSONDecodeError:
             raise Exception('Uh oh I don\'t know how you got this.  Your JSON did not decode.') #TODO fix this error
@@ -160,6 +160,7 @@ class HaloBase:
             return content
 
         elif code in [401]:
+            assert isinstance(content, dict)
             if content['error'] == 'invalid_client': # Add some more helpful info to the error
                 error_desc = content['error_description'] + ' Make sure your client ID and secret are correct.'
             else:
@@ -207,12 +208,12 @@ class HaloBase:
         return formatted_params
     
     # Another new response system that needs testing
-    def _get(self, id:any, **allvars): # New get system
+    def _get(self, id:int, **allvars)-> dict: # New get system
         response = self._requester('get',self.url+f'/{id}',self._format_requests(allvars))
         return response
     
-    def _search(self, **allvars):
-        response = self._requester('get',self.url,self._format_requests(allvars))
+    def _search(self, **allvars)-> dict:
+        response:dict = self._requester('get',self.url,self._format_requests(allvars))
         return response
     
     def _update(self, queue_mode:str, **allvars):
@@ -220,7 +221,7 @@ class HaloBase:
             raise AttributeError(f'{queue_mode} is not a valid Queue Mode.')
         
         if queue_mode == 'disabled': # Sent request immediately
-            response = self._requester('post',self.url,self._format_requests(allvars))
+            response:dict = self._requester('post',self.url,self._format_requests(allvars))
             return response
         
         elif queue_mode == 'queue': # Queue request.
@@ -229,7 +230,7 @@ class HaloBase:
         
         elif queue_mode == 'update': # Add the last request, then send
             self.formatted_params += [self._format_requests(allvars)]
-            response = self._requester('post',self.url,self.formatted_params)
+            response:dict = self._requester('post',self.url,self.formatted_params)
             self.formatted_params = [] # reset queue
             return response
     
@@ -280,12 +281,12 @@ class Actions(HaloBase): #TODO what permissions are required here
     def get(self,
             id:int,
             ticket_id:int,
-            includeemail:bool=None,
+            includeemail:Optional[bool] = None,
             includedetails:bool=True,
-            mostrecent:bool=None,
-            agentonly:bool=None,
-            emailonly:bool=None,
-            nonsystem:bool=None,
+            mostrecent:Optional[bool] = None,
+            agentonly:Optional[bool] = None,
+            emailonly:Optional[bool] = None,
+            nonsystem:Optional[bool] = None,
             **others
             ):
         rawParams = locals().copy()
@@ -295,21 +296,21 @@ class Actions(HaloBase): #TODO what permissions are required here
     
     
     def search(self,
-        count:int=None,
-        ticket_id:int=None,
-        startdate:str=None,
-        enddate:str=None,
+        count:Optional[int] = None,
+        ticket_id:Optional[int] = None,
+        startdate:Optional[str] = None,
+        enddate:Optional[str] = None,
         agentonly:bool=False,
-        conversationonly:bool=None,
-        supplieronly:bool=None,
-        importantonly:bool=None,
-        slaonly:bool=None,
-        excludesys:bool=None,
-        excludeprivate:bool=None,
-        includehtmlnote:bool=None,
-        includehtmlemail:bool=None,
-        includeattachments:bool=None,
-        ischildnotes:bool=None,
+        conversationonly:Optional[bool] = None,
+        supplieronly:Optional[bool] = None,
+        importantonly:Optional[bool] = None,
+        slaonly:Optional[bool] = None,
+        excludesys:Optional[bool] = None,
+        excludeprivate:Optional[bool] = None,
+        includehtmlnote:Optional[bool] = None,
+        includehtmlemail:Optional[bool] = None,
+        includeattachments:Optional[bool] = None,
+        ischildnotes:Optional[bool] = None,
         **others
         ):
         """Search/filter Actions.  Requires Ticket ID, or start and end date.  If neither are provided, nothing will be returned.
@@ -375,7 +376,7 @@ class Agents(HaloBase):
         resp = self._get(id=id, includedetails=includedetails, others=others)
         return resp
     
-    def search(self, team:str=None, **others):
+    def search(self, team:Optional[str] = None, **others):
         
         resp = self._search(others=others)
         return resp
@@ -450,28 +451,28 @@ class Assets(HaloBase): # TODO this is the only endpoint that actually works?
         """
 
         rawParams = locals().copy()
-        response = self._requester('get',self.url+f'/{id}',self._format_requests(rawParams))
-        return response
+        resp = self._get(id=id, includedetails=includedetails, includediagramdetails=includediagramdetails, others=others)
+        return resp
     
     
     def search(self,
     pageinate:bool=False,
     page_size:int=50,
     page_no:int=1,
-    order:str =None,
-    orderdesc:bool=None,
+    order:Optional[str] = None,
+    orderdesc:Optional[bool] = None,
     search:str | None = None,
-    ticket_id:int=None,
-    client_id:int=None,
-    site_id:int=None,
+    ticket_id:Optional[int] = None,
+    client_id:Optional[int] = None,
+    site_id:Optional[int] = None,
     username:str | None = None,
-    assetgroup_id:int=None,
-    assettype_id:int=None,
-    linkedto_id:int=None,
-    includeinactive:bool=None,
-    includeactive:bool=None,
-    includechildren:bool=None,
-    contract_id:int=None,
+    assetgroup_id:Optional[int] = None,
+    assettype_id:Optional[int] = None,
+    linkedto_id:Optional[int] = None,
+    includeinactive:Optional[bool] = None,
+    includeactive:Optional[bool] = None,
+    includechildren:Optional[bool] = None,
+    contract_id:Optional[int] = None,
     **others
     ) -> dict:
         """
@@ -517,11 +518,11 @@ class Assets(HaloBase): # TODO this is the only endpoint that actually works?
         return response
         
     def update(self,
-        id:int=None,
-        client_id:int=None,
-        site_id:int=None,
-        users:list=None,
-        fields:list=None,
+        id:Optional[int] = None,
+        client_id:Optional[int] = None,
+        site_id:Optional[int] = None,
+        users:Optional[list] = None,
+        fields:Optional[list] = None,
         queue_mode:str='disabled',
         **others
                ):
@@ -584,10 +585,10 @@ class Attachments(HaloBase):
         """
     
     def search(self, 
-        ticket_id:int=None,
-        action_id:int=None,
-        type:int=None,
-        unique_id:int=None,
+        ticket_id:Optional[int] = None,
+        action_id:Optional[int] = None,
+        type:Optional[int] = None,
+        unique_id:Optional[int] = None,
         **others):
         """Get list of attachment(s).
 
@@ -611,15 +612,14 @@ class Attachments(HaloBase):
             includedetails:bool=False,
             **others):
         
-        rawParams = locals().copy()
-        response = self._requester('get',self.url+f'/{id}',self._format_requests(rawParams))
-        return response
+        resp = self._get(id=id, includedetails=includedetails, others=others)
+        return resp
     
     def upload(self,
-            id:int=None,
-            filename:str=None,
-            ticket_id:int=None,
-            data_base64:str=None,
+            id:Optional[int] = None,
+            filename:Optional[str] = None,
+            ticket_id:Optional[int] = None,
+            data_base64:Optional[str] = None,
             **others):
         
         rawParams = locals().copy()
@@ -627,7 +627,7 @@ class Attachments(HaloBase):
         return response
         
 
-    def delete():
+    def delete(self):
         pass
         
 class Clients(HaloBase):
@@ -652,14 +652,14 @@ class Clients(HaloBase):
 
     def search(self, # Test client_ids and client_id
         pageinate:bool=False,
-        page_size:int=None, # Switched to none
+        page_size:Optional[int] = None, # Switched to none
         page_no:int=1,
-        order:str =None,
-        orderdesc:bool=None,
-        search:str=None,
-        toplevel_id:int=None,
-        includeinactive:bool=None, #TODO should these be set to their defaults? instead of none
-        includeactive:bool=None,
+        order:Optional[str] = None,
+        orderdesc:Optional[bool] = None,
+        search:Optional[str] = None,
+        toplevel_id:Optional[int] = None,
+        includeinactive:Optional[bool] = None, #TODO should these be set to their defaults? instead of none
+        includeactive:Optional[bool] = None,
         count:int=50,
         **others
                ):
@@ -723,11 +723,11 @@ class Clients(HaloBase):
         return resp
         
     def update(self, #TODO update the docstring
-        id:int=None,
-        name:str=None,
-        toplevel_id:int=None,
-        due_date_type:int=None,
-        invoiceduedaysextraclient:int=None, # This is due date int in other places
+        id:Optional[int] = None,
+        name:Optional[str] = None,
+        toplevel_id:Optional[int] = None,
+        due_date_type:Optional[int] = None,
+        invoiceduedaysextraclient:Optional[int] = None, # This is due date int in other places
         queue_mode:str='disabled',
         **others
             ):
@@ -761,12 +761,12 @@ class Contracts(HaloBase): # UNTESTED!!!!
     
     def search(self, 
         pageinate:bool=False,
-        page_size:int=None,
-        page_no:int=None,
-        order:str =None,
-        orderdesc:bool=None,
-        search:str=None,
-        count:int=None,
+        page_size:Optional[int] = None,
+        page_no:Optional[int] = None,
+        order:Optional[str] = None,
+        orderdesc:Optional[bool] = None,
+        search:Optional[str] = None,
+        count:Optional[int] = None,
         **others):
         
         rawParams = locals().copy()
@@ -789,10 +789,10 @@ class Items(HaloBase):
         pageinate:bool=False,
         page_size:int=50,
         page_no:int=1,
-        order:str =None,
-        orderdesc:bool=None,
-        search:str=None,
-        count:int=None,
+        order:Optional[str] = None,
+        orderdesc:Optional[bool] = None,
+        search:Optional[str] = None,
+        count:Optional[int] = None,
         **others):
         """Search items
 
@@ -825,13 +825,13 @@ class Items(HaloBase):
         return response #TODO figure out what the dict name is for this
     
     def update(self,
-        id:int=None,
-        costprice:float=None,
-        recurringcost:float=None,
-        baseprice:float=None,
-        recurringprice:float=None,
-        update_recurring_invoice_price:bool=None,
-        update_recurring_invoice_cost:bool=None,
+        id:Optional[int] = None,
+        costprice:Optional[float] = None,
+        recurringcost:Optional[float] = None,
+        baseprice:Optional[float] = None,
+        recurringprice:Optional[float] = None,
+        update_recurring_invoice_price:Optional[bool] = None,
+        update_recurring_invoice_cost:Optional[bool] = None,
         queue_mode:str='disabled',
         **others
                ):
@@ -876,21 +876,21 @@ class Invoices(HaloBase): #TODO add docstring here
         super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
         self.url+='/Invoice'
         
-    def search(self, #TODO fix this
+    def search(self, #TODO fix this #TODO add client_ids variable
         pageinate:bool=False,
-        page_size:int=None,
-        page_no:int=None,
-        order:str =None,
-        orderdesc:bool=None,
-        search:str=None,
-        count:int=None,
-        ticket_id:int=None,
-        client_id:int=None,
-        site_id:int=None,
-        user_id:int=None,
-        postedonly:bool=None,
-        notpostedonly:bool=None,
-        includelines:bool=None,
+        page_size:Optional[int] = None,
+        page_no:Optional[int] = None,
+        order:Optional[str] = None,
+        orderdesc:Optional[bool] = None,
+        search:Optional[str] = None,
+        count:Optional[int] = None,
+        ticket_id:Optional[int] = None,
+        client_id:Optional[int] = None,
+        site_id:Optional[int] = None,
+        user_id:Optional[int] = None,
+        postedonly:Optional[bool] = None,
+        notpostedonly:Optional[bool] = None,
+        includelines:bool=False,
         **others):
         
         rawParams = locals().copy()
@@ -903,13 +903,12 @@ class Invoices(HaloBase): #TODO add docstring here
             **others
             ):
         
-        rawParams = locals().copy()
-        response = self._requester('get',self.url+f'/{id}',self._format_requests(rawParams))
-        return response
+        resp = self._get(id=id, others=others)
+        return resp
     
     def update(self,
-               id:int=None,
-               lines:list=None,
+               id:Optional[int] = None,
+               lines:Optional[list] = None,
                **others
                ):
         
@@ -1021,13 +1020,13 @@ class RecurringInvoices(HaloBase):
         pageinate:bool=False,
         page_size:int=50,
         page_no:int=1,
-        order:str =None,
-        orderdesc:bool=None,
-        search:str=None,
-        count:int=None,
-        client_id:int=None,
+        order:Optional[str] = None,
+        orderdesc:Optional[bool] = None,
+        search:Optional[str] = None,
+        count:Optional[int] = None,
+        client_id:Optional[int] = None,
         includelines:bool=False,
-        **others):
+        **others)-> dict:
         
         rawParams = locals().copy()
         
@@ -1040,15 +1039,15 @@ class RecurringInvoices(HaloBase):
         return resp
     
     def get_all(self, #TODO add docsting #TODO add any other potentially useful toggles
-        includelines:bool=False):
+        includelines:bool=False)-> list[dict]:
         #This is literally just search but wrapped
         response = self.search(includelines=includelines)
         return response['invoices']
     
     def update(self, #TODO Test update #TODO fix docstring 
-        id:int=None,
-        due_date_type:int=None, #
-        due_date_int:int=None, # 
+        id:Optional[int] = None,
+        due_date_type:Optional[int] = None, #
+        due_date_int:Optional[int] = None, # 
         **others):
         """Update or create a recurring invoice (Not used for updating line items).
 
@@ -1157,7 +1156,7 @@ class Status(HaloBase):
         resp = self._get(id=id, includedetails=includedetails, others=others)
         return resp
     
-    def search(self, type:str=None, showcounts:bool=None, domain:str=None, view_id:int=None, excludepending:bool=None, excludeclosed:bool=None, **others): #TODO test me
+    def search(self, type:Optional[str] = None, showcounts:Optional[bool] = None, domain:Optional[str] = None, view_id:Optional[int] = None, excludepending:Optional[bool] = None, excludeclosed:Optional[bool] = None, **others): #TODO test me
         
         resp = self._search(type=type, showcounts=showcounts, domain=domain, view_id=view_id, excludepending=excludepending, excludeclosed=excludeclosed, others=others)
         return resp
@@ -1217,7 +1216,7 @@ class TicketTypes(HaloBase):
         resp = self._get(id=id, includedetails=includedetails, others=others)
         return resp
     
-    def search(self, client_id:int=None, showcounts:bool=None, domain:str=None, view_id:int=None, showinactive:bool=None, **others):
+    def search(self, client_id:Optional[int] = None, showcounts:Optional[bool] = None, domain:Optional[str] = None, view_id:Optional[int] = None, showinactive:Optional[bool] = None, **others):
 
         rawParams = locals().copy()
         
@@ -1249,23 +1248,23 @@ class Tickets(HaloBase):
     """
     
     def update(self,
-        actioncode:int=None,
-        id:int=None,
-        dateoccurred:str=None,
-        summary:str=None,
-        details:str=None,
-        details_html:str=None,
-        status_id:int=None,
-        tickettype_id:int=None,
-        sla_id:int=None,
-        client_id:int=None,
-        client_name:str=None,
-        site_id:int=None,
-        site_name:str=None,
-        user_id:int=None,
-        user_name:str=None,
-        agent_id:int=None,
-        parent_id:int=None,
+        actioncode:Optional[int] = None,
+        id:Optional[int] = None,
+        dateoccurred:Optional[str] = None,
+        summary:Optional[str] = None,
+        details:Optional[str] = None,
+        details_html:Optional[str] = None,
+        status_id:Optional[int] = None,
+        tickettype_id:Optional[int] = None,
+        sla_id:Optional[int] = None,
+        client_id:Optional[int] = None,
+        client_name:Optional[str] = None,
+        site_id:Optional[int] = None,
+        site_name:Optional[str] = None,
+        user_id:Optional[int] = None,
+        user_name:Optional[str] = None,
+        agent_id:Optional[int] = None,
+        parent_id:Optional[int] = None,
         queue_mode:str='disabled',
         **others
         ):
@@ -1315,71 +1314,71 @@ class Tickets(HaloBase):
         pageinate:bool=False,
         page_size:int=50,
         page_no:int=1,
-        order:str =None,
-        orderdesc:bool=None,
-        search:str=None,
-        ticketidonly:bool=None,
-        view_id:int=None,
-        columns_id:int=None,
-        includecolumns:bool=None,
-        includeslaactiondate:bool=None,
-        includeslatimer:bool=None,
-        includetimetaken:bool=None,
-        includesupplier:bool=None,
-        includerelease1:bool=None,
-        includerelease2:bool=None,
-        includerelease3:bool=None,
-        includechildids:bool=None,
-        includenextactivitydate:bool=None,
-        includefirstresponse:bool=None,
-        include_custom_fields:str=None,
-        list_id:int=None,
-        agent_id:int=None,
-        status_id:int=None,
-        requesttype_id:int=None,
-        supplier_id:int=None,
-        client_id:int=None,
-        site:int=None,
-        username:str=None,
-        user_id:int=None,
-        release_id:int=None,
-        asset_id:int=None,
-        itil_requesttype_id:int=None,
-        open_only:bool=None,
-        closed_only:bool=None,
-        unlinked_only:bool=None,
-        contract_id:int=None,
-        withattachments:bool=None,
-        team:int=None,
-        agent:int=None,
-        status:int=None,
-        requesttype:int=None,
-        itil_requesttype:int=None,
-        category_1:int=None,
-        category_2:int=None,
-        category_3:int=None,
-        category_4:int=None,
-        sla:int=None,
-        priority:int=None,
-        products:int=None,
-        flagged:int=None,
-        excludethese:int=None,
-        searchactions:bool=None,
-        datesearch:str=None,
-        startdate:str=None,
-        enddate:str=None,
-        search_user_name:str=None,
-        search_summary:str=None,
-        search_details:str=None,
-        search_reportedby:str=None,
-        search_version:str=None,
-        search_release1:str=None,
-        search_release2:str=None,
-        search_release3:str=None,
-        search_releasenote:str=None,
-        search_inventory_number:str=None,
-        search_oppcontactname:str=None,
-        search_oppcompanyname:str=None,
+        order:Optional[str] = None,
+        orderdesc:Optional[bool] = None,
+        search:Optional[str] = None,
+        ticketidonly:Optional[bool] = None,
+        view_id:Optional[int] = None,
+        columns_id:Optional[int] = None,
+        includecolumns:Optional[bool] = None,
+        includeslaactiondate:Optional[bool] = None,
+        includeslatimer:Optional[bool] = None,
+        includetimetaken:Optional[bool] = None,
+        includesupplier:Optional[bool] = None,
+        includerelease1:Optional[bool] = None,
+        includerelease2:Optional[bool] = None,
+        includerelease3:Optional[bool] = None,
+        includechildids:Optional[bool] = None,
+        includenextactivitydate:Optional[bool] = None,
+        includefirstresponse:Optional[bool] = None,
+        include_custom_fields:Optional[str] = None,
+        list_id:Optional[int] = None,
+        agent_id:Optional[int] = None,
+        status_id:Optional[int] = None,
+        requesttype_id:Optional[int] = None,
+        supplier_id:Optional[int] = None,
+        client_id:Optional[int] = None,
+        site:Optional[int] = None,
+        username:Optional[str] = None,
+        user_id:Optional[int] = None,
+        release_id:Optional[int] = None,
+        asset_id:Optional[int] = None,
+        itil_requesttype_id:Optional[int] = None,
+        open_only:Optional[bool] = None,
+        closed_only:Optional[bool] = None,
+        unlinked_only:Optional[bool] = None,
+        contract_id:Optional[int] = None,
+        withattachments:Optional[bool] = None,
+        team:Optional[int] = None,
+        agent:Optional[int] = None,
+        status:Optional[int] = None,
+        requesttype:Optional[int] = None,
+        itil_requesttype:Optional[int] = None,
+        category_1:Optional[int] = None,
+        category_2:Optional[int] = None,
+        category_3:Optional[int] = None,
+        category_4:Optional[int] = None,
+        sla:Optional[int] = None,
+        priority:Optional[int] = None,
+        products:Optional[int] = None,
+        flagged:Optional[int] = None,
+        excludethese:Optional[int] = None,
+        searchactions:Optional[bool] = None,
+        datesearch:Optional[str] = None,
+        startdate:Optional[str] = None,
+        enddate:Optional[str] = None,
+        search_user_name:Optional[str] = None,
+        search_summary:Optional[str] = None,
+        search_details:Optional[str] = None,
+        search_reportedby:Optional[str] = None,
+        search_version:Optional[str] = None,
+        search_release1:Optional[str] = None,
+        search_release2:Optional[str] = None,
+        search_release3:Optional[str] = None,
+        search_releasenote:Optional[str] = None,
+        search_inventory_number:Optional[str] = None,
+        search_oppcontactname:Optional[str] = None,
+        search_oppcompanyname:Optional[str] = None,
         count:int=50,
         **others
                ):
@@ -1411,8 +1410,8 @@ class Tickets(HaloBase):
         """
 
         rawParams = locals().copy()
-        response = self._requester('get',self.url+f'/{id}',self._format_requests(rawParams))
-        return response
+        resp = self._get(id=id, includedetails=includedetails, includelastaction=includelastaction, ticketidonly=ticketidonly, others=others)
+        return resp
     
         
 class Users(HaloBase):
@@ -1424,21 +1423,21 @@ class Users(HaloBase):
         pageinate:bool=False,
         page_size:int=50,
         page_no:int=1,
-        order:str =None,
-        orderdesc:bool=None,
-        search:str=None,
-        search_phonenumbers:bool=None,
-        toplevel_id:int=None,
-        client_id:int=None,
-        site_id:int=None,
-        organisation_id:int=None,
-        department_id:int=None,
-        asset_id:int=None,
-        includeinactive:bool=None,
-        includeactive:bool=None,
-        approversonly:bool=None,
-        excludeagents:bool=None,
-        count:int=None,
+        order:Optional[str] = None,
+        orderdesc:Optional[bool] = None,
+        search:Optional[str] = None,
+        search_phonenumbers:Optional[bool] = None,
+        toplevel_id:Optional[int] = None,
+        client_id:Optional[int] = None,
+        site_id:Optional[int] = None,
+        organisation_id:Optional[int] = None,
+        department_id:Optional[int] = None,
+        asset_id:Optional[int] = None,
+        includeinactive:Optional[bool] = None,
+        includeactive:Optional[bool] = None,
+        approversonly:Optional[bool] = None,
+        excludeagents:Optional[bool] = None,
+        count:Optional[int] = None,
         **others):
         """Search Users
 
@@ -1473,8 +1472,8 @@ class Users(HaloBase):
     def get(self, # TODO test me
             id:int,
             includedetails:bool=True,
-            includeactivity:bool=None,
-            includepopups:bool=None,
+            includeactivity:Optional[bool] = None,
+            includepopups:Optional[bool] = None,
             **others
             ):
         """Get a single user's details.  Requires atleast ID to be provided.
@@ -1492,8 +1491,8 @@ class Users(HaloBase):
         """
         
         rawParams = locals().copy()
-        response = self._requester('get',self.url+f'/{id}',self._format_requests(rawParams))
-        return response
+        resp = self._get(id=id, includedetails=includedetails, includeactivity=includeactivity, includepopups=includepopups, others=others)
+        return resp
     
     def get_all(self):
         """Get all users.
@@ -1506,37 +1505,37 @@ class Users(HaloBase):
         return response['users']
 
     def update(self,
-        id:int=None,
-        name:str=None,
-        site_id: int = None,
-        site_name: str = None,
-        client_name: str = None,
-        firstname: str = None,
-        surname: str = None,
-        initials: str = None,
-        title: str = None,
-        emailaddress: str = None,
-        phonenumber_preferred: str = None,
-        sitephonenumber: str = None,
-        phonenumber: str = None,
-        homenumber: str = None,
-        mobilenumber: str = None,
-        mobilenumber2: str = None,
-        fax: str = None,
-        telpref: int = None,
-        activedirectory_dn: str = None,
-        container_dn: str = None,
-        login: str = None,
-        inactive: bool = None,
-        colour: str = None,
-        isimportantcontact: bool = None,
-        other1: str = None,
-        other2: str = None,
-        other3: str = None,
-        other4: str = None,
-        other5: str = None,
-        neversendemails: bool = None,
-        roles:list = None,
+        id:Optional[int] = None,
+        name:Optional[str] = None,
+        site_id:Optional[int] = None,
+        site_name:Optional[str] = None,
+        client_name:Optional[str] = None,
+        firstname:Optional[str] = None,
+        surname:Optional[str] = None,
+        initials:Optional[str] = None,
+        title:Optional[str] = None,
+        emailaddress:Optional[str] = None,
+        phonenumber_preferred:Optional[str] = None,
+        sitephonenumber:Optional[str] = None,
+        phonenumber:Optional[str] = None,
+        homenumber:Optional[str] = None,
+        mobilenumber:Optional[str] = None,
+        mobilenumber2:Optional[str] = None,
+        fax:Optional[str] = None,
+        telpref:Optional[int] = None,
+        activedirectory_dn:Optional[str] = None,
+        container_dn:Optional[str] = None,
+        login:Optional[str] = None,
+        inactive:Optional[bool] = None,
+        colour:Optional[str] = None,
+        isimportantcontact:Optional[bool] = None,
+        other1:Optional[str] = None,
+        other2:Optional[str] = None,
+        other3:Optional[str] = None,
+        other4:Optional[str] = None,
+        other5:Optional[str] = None,
+        neversendemails:Optional[bool] = None,
+        roles:Optional[list] = None,
         queue_mode = 'disabled',
         **others):
         """Update or create user(s).
@@ -1568,7 +1567,7 @@ class Users(HaloBase):
             self.formatted_params = [] # reset queue
             return response
         
-    def delete():
+    def delete(self):
         pass
 
 # NON STANDARD
@@ -1589,16 +1588,16 @@ class DistributionLists(HaloBase):
             ):
 
         rawParams = locals().copy()
-        response = self._requester('get',self.url+f'/{id}?includedetails=true',self._format_requests(rawParams))
-        return response
+        resp = self._get(id=id)
+        return resp
     
     def create(self,
         name:str,
-        description:str="",
-        mailbox_from:int="",
-        mailbox_replyto:int="",
-        third_party_url:any="",
-        dynamic_members:bool="",
+        description:Optional[str] = None,
+        mailbox_from:Optional[int] = None,
+        mailbox_replyto:Optional[int] = None,
+        third_party_url:Optional[str] = None,
+        dynamic_members:Optional[bool] = None,
         **others
         ):
         rawParams = locals().copy()
@@ -1608,8 +1607,8 @@ class DistributionLists(HaloBase):
     
     def update(self,
         id:int,
-        addtheseusers:list=None,
-        removetheseusers:list=None): # TODO add docstring
+        addtheseusers:Optional[list] = None,
+        removetheseusers:Optional[list] = None,): # TODO add docstring
         rawParams = locals().copy()
         response = self._requester('post',self.url,self._format_requests(rawParams))
         return response
@@ -1623,10 +1622,10 @@ class TopLevel(HaloBase):
         pageinate:bool=False,
         page_size:int=50,
         page_no:int=1,
-        order:str =None,
-        orderdesc:bool=None,
-        search:str=None,
-        count:int=None,
+        order:Optional[str] = None,
+        orderdesc:Optional[bool] = None,
+        search:Optional[str] = None,
+        count:Optional[int] = None,
         **others):
         
         rawParams = locals().copy()
@@ -1654,10 +1653,10 @@ class Currency(HaloBase):
         pageinate:bool=False,
         page_size:int=50,
         page_no:int=1,
-        order:str =None,
-        orderdesc:bool=None,
-        search:str=None,
-        count:int=None,
+        order:Optional[str] = None,
+        orderdesc:Optional[bool] = None,
+        search:Optional[str] = None,
+        count:Optional[int] = None,
         **others):
         
         rawParams = locals().copy()
@@ -1691,23 +1690,38 @@ class SoftwareLicences(HaloBase):
         self.url+='/SoftwareLicence'
         
         
-    def get(self,id:int, client_id:int=None, search:str=None, **others): #TODO Confirm variables
-        """Get all software licenses/subscriptions (No I won't change it to licence)
-
+    def get(self,id:int, **others): #TODO Confirm variables
+        """Get Software License/Subscription.
+        Args:
+            id (int, optional): ID of license/subscription.
+            
         Last tested: 2025/03/28, V2.184.45
+        
+        
         """
         resp = self._get(id=id, others=others)
         return resp
     
-    def search(self, **others): #TODO test me
-        
+    def search(self, **others):
+        """Search Software Licenses/Subscriptions.
+
+        Last tested: 2025/04/15, V2.188.7
+        """
         resp = self._search(others=others)
         return resp
     
-    def update(self, queue_mode:str='disabled', **others): #TODO test me
+    def update(self, id:Optional[int] = None, type:Optional[int] = None, name:Optional[str] = None, queue_mode:str='disabled', **others): 
+        """Update or create Software Licenses/Subscriptions.
         
-        resp = self._update(queue_mode=queue_mode, others=others)
-        return resp
+        Args:
+            id (int, optional): ID of existing license/subscription.  If none provided, a new item will be created
+            type (int): Item type (Software License, Subscription, etc.).
+            name (str, optional): Licence/subscription name. Optional if updating existing item
+        
+        Last tested: 2025/04/15, V2.188.7
+        """
+        resp = self._update(id=id, type=type, name=name, queue_mode=queue_mode, others=others)
+        return resp #TODO will using ID and TYPE cause problems
     
 
 class UserRoles(HaloBase):
@@ -1729,7 +1743,8 @@ class UserRoles(HaloBase):
     
     def get(self,
             id:int,
-            includedetails:bool=True
+            includedetails:bool=True,
+            **others
             ):
         """Get a single User Role by ID.  Using this currently requires the API permission "all", not just "all:standard"
 
@@ -1740,10 +1755,9 @@ class UserRoles(HaloBase):
         Returns:
             dict: User Role information
         """
-        
-        rawParams = locals().copy()
-        response = self._requester('get',self.url+f'/{id}',self._format_requests(rawParams))
-        return response
+    
+        resp = self._get(id=id, includedetails=includedetails, others=others)
+        return resp
     
     
 class InvoiceChange(HaloBase):
@@ -1764,7 +1778,7 @@ class InvoiceChange(HaloBase):
         super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
         self.url+='/InvoiceChange'
     
-    def search(self, search:str=None, invoice_id:int=None, line_id:int=None, idonly:bool=None, type_id:int=None, count:int=None, **others):
+    def search(self, search:Optional[str] = None, invoice_id:Optional[int] = None, line_id:Optional[int] = None, idonly:Optional[bool] = None, type_id:Optional[int] = None, count:Optional[int] = None, **others):
         """Search Invoice Changes.
 
         Last tested: 2025/04/01, V2.184.45
