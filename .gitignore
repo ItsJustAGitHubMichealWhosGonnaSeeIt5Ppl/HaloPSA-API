@@ -6,13 +6,12 @@ Makefile
 make.bat
 *.eml
 *.env
+
 #My exclusions
 .vscode**
-.env
-test.py
-missing_checks.csv
-python_NAbleAPI.egg-info/**
-missingChecks.conf
+*Z_Tool*
+tools/*
+
 
 # Created by https://www.toptal.com/developers/gitignore/api/python,jupyternotebooks
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,jupyternotebooks
@@ -65,7 +64,6 @@ MANIFEST
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
 *.spec
-
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
@@ -160,6 +158,4 @@ dmypy.json
 cython_debug/
 
 # End of https://www.toptal.com/developers/gitignore/api/python,jupyternotebooks
-NAbleAPI/nAble.code-workspace
-getAnAttachment.py
-bulkMailFix.py
+pyrightconfig.json

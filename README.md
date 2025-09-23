@@ -3,6 +3,8 @@ Inspired by [homotechsual's Powershell library for HaloPSA](https://docs.homotec
 
 All base endpoints are currently implemented to some extent.  No endpoints have delete functionality yet, as I was worried I would accidentally delete something while testing.
 
+This package should also work for HaloITSM!
+
 # Installation and setup
 ## Requirements
 1. Python (tested from Python 3.9 to 3.13 right now)
@@ -26,6 +28,7 @@ pip install HaloPSA
 0. Click on the integration/Application you just created and go to Permissions.
 0. Set permissions to either All or, if you know what you'll be using, enable just those permissions. (I recommend testing with `all:standard` and then disabling permissions selectively, that way you know your connection is working before you start troubleshooting)
 0. Click Save and move on to the next step.
+
 ## Getting Started in Python
 Now that you have your API information, you can get up and running in Python!
 
@@ -39,23 +42,20 @@ HALO_TENANT = [Your Halo Instance/tenant]  Eg: https://[THIS PART OF THE URL].ha
 2. Import the HaloPSA package
 
 ```
-from HaloPSA import *
-```
-Or import only the ones you need (Recommended)
-```
-from HaloPSA import Clients, Invoices
+from HaloPSA import Halo
 ```
 3. Run your first request!
 
 ```
-users = Users(HALO_TENANT,HALO_ID,HALO_SECRET)
-all_users = users.search() # Get all users
+halo = Halo(HALO_TENANT,HALO_ID,HALO_SECRET)
+
+all_users = halo.Users.search() # Get all users
 for single_user in all_users: # Print each user, one by one
     print(single_user)
 ```
 
 ## Further reading
-I highly recommend you check the official Halo API documentation here: https://halo.halopsa.com/apidoc/info and for an even more in depth list, check out the swagger file here: https://halo.halopsa.com/api/swagger/index.html
+I highly recommend checking the official Halo API documentation here: https://halo.halopsa.com/apidoc/info and for an even more in depth list, check out the swagger file here: https://halo.halopsa.com/api/swagger/index.html
 
 Feel free to ask questions in the github issues area, I will try my best to answer.
 # Endpoints

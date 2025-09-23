@@ -9,19 +9,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Fixed
+
+### Changed
+
+### Removed
+
+## [2.0.0]
+
+### Added
+
 - Endpoint template
 - InvoiceChange endpoint with Search and Update method
 - Added warning in update_lines() method for RecurringInvoices.
 - Docstring for Clients and Tickets endpoints
-- 
+- Basic tests
 
 ### Fixed
 
 ### Changed
 
 - Formatting guidelines
-- Actions endpoint now uses updated request system in all methods
-- Clients.update() and Tickets.update() now use new request system
+- All endpoints are now initialized using the Halo class instead of having to initialize each of them separately
 
 ### Removed
 
