@@ -1,7 +1,14 @@
 
-import requests
+# BUILT-IN
 import json
 from typing import Optional, Literal
+
+# EXTERNAL
+import requests
+
+# INTERNAL
+
+# CODE
 
 #TODO create parent/child system for all the classes in here, so API key is not needed each time
 #TODO start documentation
@@ -112,12 +119,12 @@ TENANT_TYPES = Literal['psa', 'itsm']
 
 class Halo:
     def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:TENANT_TYPES='psa', log_level:str='Normal'):
-        """Halo Base Class
+        """Halo API.
 
         Args:
-            tenant (str): Your Tenant
-            clientid (str): Your API client iD
-            secret (str): Your API secret
+            tenant (str): Your Tenant.
+            clientid (str): Your API client ID.
+            secret (str): Your API secret.
             tenant_type (str, optional): Your tenant type.  Valid options ['psa', 'itsm']. Defaults to psa. 
             scope (str, optional): _description_. Defaults to 'all'.
             logLevel (str, optional): Does nothing. Defaults to 'Normal'.
@@ -323,6 +330,7 @@ class _Actions: #TODO what permissions are required here
     def __init__(self, mh:_MethodsHelper):
         self._mh = mh
         self.url = mh.url + '/Actions'
+        
     def get(self,
             id:int,
             ticket_id:int,
@@ -944,10 +952,39 @@ class _Invoices:
     
     def get(self, #TODO test Get
             id:int,
+            includedetails:Optional[bool]=None, # This defaults to False if not provided
             **others
             ):
+        """Get a single invoice
+
+        Requires _ permission [ONLY INCLUDE IF PERMISSION DIFFERS FROM OVERALL ENDPOINT]
+
+        Last tested: 2025/11/05, V2.212.7
         
-        resp = self._mh._get(url=self.url, id=id, others=others)
+        Args:
+            id (int): Invoice ID.
+            includedetails(bool, optional): Include additional details (see below). Defaults to False (even if not provided).
+        
+        Additional returned fields when `includedetails` is `True`:
+            **currency_code_name** (str, optional)
+            **pdftemplate_name** (str, optional)
+            **payments** (list)
+            **supplier_name** (str, optional)
+            **avalara_details_name** (str, optional)
+            **credit_outstanding_for_customer** (float)
+            **custombuttons** (list)
+            **extratabs** (list)
+            **conversion_rate** (float)
+            **note_count** (int)
+            **xero_default_payment_nominalcode** (str, optional)
+            **external_links** (list)
+            NOTE: There may be more fields, please alert if you find any
+        
+        Returns:
+            dict: Single invoice
+        """ #TODO figure out what fields appear when includedetails is set to true
+        
+        resp = self._mh._get(url=self.url, id=id, includedetails=includedetails, others=others)
         return resp
     
     def update(self,
