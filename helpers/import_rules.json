@@ -1,6 +1,5 @@
-[
-    {
-        "schema": "InvoiceHeader",
+{
+    "InvoiceHeader": {
         "class_name": "Invoice",
         "property_rules": {
             "invoice_date": {
@@ -509,13 +508,51 @@
             },
             "_isupdateimport": {
                 "default": null
+            },
+            "pdftemplate_name": {
+                "default": null
+            },
+            "payments": {
+                "default": null
+            },
+            "supplier_name": {
+                "default": null
+            },
+            "avalara_details_name": {
+                "default": null
+            },
+            "credit_outstanding_for_customer": {
+                "default": null
+            },
+            "custombuttons": {
+                "default": null
+            },
+            "extratabs": {
+                "default": null
+            },
+            "conversion_rate": {
+                "default": null
+            },
+            "note_count": {
+                "default": null
+            },
+            "xero_default_payment_nominalcode": {
+                "default": null
+            },
+            "external_links": {
+                "default": null
             }
         },
-        "additional_properties":{
-            "type": {"type": "int"},
-            "site": {"type": "list"},
-            "client": {"type": "list"}
-            
+        "additional_properties": {
+            "type": {
+                "type": "int"
+            },
+            "site": {
+                "type": "list"
+            },
+            "client": {
+                "type": "list"
+            }
         }
     }
-]
+}

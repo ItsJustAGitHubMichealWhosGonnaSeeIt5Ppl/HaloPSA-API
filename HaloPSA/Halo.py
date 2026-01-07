@@ -33,7 +33,7 @@ import requests
 
 #TEMPLATE FOR ENDPOINT
 '''
-class EndpointName(HaloBase):
+class _EndpointName:
     """[ENDPOINT NAME] Endpoint.
 
     [Brief description]
@@ -49,9 +49,9 @@ class EndpointName(HaloBase):
     - Update:
     - Delete: 
     """
-    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
-        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
-        self.url+='/EndpointLink'
+    def __init__(self, mh:_MethodsHelper):
+        self._mh = mh
+        self.url = mh.url + '/[ENDPOINT]'
         
         
     def get(self, id:int, **others): #TODO test me #TODO Confirm variables
@@ -155,6 +155,7 @@ class Halo:
         self.Tickets = _Tickets(mh=self._mh)
         self.Users = _Users(mh=self._mh)
         # Undocumented
+        self.AssetChange = _AssetChange(mh=self._mh)
         self.DistributionLists = _DistributionLists(mh=self._mh)
         self.TopLevel = _TopLevel(mh=self._mh)
         self.Currency = _Currency(mh=self._mh)
@@ -179,7 +180,7 @@ class _MethodsHelper:
         return request['access_token']
 
         
-    def _requester(self, method:str, url:str, payload=None,headers=None):
+    def _requester(self, method:str, url:str, payload=None, headers=None):
         #TODO allow method to be set to "Search" and use that rather than adding the ID directly into the main URL. May also require some tweaks to how request formatting is handled
         params = payload if method == 'get' else None # Set params or data depending on what type of request is being done
         data = json.dumps([payload]) if headers == None and method == 'post' else payload if  method == 'post' else None # Why is it this way?
@@ -231,8 +232,18 @@ class _MethodsHelper:
         
         params_to_pop += ['queue_mode','self','others']
         try:
-            unformatted_params = params | params['others'] # Copy params and add any additional items
-        except KeyError: # Not all endpoints have "others" but they should
+            
+            unformatted_params = params
+            while True:
+                if "others" in unformatted_params.keys():
+                    others = unformatted_params["others"]
+                    unformatted_params.pop("others")
+                    unformatted_params = unformatted_params | others # This should allow recursive checking for "others" fields
+                else:
+                    break
+                    
+        except KeyError as e: # Not all endpoints have "others" but they should
+            print(e)
             unformatted_params = params
             
         for param in params_to_pop: # Remove unneeded/unwanted parameters
@@ -615,7 +626,9 @@ class _Assets: # TODO this is the only endpoint that actually works?
             response = self._mh._requester('post',self.url,self.formatted_params)
             self.formatted_params = [] # reset queue
             return response
+        
 
+    
 class _Attachments:
     """Attachments Endpoint.
 
@@ -1652,6 +1665,37 @@ class _Users:
         pass
 
 # NON STANDARD
+
+class _AssetChange:
+    """Asset(Device)Change Endpoint.
+
+    Search and create asset change logs
+
+    No official documentation
+
+    Requires _ permission
+
+    Progress (Temporary)
+    - Get:
+    - Search:
+    - Update:
+    """
+    def __init__(self, mh:_MethodsHelper):
+        self._mh = mh
+        self.url = mh.url + '/AssetChange'
+    
+    #TODO maybe this should be actually be called Get and just have the params? IDK
+    def search(self, asset_id:Optional[int] = None, count:Optional[int] = None, idonly:Optional[bool] = None, user_id:Optional[int] = None, search:Optional[str] = None, **others):
+        #TODO confirm what can be searched in the "search" field. Seems like only the old and new value?
+        rawParams = locals().copy()
+        
+        resp = self._mh._search(url=self.url, others=rawParams)
+        return resp
+    
+    def update(self, queue_mode:str='disabled', **others): #TODO test me
+        
+        resp = self._mh._update(url=self.url, queue_mode=queue_mode, others=others)
+        return resp
 
 class _DistributionLists:
     def __init__(self, mh:_MethodsHelper):
