@@ -536,6 +536,8 @@ class _Assets: # TODO this is the only endpoint that actually works?
     includeactive:Optional[bool] = None,
     includechildren:Optional[bool] = None,
     contract_id:Optional[int] = None,
+    integration_type:Optional[str] = None,
+    integration_id:Optional[str] = None,
     **others
     ) -> dict:
         """
@@ -1453,6 +1455,8 @@ class _Tickets:
         category_3:Optional[int] = None,
         category_4:Optional[int] = None,
         sla:Optional[int] = None,
+        pending_review:Optional[bool] = None,
+        per_action:Optional[bool] = None,
         priority:Optional[int] = None,
         products:Optional[int] = None,
         flagged:Optional[int] = None,
@@ -1477,7 +1481,7 @@ class _Tickets:
         **others
                ):
 
-        rawParams = locals().copy()
+        rawParams = locals().copy() # TODO don't use locals copy
         
         resp = self._mh._search(url=self.url, others=rawParams)
         return resp
