@@ -959,13 +959,16 @@ class _Invoices:
         notpostedonly:Optional[bool] = None,
         includelines:bool=False,
         **others):
+        # # Order options (incomplete) # #
+        # invoice_date
+        
         
         rawParams = locals().copy()
         
         resp = self._mh._search(url=self.url, others=rawParams)
         return resp
     
-    def get(self, #TODO test Get
+    def get(self,
             id:int,
             includedetails:Optional[bool]=None, # This defaults to False if not provided
             **others
@@ -1501,7 +1504,7 @@ class _Tickets:
             id (int): Ticket ID
             includedetails (bool, optional): Whether to include extra details (objects) in the response. Defaults to False.
             includelastaction (bool, optional): Whether to include the last action in the response. Defaults to False.
-            ticketidonly (bool, optional): Returns only the ID fields (Ticket ID, SLA ID, Status ID, Client ID and Name and Lastincomingemail date) of the Tickets. Defaults to False.
+            ticketidonly (bool, optional): Returns the ID fields (Ticket ID, SLA ID, Status ID, Client ID and Name and Lastincomingemail date) of the Tickets. Defaults to False.
 
         Returns:
             dict: Ticket information/details

@@ -19,7 +19,6 @@ class Invoice: #/components/schemas/InvoiceHeader
 	client_id: int | None
 	client_name: str | None
 	sitenumber: int | None
-	site_name: str | None
 	uid: int | None
 	invoicenumber: str | None
 	thirdpartyinvoicenumber: str | None
@@ -54,9 +53,7 @@ class Invoice: #/components/schemas/InvoiceHeader
 	originaddress: list
 	lines: list | None
 	pdftemplate_id: int | None
-	pdftemplate_name: str | None
 	total: float
-	reference: str | None
 	duedate: datetime | None
 	is_recurring_invoice: bool | None
 	recurring_invoice_id: int | None
@@ -86,7 +83,6 @@ class Invoice: #/components/schemas/InvoiceHeader
 	snelstart_id: str | None
 	date_created: datetime | None
 	qbo_company_id: str | None
-	payments: list | None
 	dbc_id: str | None
 	dbc_company_id: str | None
 	creditlinkedtoinvoiceid: int | None
@@ -111,33 +107,23 @@ class Invoice: #/components/schemas/InvoiceHeader
 	credit_total: float | None
 	customer_paid_total: float | None
 	supplier_id: int | None
-	supplier_name: str | None
 	include_in_autopay: bool | None
 	twilio_invoice: bool | None
 	invoice_separately: bool | None
 	minimum_price_active: bool | None
 	minimum_amount: float | None
-	avalara_details_name: str | None
 	voided: bool | None
-	credit_outstanding_for_customer: float | None
 	mark_credit_as_used: bool | None
 	invoice_display: str | None
-	custombuttons: list | None
-	extratabs: list | None
-	conversion_rate: float | None
-	note_count: int | None
 	change_seq: int | None
-	last_change_agent: int | None
 	is_down_payment: bool | None
 	recognised_from_invoice: int | None
-	xero_default_payment_nominalcode: str | None
 	tax_total: float | None
 	revenue: float | None
-	external_links: list | None
 	type: int
-	site: list
 	client: list
 	disabled: bool | None = field(default=None)
+	site_name: str | None = field(default=None)
 	accountsid: str | None = field(default=None)
 	address1: str | None = field(default=None)
 	address2: str | None = field(default=None)
@@ -171,7 +157,9 @@ class Invoice: #/components/schemas/InvoiceHeader
 	printhtml: str | None = field(default=None)
 	pdf_attachment_id: int | None = field(default=None)
 	pdf_attachment_date_created: datetime | None = field(default=None)
+	pdftemplate_name: str | None = field(default=None)
 	composite_tax_total: float | None = field(default=None)
+	reference: str | None = field(default=None)
 	last_reminder_sent: datetime | None = field(default=None)
 	_is_invoice_run: bool | None = field(default=None)
 	_billing_cut_off: datetime | None = field(default=None)
@@ -204,6 +192,7 @@ class Invoice: #/components/schemas/InvoiceHeader
 	intacct_recordno: int | None = field(default=None)
 	period_start_date: datetime | None = field(default=None)
 	period_end_date: datetime | None = field(default=None)
+	payments: list | None = field(default=None)
 	markaspaid: bool | None = field(default=None)
 	markaspaidmoduleid: int | None = field(default=None)
 	reviewrequired: bool | None = field(default=None)
@@ -234,6 +223,7 @@ class Invoice: #/components/schemas/InvoiceHeader
 	intacct_project: str | None = field(default=None)
 	intacct_project_name: str | None = field(default=None)
 	_create_credit_note: bool | None = field(default=None)
+	supplier_name: str | None = field(default=None)
 	_dont_fire_automations: bool | None = field(default=None)
 	_is_process: bool | None = field(default=None)
 	_is_task_schedule: bool | None = field(default=None)
@@ -250,7 +240,9 @@ class Invoice: #/components/schemas/InvoiceHeader
 	exact_payment_conditon_name: str | None = field(default=None)
 	exact_payment_conditon_id: str | None = field(default=None)
 	exact_payment_conditon: list | None = field(default=None)
+	avalara_details_name: str | None = field(default=None)
 	credit_date: datetime | None = field(default=None)
+	credit_outstanding_for_customer: float | None = field(default=None)
 	credit_outstanding: float | None = field(default=None)
 	credit_used: float | None = field(default=None)
 	apply_credit: bool | None = field(default=None)
@@ -275,9 +267,13 @@ class Invoice: #/components/schemas/InvoiceHeader
 	originaddress5: str | None = field(default=None)
 	most_recent_invoice_id: int | None = field(default=None)
 	most_recent_invoice_type: int | None = field(default=None)
+	custombuttons: list | None = field(default=None)
+	extratabs: list | None = field(default=None)
 	update_invoice_conversion_rate: bool | None = field(default=None)
+	conversion_rate: float | None = field(default=None)
 	dont_sync_to_3rd_party: bool | None = field(default=None)
 	is_invoice_screen: bool | None = field(default=None)
+	note_count: int | None = field(default=None)
 	csp_invoice_id: int | None = field(default=None)
 	cloned_from_client_id: int | None = field(default=None)
 	bcd_posted: bool | None = field(default=None)
@@ -288,17 +284,21 @@ class Invoice: #/components/schemas/InvoiceHeader
 	apply_credit_credit_outstanding: float | None = field(default=None)
 	quickbooks_close_period_date: datetime | None = field(default=None)
 	quickbooks_period_closed: bool | None = field(default=None)
+	last_change_agent: int | None = field(default=None)
 	last_change_seq: int | None = field(default=None)
 	ignore_change_seq: bool | None = field(default=None)
 	invoice_template_id: int | None = field(default=None)
 	is_recognition: bool | None = field(default=None)
+	xero_default_payment_nominalcode: str | None = field(default=None)
 	_dotaxsync: bool | None = field(default=None)
+	external_links: list | None = field(default=None)
 	_importtypeid: int | None = field(default=None)
 	_importthirdpartyid: str | None = field(default=None)
 	_importtype: str | None = field(default=None)
 	new_external_link: list | None = field(default=None)
 	import_details_id: int | None = field(default=None)
 	_isupdateimport: bool | None = field(default=None)
+	site: list | None = field(default=None)
 
 	def __post_init__(self):
 		if self.invoice_date:
@@ -312,9 +312,25 @@ class Invoice: #/components/schemas/InvoiceHeader
 		if self.last_modified:
 			self.last_modified = datetime.strptime(self.last_modified, "%Y-%m-%dT%H:%M:%S.%f")
 		if self.datesent:
-			self.datesent = datetime.strptime(self.datesent, "%Y-%m-%dT%H:%M:%S.%f")
+			formats = ['%Y-%m-%dT%H:%M:%S','%Y-%m-%dT%H:%M:%S.%f']
+			for frmt in formats:
+				try:
+					self.datesent = datetime.strptime(self.datesent, frmt)
+					break
+				except Exception as e:
+					continue
+			else:
+				raise ValueError("datesent date format is invalid")
 		if self.datepaid:
-			self.datepaid = datetime.strptime(self.datepaid, "%Y-%m-%dT%H:%M:%S")
+			formats = ['%Y-%m-%dT%H:%M:%S','%Y-%m-%dT%H:%M:%S.%f']
+			for frmt in formats:
+				try:
+					self.datepaid = datetime.strptime(self.datepaid, frmt)
+					break
+				except Exception as e:
+					continue
+			else:
+				raise ValueError("datepaid date format is invalid")
 		if self.pdf_attachment_date_created:
 			self.pdf_attachment_date_created = datetime.strptime(self.pdf_attachment_date_created, "%Y-%m-%dT%H:%M:%S")
 		if self.duedate:
@@ -345,9 +361,10 @@ class Invoice: #/components/schemas/InvoiceHeader
 			self.credit_date = datetime.strptime(self.credit_date, "%Y-%m-%dT%H:%M:%S")
 		if self.quickbooks_close_period_date:
 			self.quickbooks_close_period_date = datetime.strptime(self.quickbooks_close_period_date, "%Y-%m-%dT%H:%M:%S")
-	@classmethod 
+# Debug method for creating items from dictionary - This comment is required or dedent dedents everything
+	@classmethod
 	def from_dict(cls, dictionary:dict):
 		return cls(**{
-            k: v for k, v in dictionary.items() 
-            if k in inspect.signature(cls).parameters 
-        })
+			k: v for k, v in dictionary.items()
+			if k in inspect.signature(cls).parameters
+		})
