@@ -2,568 +2,535 @@
     "InvoiceHeader": {
         "class_name": "Invoice",
         "property_rules": {
-            "invoice_date": {
-                "format": "%Y-%m-%dT%H:%M:%S"
-            },
-            "schedule_date": {
-                "format": "%Y-%m-%dT%H:%M:%S"
-            },
-            "datesent": {
-                "format": [
-                    "%Y-%m-%dT%H:%M:%S",
-                    "%Y-%m-%dT%H:%M:%S.%f"
-                ],
-                "comment": "This field sometimes includes microseconds"
-            },
-            "dateposted": {
-                "format": "%Y-%m-%dT%H:%M:%S.%f"
-            },
-            "last_synced": {
-                "format": "%Y-%m-%dT%H:%M:%S.%f"
-            },
-            "last_modified": {
-                "format": "%Y-%m-%dT%H:%M:%S.%f"
-            },
-            "date_created": {
-                "format": "%Y-%m-%dT%H:%M:%S.%f"
-            },
             "currency_code_name": {
-                "default": null
+                "optional": true
             },
             "disabled": {
-                "default": null
+                "optional": true
             },
             "accountsid": {
-                "default": null
+                "optional": true
             },
             "address1": {
-                "default": null
+                "optional": true
             },
             "address2": {
-                "default": null
+                "optional": true
             },
             "address3": {
-                "default": null
+                "optional": true
             },
             "address4": {
-                "default": null
+                "optional": true
             },
             "address5": {
-                "default": null
+                "optional": true
             },
             "deladdress1": {
-                "default": null
+                "optional": true
             },
             "deladdress2": {
-                "default": null
+                "optional": true
             },
             "deladdress3": {
-                "default": null
+                "optional": true
             },
             "deladdress4": {
-                "default": null
+                "optional": true
             },
             "deladdress5": {
-                "default": null
+                "optional": true
             },
             "tel_number": {
-                "default": null
+                "optional": true
             },
             "contactname": {
-                "default": null
+                "optional": true
             },
             "global_tax_code": {
-                "default": null
+                "optional": true
             },
             "notes_1": {
-                "default": null
+                "optional": true
             },
             "notes_2": {
-                "default": null
+                "optional": true
             },
             "notes_3": {
-                "default": null
+                "optional": true
             },
             "taken_by": {
-                "default": null
+                "optional": true
             },
             "order_number": {
-                "default": null
+                "optional": true
             },
             "cust_order_number": {
-                "default": null
+                "optional": true
             },
             "payment_ref": {
-                "default": null
+                "optional": true
             },
             "global_nom_code": {
-                "default": null
+                "optional": true
             },
             "global_details": {
-                "default": null
+                "optional": true
             },
             "invoice_type_code": {
-                "default": null
-            },
-            "datepaid": {
-                "default": null,
-                "format": [
-                    "%Y-%m-%dT%H:%M:%S",
-                    "%Y-%m-%dT%H:%M:%S.%f"
-                ],
-                "comment": "This field sometimes includes microseconds"
+                "optional": true
             },
             "amount_remaining": {
-                "default": null
+                "optional": true
             },
             "add_lines": {
-                "default": null
+                "optional": true
             },
             "_print_preview": {
-                "default": null
+                "optional": true
             },
             "_print_generate": {
-                "default": null
+                "optional": true
             },
             "printhtml": {
-                "default": null
+                "optional": true
             },
             "pdf_attachment_id": {
-                "default": null
+                "optional": true
             },
             "pdf_attachment_date_created": {
-                "default": null
+                "optional": true
             },
             "composite_tax_total": {
-                "default": null
+                "optional": true
             },
             "last_reminder_sent": {
-                "default": null
+                "optional": true
             },
             "_is_invoice_run": {
-                "default": null
+                "optional": true
             },
             "_billing_cut_off": {
-                "default": null
+                "optional": true
             },
             "schedule_id": {
-                "default": null
+                "optional": true
             },
             "lastcreated": {
-                "default": null
+                "optional": true
             },
             "nextcreationdate": {
-                "default": null
+                "optional": true
             },
             "period": {
-                "default": null
+                "optional": true
             },
             "schedule": {
-                "default": null
+                "optional": true
             },
             "create_recurring_invoice": {
-                "default": null
+                "optional": true
             },
             "take_auto_payment": {
-                "default": null
+                "optional": true
             },
             "force_creation": {
-                "default": null
+                "optional": true
             },
             "_create_from_areaitems": {
-                "default": null
+                "optional": true
             },
             "_create_from_contract": {
-                "default": null
+                "optional": true
             },
             "_validateonly": {
-                "default": null
+                "optional": true
             },
             "_sendmassinvoice": {
-                "default": null
+                "optional": true
             },
             "xero_branding_theme": {
-                "default": null
+                "optional": true
             },
             "mailboxid": {
-                "default": null
+                "optional": true
             },
             "period_type": {
-                "default": null
+                "optional": true
             },
             "kashflowid": {
-                "default": null
+                "optional": true
             },
             "time": {
-                "default": null
+                "optional": true
             },
             "startdate": {
-                "default": null
+                "optional": true
             },
             "enddate": {
-                "default": null
+                "optional": true
             },
             "daysplus": {
-                "default": null
+                "optional": true
             },
             "invoiceday": {
-                "default": null
+                "optional": true
             },
             "periodname": {
-                "default": null
+                "optional": true
             },
             "_isimport": {
-                "default": null
+                "optional": true
             },
             "duedatename": {
-                "default": null
+                "optional": true
             },
             "invoice_prorata_periods_ahead": {
-                "default": null
+                "optional": true
             },
             "nextcreationperiod": {
-                "default": null
+                "optional": true
             },
             "intacct_recordno": {
-                "default": null
+                "optional": true
             },
             "period_start_date": {
-                "default": null
+                "optional": true
             },
             "period_end_date": {
-                "default": null
+                "optional": true
             },
             "markaspaid": {
-                "default": null
+                "optional": true
             },
             "markaspaidmoduleid": {
-                "default": null
+                "optional": true
             },
             "reviewrequired": {
-                "default": null
+                "optional": true
             },
             "_warning": {
-                "default": null
+                "optional": true
             },
             "_xmlwarning": {
-                "default": null
+                "optional": true
             },
             "creditlinkedtoinvoiceid_typeid": {
-                "default": null
+                "optional": true
             },
             "purchaseorder_id": {
-                "default": null
+                "optional": true
             },
             "invoice_auto_increase_period": {
-                "default": null
+                "optional": true
             },
             "invoice_percent_increase": {
-                "default": null
+                "optional": true
             },
             "approvalticketid": {
-                "default": null
+                "optional": true
             },
             "ticket_summary": {
-                "default": null
+                "optional": true
             },
             "ticket_note": {
-                "default": null
+                "optional": true
             },
             "approval_start": {
-                "default": null
+                "optional": true
             },
             "new_approvalprocess_agent_id": {
-                "default": null
+                "optional": true
             },
             "new_approvalprocess_email": {
-                "default": null
+                "optional": true
             },
             "new_approvalprocess_cab_id": {
-                "default": null
+                "optional": true
             },
             "new_approvalprocess_users": {
-                "default": null
+                "optional": true
             },
             "new_approvalprocess_cab": {
-                "default": null
+                "optional": true
             },
             "approval_process_id": {
-                "default": null
+                "optional": true
             },
             "generic_online_invoice_payment_url": {
-                "default": null
+                "optional": true
             },
             "intacct_save_location": {
-                "default": null
+                "optional": true
             },
             "intacctseparatetaxline": {
-                "default": null
+                "optional": true
             },
             "intacct_class": {
-                "default": null
+                "optional": true
             },
             "intacct_class_name": {
-                "default": null
+                "optional": true
             },
             "contains_calculated_quantity": {
-                "default": null
+                "optional": true
             },
             "intacct_tax_solution": {
-                "default": null
+                "optional": true
             },
             "intacct_tax_solution_name": {
-                "default": null
+                "optional": true
             },
             "intacct_project": {
-                "default": null
+                "optional": true
             },
             "intacct_project_name": {
-                "default": null
+                "optional": true
             },
             "_create_credit_note": {
-                "default": null
+                "optional": true
             },
             "_dont_fire_automations": {
-                "default": null
+                "optional": true
             },
             "_is_process": {
-                "default": null
+                "optional": true
             },
             "_is_task_schedule": {
-                "default": null
+                "optional": true
             },
             "payments_pending": {
-                "default": null
+                "optional": true
             },
             "_forcethirdpartysync": {
-                "default": null
+                "optional": true
             },
             "client_to_invoice_to_id": {
-                "default": null
+                "optional": true
             },
             "creation_source": {
-                "default": null
+                "optional": true
             },
             "typeid": {
-                "default": null
+                "optional": true
             },
             "minimum_line_description": {
-                "default": null
+                "optional": true
             },
             "avalara_details_id": {
-                "default": null
+                "optional": true
             },
             "qbo_term_name": {
-                "default": null
+                "optional": true
             },
             "qbo_term_id": {
-                "default": null
+                "optional": true
             },
             "qbo_term": {
-                "default": null
+                "optional": true
             },
             "exact_payment_conditon_name": {
-                "default": null
+                "optional": true
             },
             "exact_payment_conditon_id": {
-                "default": null
+                "optional": true
             },
             "exact_payment_conditon": {
-                "default": null
+                "optional": true
             },
             "credit_date": {
-                "default": null
+                "optional": true
             },
             "credit_outstanding": {
-                "default": null
+                "optional": true
             },
             "credit_used": {
-                "default": null
+                "optional": true
             },
             "apply_credit": {
-                "default": null
+                "optional": true
             },
             "apply_credit_id": {
-                "default": null
+                "optional": true
             },
             "apply_credit_amount": {
-                "default": null
+                "optional": true
             },
             "apply_credit_description": {
-                "default": null
+                "optional": true
             },
             "apply_credit_long_description": {
-                "default": null
+                "optional": true
             },
             "apply_credit_tax_type": {
-                "default": null
+                "optional": true
             },
             "_novalidate": {
-                "default": null
+                "optional": true
             },
             "sqlimport_id": {
-                "default": null
+                "optional": true
             },
             "invoice_match_id": {
-                "default": null
+                "optional": true
             },
             "sync_include_paid": {
-                "default": null
+                "optional": true
             },
             "dont_set_original_client_id": {
-                "default": null
+                "optional": true
             },
             "_docommitsync": {
-                "default": null
+                "optional": true
             },
             "_ignore_dont_send_invoice": {
-                "default": null
+                "optional": true
             },
             "sendinvoicereminder": {
-                "default": null
+                "optional": true
             },
             "ticket_client_to_invoice_to_id": {
-                "default": null
+                "optional": true
             },
             "originaddress1": {
-                "default": null
+                "optional": true
             },
             "originaddress2": {
-                "default": null
+                "optional": true
             },
             "originaddress3": {
-                "default": null
+                "optional": true
             },
             "originaddress4": {
-                "default": null
+                "optional": true
             },
             "originaddress5": {
-                "default": null
+                "optional": true
             },
             "most_recent_invoice_id": {
-                "default": null
+                "optional": true
             },
             "most_recent_invoice_type": {
-                "default": null
+                "optional": true
             },
             "update_invoice_conversion_rate": {
-                "default": null
+                "optional": true
             },
             "dont_sync_to_3rd_party": {
-                "default": null
+                "optional": true
             },
             "is_invoice_screen": {
-                "default": null
+                "optional": true
             },
             "csp_invoice_id": {
-                "default": null
+                "optional": true
             },
             "cloned_from_client_id": {
-                "default": null
+                "optional": true
             },
             "bcd_posted": {
-                "default": null
+                "optional": true
             },
             "invoice_totals": {
-                "default": null
+                "optional": true
             },
             "immediate_prorata_recurring_invoice_id": {
-                "default": null
+                "optional": true
             },
             "toplevel_name": {
-                "default": null
+                "optional": true
             },
             "suppliers_order_reference": {
-                "default": null
+                "optional": true
             },
             "apply_credit_credit_outstanding": {
-                "default": null
+                "optional": true
             },
             "quickbooks_close_period_date": {
-                "default": null
+                "optional": true
             },
             "quickbooks_period_closed": {
-                "default": null
+                "optional": true
             },
             "last_change_seq": {
-                "default": null
+                "optional": true
             },
             "ignore_change_seq": {
-                "default": null
+                "optional": true
             },
             "invoice_template_id": {
-                "default": null
+                "optional": true
             },
             "is_recognition": {
-                "default": null
+                "optional": true
             },
             "_dotaxsync": {
-                "default": null
+                "optional": true
             },
             "_importtypeid": {
-                "default": null
+                "optional": true
             },
             "_importthirdpartyid": {
-                "default": null
+                "optional": true
             },
             "_importtype": {
-                "default": null
+                "optional": true
             },
             "new_external_link": {
-                "default": null
+                "optional": true
             },
             "import_details_id": {
-                "default": null
+                "optional": true
             },
             "_isupdateimport": {
-                "default": null
+                "optional": true
             },
             "pdftemplate_name": {
-                "default": null
+                "optional": true
             },
             "payments": {
-                "default": null
+                "optional": true
             },
             "supplier_name": {
-                "default": null
+                "optional": true
             },
             "avalara_details_name": {
-                "default": null
+                "optional": true
             },
             "credit_outstanding_for_customer": {
-                "default": null
+                "optional": true
             },
             "custombuttons": {
-                "default": null
+                "optional": true
             },
             "extratabs": {
-                "default": null
+                "optional": true
             },
             "conversion_rate": {
-                "default": null
+                "optional": true
             },
             "note_count": {
-                "default": null
+                "optional": true
             },
             "xero_default_payment_nominalcode": {
-                "default": null
+                "optional": true
             },
             "external_links": {
-                "default": null
+                "optional": true
             },
             "last_change_agent": {
-                "default": null,
+                "optional": true,
                 "comment": "If no change is ever made, this field doesn't seem to be returned"
             },
             "reference": {
-                "default": null
+                "optional": true
             },
             "site_name": {
-                "default": null,
+                "optional": true,
                 "comment": "Not returned on single invoice.get() if no site is assigned even if includedetails is set to True"
             },
             "site": {
-                "default": null,
+                "optional": true,
                 "comment": "Not returned on single invoice.get() if no site is assigned even if includedetails is set to True"
             }
         },
@@ -2573,8 +2540,133 @@
             },
             "and_isupdateimport": {
                 "optional": true
+            },
+            "oppaddr1": {
+                "optional": true
+            },
+            "oppaddr2": {
+                "optional": true
+            },
+            "oppaddr3": {
+                "optional": true
+            },
+            "oppaddr4": {
+                "optional": true
+            },
+            "opppostcode": {
+                "optional": true
+            },
+            "_isupdateimport": {
+                "optional": true
+            },
+            "oppcompanyname": {
+                "optional": true
+            },
+            "opptype": {
+                "optional": true
+            },
+            "andopptimezonename": {
+                "optional": true
+            },
+            "opptimezonename": {
+                "optional": true
+            },
+            "slaactiondate": {
+                "optional": true
+            },
+            "slapercused": {
+                "optional": true
+            },
+            "slatimeleft": {
+                "optional": true
+            },
+            "andcurrentelapsedhours": {
+                "optional": true
+            },
+            "currentelapsedhours": {
+                "optional": true
+            },
+            "emailcclist": {
+                "optional": true
+            },
+            "workflow_seq": {
+                "optional": true
+            },
+            "alsoinform": {
+                "optional": true
+            },
+            "email_message_id": {
+                "optional": true
+            },
+            "workflow_history": {
+                "optional": true
+            },
+            "andinternet_message_id": {
+                "optional": true
+            },
+            "internet_message_id": {
+                "optional": true
+            },
+            "customer_relationships": {
+                "optional": true
+            },
+            "reportedby": {
+                "optional": true
+            },
+            "user_email": {
+                "optional": true
+            },
+            "emailtolist": {
+                "optional": true
+            },
+            "oppcontactname": {
+                "optional": true
+            },
+            "andoppemailaddress": {
+                "optional": true
+            },
+            "oppemailaddress": {
+                "optional": true
+            },
+            "timeentries": {
+                "optional": true
+            },
+            "approval_cab_name": {
+                "optional": true
+            },
+            "popup_notes": {
+                "optional": true
+            },
+            "journeys": {
+                "optional": true
+            },
+            "faultapprovalexists": {
+                "optional": true
+            },
+            "extratabs": {
+                "optional": true
+            },
+            "contributors": {
+                "optional": true
+            },
+            "hoursinvoiced": {
+                "optional": true
+            },
+            "opp_country_name": {
+                "optional": true
+            },
+            "additional_agents": {
+                "optional": true
+            },
+            "andbillable_time": {
+                "optional": true
             }
         },
+        "additional_properties": {}
+    },
+    "Actions": {
+        "class_name": "Action",
+        "property_rules": {},
         "additional_properties": {}
     }
 }

@@ -26,18 +26,27 @@ halo = Halo(tenant=HALO_TENANT, clientid=HALO_ID, secret=HALO_SECRET)
 #TODO replace \t with 4 spaces to avoid issues
 #TODO add new dataclasses to the __init__ file
 
-# Swagger location
+# Folders
 swagger_file = "helpers/halo_swagger.json"
-import_rules_file = "helpers/import_rules.json"
+dataclass_rules_file = "helpers/dataclass_rules.json"
+method_rules_file = "helpers/method_rules.json"
+dataclass_folder = "HaloPSA/responses"
+
 
 with open(swagger_file, 'r') as jsonfile:
     json_data = json.loads(jsonfile.read())
     
-with open(import_rules_file, 'r') as jsonfile:
-    schemas_to_import = json.loads(jsonfile.read())
-
 # Schemas are here
 halo_schema = json_data["components"]["schemas"]
+halo_methods = json_data["paths"]
+
+with open(dataclass_rules_file, 'r') as jsonfile:
+    schemas_to_import = json.loads(jsonfile.read())
+    
+with open(dataclass_rules_file, 'r') as jsonfile:
+    method_rules = json.loads(jsonfile.read())
+
+
 
 #TODO move this to a file or something
 dataclass_template_str = """# BUILT-IN
@@ -56,16 +65,15 @@ import inspect
 """
 
 
-dataclass_folder = "HaloPSA/responses"
 
 #TODO add a "only create if it doesnt exist" option
 child_schema_types = Literal["ignore", "create", "dont_create"] 
 
-def create_dataclass(import_rules:dict, child_schema:child_schema_types="ignore", create_list:bool=False, replace_existing:bool=False, sort:bool=False):
+def create_dataclass(dataclass_rules:dict, child_schema:child_schema_types="ignore", create_list:bool=False, replace_existing:bool=False, sort:bool=False):
     """Create response dataclasses. To create, the import_rules must atlease contain the schema name as an item. Everything else
 
     Args:
-        import_rules (dict): Importing rules. #TODO allow file path to be provided here instead
+        dataclass_rules (dict): Importing rules. #TODO allow file path to be provided here instead
         child_schema (child_schema_types, optional): How to handle child schemas. Defaults to "ignore".
         create_list (bool, optional): NO idea what this was for. Defaults to False.
         replace_existing (bool, optional): Replace existing response files. Note that this will NOT check the contents of the file, just whether it exists. Defaults to False.
@@ -86,7 +94,7 @@ def create_dataclass(import_rules:dict, child_schema:child_schema_types="ignore"
     # is no class name is sent, schema name will be used
     
     # For a 
-    for schema, data in import_rules.items(): #TODO rename data to something else
+    for schema, data in dataclass_rules.items(): #TODO rename data to something else
         schema_name:str =  schema
         property_rules:dict= data["property_rules"]
         
@@ -180,7 +188,7 @@ def create_dataclass(import_rules:dict, child_schema:child_schema_types="ignore"
                             post_init_rules.append(f"if self.{prop_name}:\n\tself.{prop_name} = datetime.strptime(self.{prop_name}, \"{rules['format']}\")") # Create rule
                     else:
                         #TODO maybe this should always be added to datetime fields?
-                        post_init_rules.append(f"if self.{prop_name}:\n\tself.{prop_name} = datetime.strptime(self.{prop_name}, \"%Y-%m-%dT%H:%M:%S\")") # If no specific date string is provided, then use a generic one
+                        post_init_rules.append(f"if self.{prop_name}:\n\tself.{prop_name} = datetime.fromisoformat(self.{prop_name})") # If no specific date string is provided, then use a generic one
                         
                 else:
                     prop_str += " str"
@@ -208,13 +216,23 @@ def create_dataclass(import_rules:dict, child_schema:child_schema_types="ignore"
                 prop_str += " | None"
             
             if rules:
+                # Optional keys (this is going to replace "default: none")
                 if "default" in rules.keys():
                     if rules['default'] == None and not nullable:
                         prop_str += " | None"
-                    #TODO this doesn't get added to custom rules because nullable is false (I think)
+                    
                     prop_str += f" = field(default={rules['default']})"
                     optional_dataclass_properties.append(prop_str)
                     continue # Avoid double adding
+                
+                elif "optional" in rules.keys() and rules["optional"]:
+                    #TODO this is kind of a dumb workaround, should clean this up.
+                    if " | None" not in prop_str:
+                        prop_str += " | None"
+                    prop_str += f" = field(default=None)"
+                    optional_dataclass_properties.append(prop_str)
+                    continue # Avoid double adding
+                    
             dataclass_properties.append(prop_str)
                     
         for prop in dataclass_properties:
@@ -250,7 +268,7 @@ create_dataclass(schemas_to_import, replace_existing=True)
 # For fields that need more formatting
 # format: can contain a datetime formatting string, or a list of datetime formatting strings
 # default: set the default field value (helpful when things aren't always passed/provided by the data source)
-# optional (bool): whether the field is always returned #TODO move `default: null` items here
+# optional (bool): whether the field is always returned
 # comment: Purely for readability or adding additional context #TODO add these as code comments
 # Example item
 """
@@ -274,6 +292,12 @@ create_dataclass(schemas_to_import, replace_existing=True)
 """
 # TODO items added via additional rules do not check the default field, which causes issues. Workaround is to add the item to both additional properties and property rules
 
+# This will create methods for an endpoint
+def create_methods(method_rules:dict):
+    pass
+    
+
+pass
 # Mark fields as optional from a list
 def set_optional_properties(properties:list, schema_name:str, import_rules_file:str="helpers/import_rules.json"):
     with open(import_rules_file, 'r') as jsonfile:
@@ -302,7 +326,12 @@ def set_optional_properties(properties:list, schema_name:str, import_rules_file:
 def list_from_exception(schema_name:str, exception:Optional[Exception]=None, import_rules_file:str="helpers/import_rules.json"):
     #TODO this might not always start with "TypeError"
     if exception:
-        properties_str = exception.args[0].split("arguments:")[1]
+        #TODO use regex for this r"arguments?:"
+        if "arguments:" in exception.args[0]:
+            properties_str = exception.args[0].split("arguments:")[1]
+        else:
+            properties_str = exception.args[0].split("argument:")[1]
+            
         
     # No exception was provided, so get it via input
     else:
@@ -330,8 +359,14 @@ def single_ticket_test(ticket_id:int, includedetails:bool=True, includelastactio
     except Exception as e:
         return e
 
-
-exc = single_ticket_test(29947)
-if exc != True: #TODO this is jank
-    list_from_exception(schema_name="Faults", exception=exc)
-    pass
+# Keep trying to fix it
+while True:
+    result = single_ticket_test(29955, includedetails=False, includelastaction=False)
+    input("Try to fix again?")
+    if result != True: #TODO this is jank
+        list_from_exception(schema_name="Faults", exception=result)
+        #pass
+        #create_dataclass(schemas_to_import, replace_existing=True)
+    else:
+        break
+    
