@@ -43,6 +43,7 @@ class Invoice: #/components/schemas/InvoiceHeader
 	hideinvoice: bool | None
 	ticket_id: int | None
 	invoicetype: int | None
+	datepaid: datetime | None
 	paymentstatus: int | None
 	xeroid: str | None
 	amountpaid: float | None
@@ -149,7 +150,6 @@ class Invoice: #/components/schemas/InvoiceHeader
 	global_details: str | None = field(default=None)
 	invoice_type_code: str | None = field(default=None)
 	currency_code_name: str | None = field(default=None)
-	datepaid: datetime | None = field(default=None)
 	amount_remaining: float | None = field(default=None)
 	add_lines: list | None = field(default=None)
 	_print_preview: bool | None = field(default=None)
@@ -302,65 +302,49 @@ class Invoice: #/components/schemas/InvoiceHeader
 
 	def __post_init__(self):
 		if self.invoice_date:
-			self.invoice_date = datetime.strptime(self.invoice_date, "%Y-%m-%dT%H:%M:%S")
+			self.invoice_date = datetime.fromisoformat(self.invoice_date)
 		if self.schedule_date:
-			self.schedule_date = datetime.strptime(self.schedule_date, "%Y-%m-%dT%H:%M:%S")
+			self.schedule_date = datetime.fromisoformat(self.schedule_date)
 		if self.dateposted:
-			self.dateposted = datetime.strptime(self.dateposted, "%Y-%m-%dT%H:%M:%S.%f")
+			self.dateposted = datetime.fromisoformat(self.dateposted)
 		if self.last_synced:
-			self.last_synced = datetime.strptime(self.last_synced, "%Y-%m-%dT%H:%M:%S.%f")
+			self.last_synced = datetime.fromisoformat(self.last_synced)
 		if self.last_modified:
-			self.last_modified = datetime.strptime(self.last_modified, "%Y-%m-%dT%H:%M:%S.%f")
+			self.last_modified = datetime.fromisoformat(self.last_modified)
 		if self.datesent:
-			formats = ['%Y-%m-%dT%H:%M:%S','%Y-%m-%dT%H:%M:%S.%f']
-			for frmt in formats:
-				try:
-					self.datesent = datetime.strptime(self.datesent, frmt)
-					break
-				except Exception as e:
-					continue
-			else:
-				raise ValueError("datesent date format is invalid")
+			self.datesent = datetime.fromisoformat(self.datesent)
 		if self.datepaid:
-			formats = ['%Y-%m-%dT%H:%M:%S','%Y-%m-%dT%H:%M:%S.%f']
-			for frmt in formats:
-				try:
-					self.datepaid = datetime.strptime(self.datepaid, frmt)
-					break
-				except Exception as e:
-					continue
-			else:
-				raise ValueError("datepaid date format is invalid")
+			self.datepaid = datetime.fromisoformat(self.datepaid)
 		if self.pdf_attachment_date_created:
-			self.pdf_attachment_date_created = datetime.strptime(self.pdf_attachment_date_created, "%Y-%m-%dT%H:%M:%S")
+			self.pdf_attachment_date_created = datetime.fromisoformat(self.pdf_attachment_date_created)
 		if self.duedate:
-			self.duedate = datetime.strptime(self.duedate, "%Y-%m-%dT%H:%M:%S")
+			self.duedate = datetime.fromisoformat(self.duedate)
 		if self.last_reminder_sent:
-			self.last_reminder_sent = datetime.strptime(self.last_reminder_sent, "%Y-%m-%dT%H:%M:%S")
+			self.last_reminder_sent = datetime.fromisoformat(self.last_reminder_sent)
 		if self._billing_cut_off:
-			self._billing_cut_off = datetime.strptime(self._billing_cut_off, "%Y-%m-%dT%H:%M:%S")
+			self._billing_cut_off = datetime.fromisoformat(self._billing_cut_off)
 		if self.lastcreated:
-			self.lastcreated = datetime.strptime(self.lastcreated, "%Y-%m-%dT%H:%M:%S")
+			self.lastcreated = datetime.fromisoformat(self.lastcreated)
 		if self.nextcreationdate:
-			self.nextcreationdate = datetime.strptime(self.nextcreationdate, "%Y-%m-%dT%H:%M:%S")
+			self.nextcreationdate = datetime.fromisoformat(self.nextcreationdate)
 		if self.time:
-			self.time = datetime.strptime(self.time, "%Y-%m-%dT%H:%M:%S")
+			self.time = datetime.fromisoformat(self.time)
 		if self.startdate:
-			self.startdate = datetime.strptime(self.startdate, "%Y-%m-%dT%H:%M:%S")
+			self.startdate = datetime.fromisoformat(self.startdate)
 		if self.enddate:
-			self.enddate = datetime.strptime(self.enddate, "%Y-%m-%dT%H:%M:%S")
+			self.enddate = datetime.fromisoformat(self.enddate)
 		if self.date_created:
-			self.date_created = datetime.strptime(self.date_created, "%Y-%m-%dT%H:%M:%S.%f")
+			self.date_created = datetime.fromisoformat(self.date_created)
 		if self.period_start_date:
-			self.period_start_date = datetime.strptime(self.period_start_date, "%Y-%m-%dT%H:%M:%S")
+			self.period_start_date = datetime.fromisoformat(self.period_start_date)
 		if self.period_end_date:
-			self.period_end_date = datetime.strptime(self.period_end_date, "%Y-%m-%dT%H:%M:%S")
+			self.period_end_date = datetime.fromisoformat(self.period_end_date)
 		if self.approvaldatetime:
-			self.approvaldatetime = datetime.strptime(self.approvaldatetime, "%Y-%m-%dT%H:%M:%S")
+			self.approvaldatetime = datetime.fromisoformat(self.approvaldatetime)
 		if self.credit_date:
-			self.credit_date = datetime.strptime(self.credit_date, "%Y-%m-%dT%H:%M:%S")
+			self.credit_date = datetime.fromisoformat(self.credit_date)
 		if self.quickbooks_close_period_date:
-			self.quickbooks_close_period_date = datetime.strptime(self.quickbooks_close_period_date, "%Y-%m-%dT%H:%M:%S")
+			self.quickbooks_close_period_date = datetime.fromisoformat(self.quickbooks_close_period_date)
 # Debug method for creating items from dictionary - This comment is required or dedent dedents everything
 	@classmethod
 	def from_dict(cls, dictionary:dict):
