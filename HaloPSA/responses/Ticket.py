@@ -18,9 +18,7 @@ class Ticket: #/components/schemas/Faults
 	summary: str | None
 	details: str | None
 	status_id: int | None
-	status_name: str | None
 	tickettype_id: int | None
-	tickettype_name: str | None
 	sla_id: int | None
 	sla_name: str | None
 	priority_id: int | None
@@ -33,161 +31,56 @@ class Ticket: #/components/schemas/Faults
 	team_id: int | None
 	team: str | None
 	agent_id: int | None
-	agent_name: str | None
 	category_1: str | None
 	category_2: str | None
 	category_3: str | None
 	category_4: str | None
-	categoryid_1: int | None
-	categoryid_2: int | None
-	categoryid_3: int | None
-	categoryid_4: int | None
-	category_1_display: str | None
-	category_2_display: str | None
-	category_3_display: str | None
-	category_4_display: str | None
 	estimate: float | None
 	estimatedays: float | None
-	projecttimepercentage: float | None
-	projectcompletionpercentage: float | None
-	projectearlieststart: datetime | None
-	projectlatestend: datetime | None
 	timetaken: float | None
-	faigeneratedsummary_list: str | None
-	chargehours: float | None
-	nonchargehours: float | None
-	travelhours: float | None
-	totalmileage: float | None
-	itemsprice: float | None
-	items: str | None
 	supplier_name: str | None
-	parent_id: int | None
 	child_count: int | None
-	child_count_open: int | None
 	attachment_count: int | None
 	flagged: bool | None
 	read: bool | None
 	enduserstatus: int | None
 	onhold: bool | None
 	respondbydate: datetime | None
-	responsedate: datetime | None
-	first_responsedate: datetime | None
-	responsestartdate: datetime | None
-	slaresponsestate: str | None
 	fixbydate: datetime | None
-	dateclosed: datetime | None
-	dateassigned: datetime | None
 	excludefromsla: bool | None
 	slaholdtime: float | None
 	site_timezone: str | None
-	parentguid: str | None
-	parentassign: bool | None
-	slaactiondate: datetime | None
-	slapercused: float | None
-	slatimeleft: float | None
-	currentelapsedhours: float | None
 	lastactiondate: datetime | None
 	last_update: datetime | None
-	lastchildactiondate: datetime | None
 	organisation_id: int | None
 	department_id: int | None
-	reportedby: str | None
-	user_email: str | None
-	emailtolist: str | None
-	emailtolistsupplier: str | None
-	emailcclist: str | None
-	emailcclistsupplier: str | None
 	matched_kb_id: int | None
-	release_note: str | None
 	product_id: int | None
 	product_name: str | None
 	release_id: int | None
-	release_name: str | None
 	release2_id: int | None
-	release2_name: str | None
 	release3_id: int | None
-	release3_name: str | None
-	child_ticket_id_string: str | None
-	asset_key_field_string: str | None
-	asset_type_name: str | None
 	workflow_name: str | None
-	workflow_stage: str | None
-	workflow_stage_id: int | None
-	workflow_stage_number: str | None
 	lastincomingemail: datetime
-	child_ticket_ids: list | None
-	nextactivitydate: datetime | None
-	nextactivityorappointmentdate: datetime | None
-	inventory_number: str | None
 	workflow_id: int | None
 	workflow_step: int | None
-	workflow_seq: int | None
 	pipeline_stage_id: int | None
-	pipeline_stage_name: str | None
-	hasbeenclosed: bool | None
-	unread_child_action_count: int | None
-	unread_related_action_count: int | None
-	child_action_count: int | None
-	parent_subject: str | None
-	related_action_count: int | None
 	is_vip: bool | None
 	isimportantcontact: bool | None
 	inactive: bool | None
 	impact: int | None
 	urgency: int | None
-	startdate: datetime | None
-	startdate_timezone: str | None
-	startdate_with_timezone: list
 	starttime: str | None
 	starttimeslot: int | None
 	targetdate: datetime | None
-	targetdate_timezone: str | None
-	targetdate_with_timezone: list
 	targettime: str | None
 	targettimeslot: int | None
-	targetpercused: float | None
-	targettimeleft: float | None
 	deadlinedate: datetime | None
-	followupdate: datetime | None
-	oppcontactname: str | None
-	oppcompanyname: str | None
-	oppemailaddress: str | None
-	oppcustomertitle: str | None
-	opptel: str | None
-	oppaddr1: str | None
-	oppaddr2: str | None
-	oppaddr3: str | None
-	oppaddr4: str | None
-	opppostcode: str | None
 	oppcountry: str | None
 	oppregion: str | None
-	opptype: str | None
-	oppvalue: float | None
-	oppvalue_monthly: float | None
-	oppvalue_annual: float | None
-	oppvalue_oneoff: float | None
-	oppconversionprobability: float | None
 	oppvalueadjusted: float | None
-	oppprofit: float | None
-	oppcurrentsystem: str | None
-	oppcompetitors: str | None
-	opptrialdate: datetime | None
-	oppdemodate: datetime | None
-	oppdiscountdate: datetime | None
-	oppattemptsmade: int | None
-	oppconverteddate: datetime | None
-	oppproductchosen: str | None
-	oppreason: str | None
-	opphear: str | None
-	opptimezonename: str | None
-	oppclosurecategory: int | None
 	cost: float | None
 	quantity: int | None
-	projecttimebudget: float | None
-	projectmoneybudget: float | None
-	projecttimeactual: float | None
-	projectmoneyactual: float | None
-	lastnote: str | None
 	userdef1: str | None
 	userdef2: str | None
 	userdef3: str | None
@@ -195,225 +88,63 @@ class Ticket: #/components/schemas/Faults
 	userdef5: str | None
 	source: int | None
 	release_important: bool | None
-	releasenotegroup_name: str | None
 	releasenotegroup_id: int | None
-	third_party_id: int | None
-	third_party_id_string: str | None
 	supplier_status: int | None
-	contract_refextra: str | None
 	appointment_type: int | None
 	customfields: list | None
-	timeentries: list | None
 	section_timezone: str | None
-	itilname: str | None
-	related_service_descriptions: str | None
-	related_businessapps_descriptions: str | None
-	related_service_category_names: str | None
 	projectinternaltask: bool | None
-	appointment_id: int | None
-	nextappointmentdate: datetime | None
-	firstname: str | None
-	lastname: str | None
-	connectedinstance_id: int | None
-	web_url: str | None
-	api_url: str | None
-	action_number: int | None
-	action_ticket_id: int | None
-	action_datetime: datetime | None
-	action_outcome: str | None
-	action_chargerate: str | None
-	action_contract_ref: str | None
-	action_note: str | None
-	ticket_invoices_for_each_site: bool | None
-	salesorder_id: int | None
-	orderhead_id: int | None
-	budgettype: str | None
-	requesttype_name: str | None
-	recalculate_billing: bool | None
 	impactlevel: int | None
-	supplier_id: int | None
-	pr_id: int | None
-	branch_id: int | None
-	branch_name: str | None
-	update_milestone_id: int | None
-	milestone_id: int | None
-	milestone_name: str | None
-	milestone_billing_type: int | None
-	milestone_value: float | None
-	milestone_sequence: int | None
-	milestone_status: int | None
-	milestone_startdate: datetime | None
-	milestone_enddate: datetime | None
-	colour: str | None
 	reviewed: bool | None
-	action_agent_name: str | None
 	merged_into_id: int | None
-	reassigncount: int | None
-	parent_status: int | None
-	parent_agent: int | None
-	child_status: int | None
-	date_fully_closed: datetime | None
-	lastaction_chargerate: str | None
-	hover_summary: str | None
-	slatimeelapsed: float | None
-	ai_summary: str | None
-	search_score: float | None
-	main_project_id: int | None
-	is_maintenance: bool | None
-	phonenumber: str | None
 	details_html: str | None
 	takenby: str | None
 	datecreated: datetime | None
 	createdfrom_id: int | None
-	createdfrom_summary: str | None
-	clonedfrom_id: int | None
-	clonedfrom_summary: str | None
-	closure_note: str | None
-	closure_note_html: str | None
-	closure_time: float | None
 	top_level_id: int | None
-	customer_relationships: str | None
-	asset_number: int | None
-	asset_site: int | None
-	slastate: str | None
-	slaexcuse: str | None
 	site_sla_id: int | None
-	client_reference: str | None
-	supplier_slaexcuse: str | None
-	supplier_date: datetime | None
 	supplier_contract_id: int | None
-	supplier_contract_ref: str | None
-	supplier_sla_id: int | None
-	supplier_priority_id: int | None
-	supplier_responsestate: str | None
-	supplier_responsedate: datetime | None
-	supplier_responsetime: float | None
-	supplier_respondbydate: datetime | None
-	supplier_slastate: str | None
-	supplier_slatimeelapsed: float | None
-	supplier_dateclosed: datetime | None
-	supplier_fixbydate: datetime | None
 	supplier_breachrespsent: bool | None
 	supplier_breachfixbysent: bool | None
-	changestate: str | None
-	approvedby: int | None
 	showforusers: bool | None
 	messsent: str | None
-	satisfactionlevel: int | None
-	satisfactioncomment: str | None
-	invoicenumber: str | None
-	invoicenote: str | None
-	invoicedate: datetime | None
-	invoicepaiddate: datetime | None
-	nonbillable_time: float | None
-	mileage: float | None
-	planneddate: datetime | None
-	ccaddress: str | None
 	agreedcleared: bool | None
-	responsetime: float | None
-	first_responsetime: float | None
-	alsoinform: str | None
-	justification: str | None
 	backoutplan: str | None
 	communicationplan: str | None
 	testplan: str | None
 	riskdescription: str | None
 	risklevel: int | None
 	impactdescription: str | None
-	service_id: int | None
-	isparentservice: bool | None
 	surveysent: bool | None
-	planneddateend: datetime | None
-	currentfaactionnumber: int | None
-	approval_process_step: int | None
 	approval_process_step_name: str | None
-	approval_cab_name: str | None
-	approval_process_id: int | None
-	faultcodeopen: int | None
-	faultcode: int | None
-	laststatus3rdparty: int | None
 	inform3rdpartysystem: bool | None
-	deliverycontact: str | None
-	delivery_address: list
 	surveyneeded: bool | None
 	knownerror: bool | None
 	development: bool | None
-	causedby: int | None
-	messsentlast: str | None
-	unapprovedchangestatus: int | None
 	changeseq: int | None
-	lastrecurringemailsentdate: datetime | None
-	template_id: int | None
-	template_name: str | None
-	child_template_id: int | None
-	slaholdreminderdatelastemailed: datetime | None
-	closurereminderdatelastemailed: datetime | None
-	assetstring: str | None
 	mailboxid: int | None
-	alerttype: str | None
 	actisbillabledefault: bool | None
-	emaildisplayname: str | None
-	emailpriority: int | None
 	chargerate: int | None
 	timezonename: str | None
 	forwardinboundupdates: bool | None
 	loggedoutofhdworkinghours: bool | None
 	acctmaninformedsurvey: bool | None
 	laststatuschangeinformed: int | None
-	gfialerttype: str | None
-	quotedescription: str | None
-	quotelabouramount: float | None
-	quotepriority: int | None
-	budgetcode: int | None
-	actualcost: float | None
-	invoicestatus: int | None
-	invoicedescription: str | None
-	invoicelabouramount: float | None
-	invoicematerialsamount: float | None
-	firsttimefix: int | None
-	quotematerialsamount: float | None
-	ukasaccredited: bool | None
-	labno: str | None
-	twitterscreenname: str | None
-	twitterid: int | None
-	facebook_id: str | None
-	fixbydateadjusted: bool | None
 	loggedonbehalfby: str | None
-	alternativecontactno: str | None
-	operationalserviceid: int | None
-	requestdetailsprinted: bool | None
-	serviceformprinted: bool | None
 	auditstatus: int | None
 	auditunum: int | None
 	auditdate: datetime | None
-	auditnote: str | None
-	auditfaileddate: datetime | None
-	auditfailednote: str | None
-	userrequestedapprover: int | None
 	oppdontaddtomailinglist: bool | None
 	sendprintrequest: int | None
 	pagerdutyid: str | None
 	pagerdutyincidentidstring: str | None
 	pagerdutystatus: int | None
-	pagerdutyurl: str | None
-	pagerdutyincidentid: str | None
-	opportunity_third_party_url: str | None
-	pr_link: str | None
-	github_repository: str | None
 	component_id: int | None
-	component_name: str | None
 	version_id: int | None
-	version_name: str | None
 	mailentryid: str | None
 	contract_id: int | None
-	contract_ref: str | None
-	billing_address: list
 	workflow_stepstarted: datetime | None
-	lessonslearned: str | None
 	laststatuschangeinformedmanager: int | None
-	lastbugzillasync: datetime | None
-	sapid: str | None
-	sapattachmentsuuid: str | None
 	currency: int | None
 	projectconsignmentheaderid: int | None
 	projectconsignmentdetailid: int | None
@@ -421,163 +152,41 @@ class Ticket: #/components/schemas/Faults
 	hdid: int | None
 	deleted: bool | None
 	matched_rule_id: int | None
-	matched_rule_name: str | None
-	matched_rule_dont_show_notification: bool | None
 	ignore_kb_match: bool | None
 	deadlinenotificationhours: float | None
-	asset_type: int | None
 	showonroadmap: bool | None
-	roadmapnote: str | None
 	phonenumberfrom: str | None
 	addressfrom: str | None
 	changeinformation_html: str | None
 	team_department_id: int | None
-	sendack: bool | None
 	newaction_emailfrom: int | None
-	newaction_emailfrom_address_override: str | None
 	_canupdate: bool | None
-	_mustupdateticketuser: bool | None
-	_spam: bool | None
-	_spamblock: bool | None
-	users_name: str | None
-	sibling_count_open: int | None
-	parent_summary: str | None
-	parent_status_name: str | None
-	new_approvalprocess: int | None
-	new_approvalprocess_agent_id: int | None
-	new_approvalprocess_user_id: int | None
-	new_approvalprocess_email: str | None
-	new_approvalprocess_cab_id: int | None
-	approvers: list | None
-	approvers_history: list | None
 	appointment_count: int | None
 	open_chat_count: int | None
 	task_count: int | None
-	create_article: bool | None
-	qualifications: list | None
-	target_adjust: int | None
-	start_adjust: int | None
-	dont_do_rules: bool | None
-	dont_do_databaselookups: bool | None
-	apply_rules: bool | None
-	apply_this_rule: int | None
-	_forcereassign: bool | None
-	_appointment01_ok: bool | None
-	_agent01_ok: bool | None
-	_agent02_ok: bool | None
-	_asset01_ok: bool | None
-	return_this: bool | None
-	_validate_form: bool | None
-	_validate_updates: bool | None
-	attachments: list | None
-	documents: list | None
-	popup_notes: list | None
-	current_action_type: str | None
-	current_action_name: str | None
-	_ispreview: bool | None
-	assets: list | None
-	nochangesequpdate: bool | None
-	_reclose: bool | None
-	_reclose_oid: int | None
-	_recover: bool | None
 	email_start_tag_override: str | None
 	email_end_tag_override: str | None
 	follower_count: int | None
-	contact_address: list
-	chat_id: int | None
-	actioncode: int | None
-	clone_count: int | None
-	copy_milestone: bool | None
 	todo_count: int | None
-	todo_list: list | None
 	service_count: int | None
 	businessapp_count: int | None
-	unsubscribedfromserviceid: int | None
 	is_opportunity: bool | None
 	is_project: bool | None
 	items_issued_count: int | None
-	items_issued: list | None
-	project_items_issued: list | None
 	quotation_count: int | None
 	salesorder_count: int | None
 	purchaseorder_count: int | None
 	invoice_line_count: int | None
-	third_party_client_id: str | None
-	_refreshresponse: bool | None
-	_isimport: bool | None
-	_isalert: bool | None
-	_novalidate: bool | None
-	is_closure_reminder_closure: bool | None
-	is_slahold_reminder_closure: bool | None
-	_importid: int | None
-	sendtopagerduty: bool | None
-	splunkurl: str | None
-	splunksearch: str | None
 	budgettype_id: int | None
-	budgettype_name: str | None
-	budgets: list | None
-	process_ai: bool | None
-	send_remoteinvite: bool | None
-	invite_emaillist: str | None
-	third_party_call_id: str | None
-	remotetechid: int | None
-	linkremotesession: bool | None
-	remotesessionid: int | None
-	utcoffset: float | None
-	form_id: str | None
-	database_lookup_result: list
-	azure_tenants: str | None
 	azure_tenants_name: str | None
-	_warning: str | None
-	_warning_is_error: str | None
-	close_unassigned: bool | None
 	canbechild: bool | None
-	_changefreeze01_ok: bool | None
-	_maintenance01_ok: bool | None
-	_force: bool | None
-	_ticketclash01_ok: bool | None
-	_milestonedate01_ok: bool | None
-	_ignoremilestonedates: bool | None
 	locked: bool | None
 	has_related: bool | None
 	pagerdutyeragent: int | None
-	elapsed_response_hours: float | None
-	elapsed_resolution_hours: float | None
-	sla_start_date: datetime | None
-	_print_generate: bool | None
-	printhtml: str | None
-	pdf_attachment_id: int | None
-	journeys: list | None
 	devops_agent: str | None
-	_dontupdate_devops: bool | None
-	category_note_1: str | None
-	category_user_note_1: str | None
-	category_include_note_1: bool | None
-	category_itil_1: int | None
-	category_note_2: str | None
-	category_user_note_2: str | None
-	category_include_note_2: bool | None
-	category_itil_2: int | None
-	category_note_3: str | None
-	category_user_note_3: str | None
-	category_include_note_3: bool | None
-	category_itil_3: int | None
-	category_note_4: str | None
-	category_user_note_4: str | None
-	category_include_note_4: bool | None
-	category_itil_4: int | None
 	devops_comment_count: int | None
-	_iszapier: bool | None
-	ncentral_ticketid: str | None
-	_isnotify: bool | None
-	created_from_action_id: int | None
-	created_from_action_name: str | None
-	createacknowledgement: bool | None
 	your_vote: int | None
 	your_vote_comment: str | None
-	donotapplytemplateintheapi: bool | None
-	_create_outstanding_appointments: bool | None
-	_create_outstanding_appointment_email: bool | None
 	scomalertstate: int | None
 	orionalertid: int | None
 	orionalertactiveid: int | None
@@ -585,510 +194,901 @@ class Ticket: #/components/schemas/Faults
 	orionclosestate: int | None
 	orionacknowledgedby: int | None
 	orionacknowledgedate: datetime | None
-	_acknowledgealert: bool | None
 	orionacknowledgenote: str | None
-	orionacknowledgedbyname: str | None
 	orionalertname: str | None
 	servicenow_id: str | None
-	third_party_parent_id: str | None
-	third_party_problem_id: str | None
-	opened_by: str | None
-	resolved_by: str | None
-	sendtosplunkoncall: bool | None
-	splunkoncalltarget: int | None
-	splunkoncalltarget_id: str | None
 	splunkoncall_id: str | None
 	splunkoncallurl: str | None
 	splunkoncallstatus: int | None
 	connectwise_id: int | None
 	connectwise_project_id: int | None
-	prepay_balance_hours: float | None
-	prepay_balance_amount: float | None
 	servicenow_number: str | None
-	parent_ticket_type_name: str | None
-	createdfrom_ticket_type_name: str | None
-	clonedfrom_ticket_type_name: str | None
 	autotask_id: int | None
 	autotask_number: str | None
 	atera_alert_id: int | None
-	syncro_alert_id: int | None
 	laststatuschangestatus: int | None
 	laststatuschangestatusdate: datetime | None
-	mark_as_read_only: bool | None
-	audit_log: list | None
 	meraki_device: str | None
 	meraki_alert_type: str | None
-	matched_rules: list | None
 	powershell_script_count: int | None
 	devops_workitem_count: int | None
 	ninja_alert_id: str | None
 	ninja_device_id: int | None
-	usertype: int | None
-	actionworkflowset: bool | None
 	isbillable: bool | None
 	itemsarebillable: bool | None
-	childrenlefttocreate: bool | None
 	who: str | None
 	resourcetype_id: int | None
-	resourcetype_name: str | None
 	resource_booking_type: int | None
-	resource_booking_timeslot: datetime | None
-	resource_booking_asset: int | None
-	matched_rule_ids: str | None
-	forceruleupdate: bool | None
-	teams_user_id: str | None
-	_isteams: bool | None
 	faultapprovalfailed: bool | None
-	article_description: str | None
-	article_resolution: str | None
-	article_notes: str | None
 	article_type: int | None
-	tags: list | None
-	dontcreatechild: bool | None
-	needcreatechild: bool | None
-	sentinel_id: str | None
-	sentinel_resourcegroup: str | None
-	sentinel_subscriptionid: str | None
-	sentinel_workspace: str | None
-	faultapprovalexists: bool | None
-	_validate_only: bool | None
-	_validation_key: str | None
-	azuremonitor_id: str | None
-	domotz_alertid: int | None
-	domotz_deviceid: int | None
-	domerge: bool | None
-	isnew: bool | None
 	automate_id: int | None
 	device_automate_id: int | None
 	auvik_id: str | None
 	auvik_url: str | None
-	contract_balance: str | None
-	bookingurl: str | None
-	isclone: bool | None
-	clonedfrom: int | None
-	slatimeremaining: float | None
-	customfieldvalidationreason: str | None
-	_has_automations: bool | None
-	chat_count: int | None
-	_dont_update_project_dates: bool | None
-	_dontupdate_jira: bool | None
 	jira_issue_count: int | None
 	call_log_count: int | None
-	sentinel_url: str | None
-	sentinel_display_id: int | None
-	postloggedview: int | None
-	addigy_alert_id: str | None
-	ninja_alert_type: str | None
 	freshdesk_id: int | None
 	external_links: list | None
-	_match_thirdparty_id: str | None
-	_match_integration_id: int | None
-	_match_integration_name: str | None
-	kaseya_agent_id: str | None
-	kaseya_asset_name: str | None
-	salesforce_contactid: str | None
-	salesforce_accountid: str | None
-	salesforce_parentid: str | None
-	salesforce_status: str | None
-	newrelic_id: str | None
-	newrelicincident_id: str | None
-	backup_radar_id: int | None
-	backup_radar_state: int | None
-	linktypesarray: list | None
-	kaseyaid: str | None
 	alluserscanview: int | None
-	_dontupdate_salesforce: bool | None
 	sync_to_salesforce: bool | None
-	salesforce_stage: int | None
-	_newticket_quickclose: bool | None
-	service_request_detail_id: int | None
 	visible_child_tickets: int
-	check_status_freeze: bool | None
 	expenses: list | None
-	clear_feedback: bool | None
-	facebook_message_id: str | None
-	twitter_message_id: int | None
 	ncentral_details_id: int | None
-	requesttype_published_id: str | None
-	chat_key_id: str | None
 	supplier_contact_id: int | None
-	parent_itil_ticket_type: int | None
-	parent_release_note: str | None
-	parent_release_name: str | None
-	parent_release2_name: str | None
-	parent_release3_name: str | None
 	pagerdutyservice: str | None
-	pagerdutyservice_name: str | None
-	_dontupdate_pagerduty: bool | None
-	_dont_fire_automations: bool | None
-	teamsmessage: str | None
-	zoom_default_message: str | None
-	default_teams_chat_name: str | None
-	show_chat_create: bool | None
-	htmlmessage: str | None
 	linked_halo_ticket_count: int | None
-	halolink_ticketid: int | None
-	override_opening_action_who: bool | None
 	whatsappcreatedfromid: str | None
-	unotes: str | None
-	smemo: str | None
-	amemo: str | None
-	_matchintacctclass: bool | None
-	intacct_class: str | None
-	intacct_class_name: str | None
 	sms_override: str | None
-	device_name: str | None
-	milestones: list | None
-	disable_milestone_modification: bool | None
-	email_message_id: str | None
-	seenby: str | None
-	recaptcha_token: str | None
-	resource_booking_site: int | None
-	extratabs: list | None
-	new_approvalprocess_role_id: int | None
-	new_approvalprocess_customfieldid: int | None
-	linked_ecommerce_order_number: str | None
-	linked_ecommerce_order_url: str | None
-	parent_milestones: list | None
-	vectors: list | None
-	ai_matched_tickets: list | None
-	ai_matched_tickets_incidents: list | None
-	ai_matched_tickets_requests: list | None
-	ai_matched_tickets_problems: list | None
-	ai_matched_articles: list | None
-	ai_suggestions: list | None
-	_apply_ai_suggestions: list | None
-	_dismiss_ai_suggestions: list | None
-	suggested_category1: str | None
 	thirdpartyreviewscore: int | None
 	datto_alert_state: int | None
-	forwarded_by: int | None
 	reviewed_date: datetime | None
 	is_sensitive: bool | None
 	contract_schedule_plan_id: int | None
-	instagram_message_id: str | None
-	default_reporter: int | None
-	defaultsendattachments: bool | None
-	devops_key: str | None
-	related_tickets: list | None
-	new_related_tickets: list | None
-	unrelate_from_ticket_id: int | None
-	ecommerce_orders: list | None
 	hide_feedback: bool | None
-	workflow_history: list | None
-	connectwisermm_ticketid: str | None
-	colour_rule: int | None
-	google_reviewdata: list
-	google_questiondata: list
-	original_agent: int | None
-	oppjobtitle: str | None
-	do_lookups: bool | None
-	liongard_system_id: int | None
-	bigpanda_id: str | None
-	contributors: list | None
-	internet_message_id: str | None
-	matching_value: str | None
-	sqlimport_id: int | None
-	respondbydateadjusted: bool | None
-	date_dependencies: list | None
-	new_milestone_ticket: int | None
-	assets_columns: list | None
-	slaresponseexcuse: str | None
-	can_add_cc_followers: bool | None
-	_fromchatprofileid: str | None
-	lapsafe_count: int | None
-	olas: list | None
 	ola_count: int | None
-	new_workflow_history: list | None
-	default_slack_channel_name: str | None
-	show_channel_create: bool | None
-	slack_channel_id: str | None
-	slack_callback_id: str | None
-	ai_suggested_priority: str | None
 	ai_suggested_urgency: int | None
 	ai_suggested_impact: int | None
-	ai_suggested_resolution: str | None
-	ai_generated_summary: str | None
-	ai_search_query: str | None
-	ai_suggested_type: str | None
-	ai_sentiment_analysis: str | None
-	ai_satisfaction_level: str | None
-	ai_tonality: str | None
-	_isagentuser: bool | None
-	ai_survey_score: int | None
-	ai_survey_comment: str | None
-	freshdesk_ticket_data: list
-	freshdesk_group_name: str | None
-	freshdesk_agent_name: str | None
-	freshdesk_agent_email: str | None
-	freshdesk_product_name: str | None
-	matched_kb_id_acessible_to_user: bool | None
-	remotesession_count: int | None
-	search_index_sync_timestamp: datetime | None
-	search_index_sync_batches: int | None
-	new_whe_: datetime | None
-	new_actioncode: int | None
-	notepad: str | None
-	embedding_match_timestamp: datetime | None
-	_re_index: bool | None
-	_fetch_matches: bool | None
-	workflow_move_date_override: datetime | None
-	lookup_search: str | None
-	agent_booking_type: int | None
-	agent_booking: list
-	pandadoc_attachment: int | None
-	pandadoc_attachment_name: str | None
-	pandadoc_attachment_url: str | None
-	thirdparty_url: str | None
-	security_signal_id: str | None
-	datadog_id: str | None
-	ai_conversation_summary: str | None
-	incomingevent_count: int | None
-	azure_connection_id: int | None
-	kblinkid: int | None
-	ticket_client_to_invoice_to_id: int | None
-	ticket_client_to_invoice_to_name: str | None
-	_prevent_outgoing: bool | None
-	dont_copy_history: bool | None
-	user_linked_sites: list | None
-	prepay_threshold: list
-	automation_entity_type: int | None
-	make_automation_entity_inactive: bool | None
-	is_downtime: bool | None
-	add_tags: list | None
-	locked_by_agentid: int | None
-	_forceunlock: bool | None
-	_is_aisuggestion_merge: bool | None
-	service_linked_device: int | None
-	quick_ticket_link_text: str | None
-	_override_child_merge_type: int | None
-	next_review_date: datetime | None
-	kb_pdf_template: int | None
-	kb_pdftemplate_name: str | None
-	template_when_linked: int | None
-	templatewhenlinked_name: str | None
-	statement_of_work_added: bool | None
-	_remove_pipeline_stage: bool | None
-	order_line_price: float | None
-	order_line_composite_key: list
 	_can_view_att: bool | None
 	_can_upload_att: bool | None
 	_can_download_att: bool | None
 	_can_edit_att: bool | None
 	_can_view_action_history: bool | None
-	risk_score: float | None
-	from_catalogue: bool | None
-	enduser_role_ids: list | None
-	order_sequence: int | None
-	order_update_to: int | None
-	order_update_from: int | None
-	workflow_html_to_show_on_progress: str | None
-	requesttype_group_id: int | None
-	is_ai_indexable: bool | None
-	qualifications_matched: str | None
-	hoursinvoiced: float | None
-	_kbduplicate01_ok: bool | None
-	kb_ai_summary: str | None
-	duplicate_kbs: str | None
-	billing_type: int | None
 	table: list
 	use: str | None
 	canbevotedfor: bool | None
-	supplier_reference: str | None
-	top_level_name: str | None
-	deleted_date: datetime | None
-	isbeingclosed: bool | None
-	maximumRestrictedPriority: int | None
-	primary_service_name: str | None
-	idsummary: str | None
-	scomclearance: str | None
-	scomalertid: str | None
-	statusseq: int | None
-	statuscolor: str | None
-	next_appointment_type: int | None
-	account_manager: str | None
-	orionalert: int | None
-	orionnote: str | None
-	orionwho: int | None
-	product_key: str | None
-	rapid7_action_count: str | None
-	rapid7_ticketrrn: str | None
-	rapid7_ticketinvid: str | None
 	ticketage: float | None
-	ninja_id: str | None
-	teams_ticket_icon: str | None
-	lastactiondateteams: str | None
-	priority_name: str | None
 	useful_count: int | None
 	notuseful_count: int | None
-	sitepostcode: str | None
-	mailbox: str | None
-	userdepartments: str | None
 	updateservicestatus: bool | None
 	servicestatusnote: str | None
 	itil_requesttype_id: int | None
-	startdatetime: datetime | None
-	enddatetime: datetime | None
-	closure_agent_id: int | None
-	closed_in_integration_system: bool | None
-	createdfromautomationstdid: int | None
-	created_from_automation_entityid: int | None
 	ticket_tags: str | None
-	status_change_frozen: bool | None
-	approval_status: int | None
-	opp_country_name: str | None
 	opp_region_name: str | None
 	invoiceseperatelyoverride: bool | None
 	purchaseordernumber: str | None
-	overrideticketcost: float | None
-	budgethours: str | None
-	created_by: str | None
-	additional_agents: list | None
-	client_to_invoice_to_id: int | None
-	primary_issue: list
-	primary_workitem: list
-	billing_plan_text: str | None
-	default_appointment_summary: str | None
-	default_appointment_details: str | None
-	agent_signature: str | None
-	customer_signature: str | None
-	new_agent_signature: str | None
-	new_customer_signature: str | None
 	billable_time: float | None
-	invoiceable_time: float | None
-	owning_service: int | None
-	owning_service_name: str | None
 	_open_search_score: int
-	ticket_timezone: str | None
 	reference: str | None
-	_importtypeid: int | None
-	_importthirdpartyid: str | None
-	_importtype: str | None
-	new_external_link: list
-	import_details_id: int | None
-	_isupdateimport: bool | None
+	status_name: str | None = field(default=None)
+	tickettype_name: str | None = field(default=None)
+	agent_name: str | None = field(default=None)
+	categoryid_1: int | None = field(default=None)
+	categoryid_2: int | None = field(default=None)
+	categoryid_3: int | None = field(default=None)
+	categoryid_4: int | None = field(default=None)
+	category_1_display: str | None = field(default=None)
+	category_2_display: str | None = field(default=None)
+	category_3_display: str | None = field(default=None)
+	category_4_display: str | None = field(default=None)
+	projecttimepercentage: float | None = field(default=None)
+	projectcompletionpercentage: float | None = field(default=None)
+	projectearlieststart: datetime | None = field(default=None)
+	projectlatestend: datetime | None = field(default=None)
+	faigeneratedsummary_list: str | None = field(default=None)
+	chargehours: float | None = field(default=None)
+	nonchargehours: float | None = field(default=None)
+	travelhours: float | None = field(default=None)
+	totalmileage: float | None = field(default=None)
+	itemsprice: float | None = field(default=None)
+	items: str | None = field(default=None)
+	parent_id: int | None = field(default=None)
+	child_count_open: int | None = field(default=None)
+	responsedate: datetime | None = field(default=None)
+	first_responsedate: datetime | None = field(default=None)
+	responsestartdate: datetime | None = field(default=None)
+	slaresponsestate: str | None = field(default=None)
+	dateclosed: datetime | None = field(default=None)
+	dateassigned: datetime | None = field(default=None)
+	parentguid: str | None = field(default=None)
+	parentassign: bool | None = field(default=None)
+	slaactiondate: datetime | None = field(default=None)
+	slapercused: float | None = field(default=None)
+	slatimeleft: float | None = field(default=None)
+	currentelapsedhours: float | None = field(default=None)
+	lastchildactiondate: datetime | None = field(default=None)
+	reportedby: str | None = field(default=None)
+	user_email: str | None = field(default=None)
+	emailtolist: str | None = field(default=None)
+	emailtolistsupplier: str | None = field(default=None)
+	emailcclist: str | None = field(default=None)
+	emailcclistsupplier: str | None = field(default=None)
+	release_note: str | None = field(default=None)
+	release_name: str | None = field(default=None)
+	release2_name: str | None = field(default=None)
+	release3_name: str | None = field(default=None)
+	child_ticket_id_string: str | None = field(default=None)
+	asset_key_field_string: str | None = field(default=None)
+	asset_type_name: str | None = field(default=None)
+	workflow_stage: str | None = field(default=None)
+	workflow_stage_id: int | None = field(default=None)
+	workflow_stage_number: str | None = field(default=None)
+	child_ticket_ids: list | None = field(default=None)
+	nextactivitydate: datetime | None = field(default=None)
+	nextactivityorappointmentdate: datetime | None = field(default=None)
+	inventory_number: str | None = field(default=None)
+	workflow_seq: int | None = field(default=None)
+	pipeline_stage_name: str | None = field(default=None)
+	hasbeenclosed: bool | None = field(default=None)
+	unread_child_action_count: int | None = field(default=None)
+	unread_related_action_count: int | None = field(default=None)
+	child_action_count: int | None = field(default=None)
+	parent_subject: str | None = field(default=None)
+	related_action_count: int | None = field(default=None)
+	startdate: datetime | None = field(default=None)
+	startdate_timezone: str | None = field(default=None)
+	startdate_with_timezone: list | None = field(default=None)
+	targetdate_timezone: str | None = field(default=None)
+	targetdate_with_timezone: list | None = field(default=None)
+	targetpercused: float | None = field(default=None)
+	targettimeleft: float | None = field(default=None)
+	followupdate: datetime | None = field(default=None)
+	oppcontactname: str | None = field(default=None)
+	oppcompanyname: str | None = field(default=None)
+	oppemailaddress: str | None = field(default=None)
+	oppcustomertitle: str | None = field(default=None)
+	opptel: str | None = field(default=None)
+	oppaddr1: str | None = field(default=None)
+	oppaddr2: str | None = field(default=None)
+	oppaddr3: str | None = field(default=None)
+	oppaddr4: str | None = field(default=None)
+	opppostcode: str | None = field(default=None)
+	opptype: str | None = field(default=None)
+	oppvalue: float | None = field(default=None)
+	oppvalue_monthly: float | None = field(default=None)
+	oppvalue_annual: float | None = field(default=None)
+	oppvalue_oneoff: float | None = field(default=None)
+	oppconversionprobability: float | None = field(default=None)
+	oppprofit: float | None = field(default=None)
+	oppcurrentsystem: str | None = field(default=None)
+	oppcompetitors: str | None = field(default=None)
+	opptrialdate: datetime | None = field(default=None)
+	oppdemodate: datetime | None = field(default=None)
+	oppdiscountdate: datetime | None = field(default=None)
+	oppattemptsmade: int | None = field(default=None)
+	oppconverteddate: datetime | None = field(default=None)
+	oppproductchosen: str | None = field(default=None)
+	oppreason: str | None = field(default=None)
+	opphear: str | None = field(default=None)
+	opptimezonename: str | None = field(default=None)
+	oppclosurecategory: int | None = field(default=None)
+	projecttimebudget: float | None = field(default=None)
+	projectmoneybudget: float | None = field(default=None)
+	projecttimeactual: float | None = field(default=None)
+	projectmoneyactual: float | None = field(default=None)
+	lastnote: str | None = field(default=None)
+	releasenotegroup_name: str | None = field(default=None)
+	third_party_id: int | None = field(default=None)
+	third_party_id_string: str | None = field(default=None)
+	contract_refextra: str | None = field(default=None)
+	timeentries: list | None = field(default=None)
+	itilname: str | None = field(default=None)
+	related_service_descriptions: str | None = field(default=None)
+	related_businessapps_descriptions: str | None = field(default=None)
+	related_service_category_names: str | None = field(default=None)
+	appointment_id: int | None = field(default=None)
+	nextappointmentdate: datetime | None = field(default=None)
+	firstname: str | None = field(default=None)
+	lastname: str | None = field(default=None)
+	connectedinstance_id: int | None = field(default=None)
+	web_url: str | None = field(default=None)
+	api_url: str | None = field(default=None)
+	action_number: int | None = field(default=None)
+	action_ticket_id: int | None = field(default=None)
+	action_datetime: datetime | None = field(default=None)
+	action_outcome: str | None = field(default=None)
+	action_chargerate: str | None = field(default=None)
+	action_contract_ref: str | None = field(default=None)
+	action_note: str | None = field(default=None)
+	ticket_invoices_for_each_site: bool | None = field(default=None)
+	salesorder_id: int | None = field(default=None)
+	orderhead_id: int | None = field(default=None)
+	budgettype: str | None = field(default=None)
+	requesttype_name: str | None = field(default=None)
+	recalculate_billing: bool | None = field(default=None)
+	supplier_id: int | None = field(default=None)
+	pr_id: int | None = field(default=None)
+	branch_id: int | None = field(default=None)
+	branch_name: str | None = field(default=None)
+	update_milestone_id: int | None = field(default=None)
+	milestone_id: int | None = field(default=None)
+	milestone_name: str | None = field(default=None)
+	milestone_billing_type: int | None = field(default=None)
+	milestone_value: float | None = field(default=None)
+	milestone_sequence: int | None = field(default=None)
+	milestone_status: int | None = field(default=None)
+	milestone_startdate: datetime | None = field(default=None)
+	milestone_enddate: datetime | None = field(default=None)
+	colour: str | None = field(default=None)
+	action_agent_name: str | None = field(default=None)
+	reassigncount: int | None = field(default=None)
+	parent_status: int | None = field(default=None)
+	parent_agent: int | None = field(default=None)
+	child_status: int | None = field(default=None)
+	date_fully_closed: datetime | None = field(default=None)
+	lastaction_chargerate: str | None = field(default=None)
+	hover_summary: str | None = field(default=None)
+	slatimeelapsed: float | None = field(default=None)
+	ai_summary: str | None = field(default=None)
+	search_score: float | None = field(default=None)
+	main_project_id: int | None = field(default=None)
+	is_maintenance: bool | None = field(default=None)
+	phonenumber: str | None = field(default=None)
+	createdfrom_summary: str | None = field(default=None)
+	clonedfrom_id: int | None = field(default=None)
+	clonedfrom_summary: str | None = field(default=None)
+	closure_note: str | None = field(default=None)
+	closure_note_html: str | None = field(default=None)
+	closure_time: float | None = field(default=None)
+	customer_relationships: str | None = field(default=None)
+	asset_number: int | None = field(default=None)
+	asset_site: int | None = field(default=None)
+	slastate: str | None = field(default=None)
+	slaexcuse: str | None = field(default=None)
+	client_reference: str | None = field(default=None)
+	supplier_slaexcuse: str | None = field(default=None)
+	supplier_date: datetime | None = field(default=None)
+	supplier_contract_ref: str | None = field(default=None)
+	supplier_sla_id: int | None = field(default=None)
+	supplier_priority_id: int | None = field(default=None)
+	supplier_responsestate: str | None = field(default=None)
+	supplier_responsedate: datetime | None = field(default=None)
+	supplier_responsetime: float | None = field(default=None)
+	supplier_respondbydate: datetime | None = field(default=None)
+	supplier_slastate: str | None = field(default=None)
+	supplier_slatimeelapsed: float | None = field(default=None)
+	supplier_dateclosed: datetime | None = field(default=None)
+	supplier_fixbydate: datetime | None = field(default=None)
+	changestate: str | None = field(default=None)
+	approvedby: int | None = field(default=None)
+	satisfactionlevel: int | None = field(default=None)
+	satisfactioncomment: str | None = field(default=None)
+	invoicenumber: str | None = field(default=None)
+	invoicenote: str | None = field(default=None)
+	invoicedate: datetime | None = field(default=None)
+	invoicepaiddate: datetime | None = field(default=None)
+	nonbillable_time: float | None = field(default=None)
+	mileage: float | None = field(default=None)
+	planneddate: datetime | None = field(default=None)
+	ccaddress: str | None = field(default=None)
+	responsetime: float | None = field(default=None)
+	first_responsetime: float | None = field(default=None)
+	alsoinform: str | None = field(default=None)
+	justification: str | None = field(default=None)
+	service_id: int | None = field(default=None)
+	isparentservice: bool | None = field(default=None)
+	planneddateend: datetime | None = field(default=None)
+	currentfaactionnumber: int | None = field(default=None)
+	approval_process_step: int | None = field(default=None)
+	approval_cab_name: str | None = field(default=None)
+	approval_process_id: int | None = field(default=None)
+	faultcodeopen: int | None = field(default=None)
+	faultcode: int | None = field(default=None)
+	laststatus3rdparty: int | None = field(default=None)
+	deliverycontact: str | None = field(default=None)
+	delivery_address: list | None = field(default=None)
+	causedby: int | None = field(default=None)
+	messsentlast: str | None = field(default=None)
+	unapprovedchangestatus: int | None = field(default=None)
+	lastrecurringemailsentdate: datetime | None = field(default=None)
+	template_id: int | None = field(default=None)
+	template_name: str | None = field(default=None)
+	child_template_id: int | None = field(default=None)
+	slaholdreminderdatelastemailed: datetime | None = field(default=None)
+	closurereminderdatelastemailed: datetime | None = field(default=None)
+	assetstring: str | None = field(default=None)
+	alerttype: str | None = field(default=None)
+	emaildisplayname: str | None = field(default=None)
+	emailpriority: int | None = field(default=None)
+	gfialerttype: str | None = field(default=None)
+	quotedescription: str | None = field(default=None)
+	quotelabouramount: float | None = field(default=None)
+	quotepriority: int | None = field(default=None)
+	budgetcode: int | None = field(default=None)
+	actualcost: float | None = field(default=None)
+	invoicestatus: int | None = field(default=None)
+	invoicedescription: str | None = field(default=None)
+	invoicelabouramount: float | None = field(default=None)
+	invoicematerialsamount: float | None = field(default=None)
+	firsttimefix: int | None = field(default=None)
+	quotematerialsamount: float | None = field(default=None)
+	ukasaccredited: bool | None = field(default=None)
+	labno: str | None = field(default=None)
+	twitterscreenname: str | None = field(default=None)
+	twitterid: int | None = field(default=None)
+	facebook_id: str | None = field(default=None)
+	fixbydateadjusted: bool | None = field(default=None)
+	alternativecontactno: str | None = field(default=None)
+	operationalserviceid: int | None = field(default=None)
+	requestdetailsprinted: bool | None = field(default=None)
+	serviceformprinted: bool | None = field(default=None)
+	auditnote: str | None = field(default=None)
+	auditfaileddate: datetime | None = field(default=None)
+	auditfailednote: str | None = field(default=None)
+	userrequestedapprover: int | None = field(default=None)
+	pagerdutyurl: str | None = field(default=None)
+	pagerdutyincidentid: str | None = field(default=None)
+	opportunity_third_party_url: str | None = field(default=None)
+	pr_link: str | None = field(default=None)
+	github_repository: str | None = field(default=None)
+	component_name: str | None = field(default=None)
+	version_name: str | None = field(default=None)
+	contract_ref: str | None = field(default=None)
+	billing_address: list | None = field(default=None)
+	lessonslearned: str | None = field(default=None)
+	lastbugzillasync: datetime | None = field(default=None)
+	sapid: str | None = field(default=None)
+	sapattachmentsuuid: str | None = field(default=None)
+	matched_rule_name: str | None = field(default=None)
+	matched_rule_dont_show_notification: bool | None = field(default=None)
+	asset_type: int | None = field(default=None)
+	roadmapnote: str | None = field(default=None)
+	sendack: bool | None = field(default=None)
+	newaction_emailfrom_address_override: str | None = field(default=None)
+	_mustupdateticketuser: bool | None = field(default=None)
+	_spam: bool | None = field(default=None)
+	_spamblock: bool | None = field(default=None)
+	users_name: str | None = field(default=None)
+	sibling_count_open: int | None = field(default=None)
+	parent_summary: str | None = field(default=None)
+	parent_status_name: str | None = field(default=None)
+	new_approvalprocess: int | None = field(default=None)
+	new_approvalprocess_agent_id: int | None = field(default=None)
+	new_approvalprocess_user_id: int | None = field(default=None)
+	new_approvalprocess_email: str | None = field(default=None)
+	new_approvalprocess_cab_id: int | None = field(default=None)
+	approvers: list | None = field(default=None)
+	approvers_history: list | None = field(default=None)
+	create_article: bool | None = field(default=None)
+	qualifications: list | None = field(default=None)
+	target_adjust: int | None = field(default=None)
+	start_adjust: int | None = field(default=None)
+	dont_do_rules: bool | None = field(default=None)
+	dont_do_databaselookups: bool | None = field(default=None)
+	apply_rules: bool | None = field(default=None)
+	apply_this_rule: int | None = field(default=None)
+	_forcereassign: bool | None = field(default=None)
+	_appointment01_ok: bool | None = field(default=None)
+	_agent01_ok: bool | None = field(default=None)
+	_agent02_ok: bool | None = field(default=None)
+	_asset01_ok: bool | None = field(default=None)
+	return_this: bool | None = field(default=None)
+	_validate_form: bool | None = field(default=None)
+	_validate_updates: bool | None = field(default=None)
+	attachments: list | None = field(default=None)
+	documents: list | None = field(default=None)
+	popup_notes: list | None = field(default=None)
+	current_action_type: str | None = field(default=None)
+	current_action_name: str | None = field(default=None)
+	_ispreview: bool | None = field(default=None)
+	assets: list | None = field(default=None)
+	nochangesequpdate: bool | None = field(default=None)
+	_reclose: bool | None = field(default=None)
+	_reclose_oid: int | None = field(default=None)
+	_recover: bool | None = field(default=None)
+	contact_address: list | None = field(default=None)
+	chat_id: int | None = field(default=None)
+	actioncode: int | None = field(default=None)
+	clone_count: int | None = field(default=None)
+	copy_milestone: bool | None = field(default=None)
+	todo_list: list | None = field(default=None)
+	unsubscribedfromserviceid: int | None = field(default=None)
+	items_issued: list | None = field(default=None)
+	project_items_issued: list | None = field(default=None)
+	third_party_client_id: str | None = field(default=None)
+	_refreshresponse: bool | None = field(default=None)
+	_isimport: bool | None = field(default=None)
+	_isalert: bool | None = field(default=None)
+	_novalidate: bool | None = field(default=None)
+	is_closure_reminder_closure: bool | None = field(default=None)
+	is_slahold_reminder_closure: bool | None = field(default=None)
+	_importid: int | None = field(default=None)
+	sendtopagerduty: bool | None = field(default=None)
+	splunkurl: str | None = field(default=None)
+	splunksearch: str | None = field(default=None)
+	budgettype_name: str | None = field(default=None)
+	budgets: list | None = field(default=None)
+	process_ai: bool | None = field(default=None)
+	send_remoteinvite: bool | None = field(default=None)
+	invite_emaillist: str | None = field(default=None)
+	third_party_call_id: str | None = field(default=None)
+	remotetechid: int | None = field(default=None)
+	linkremotesession: bool | None = field(default=None)
+	remotesessionid: int | None = field(default=None)
+	utcoffset: float | None = field(default=None)
+	form_id: str | None = field(default=None)
+	database_lookup_result: list | None = field(default=None)
+	azure_tenants: str | None = field(default=None)
+	_warning: str | None = field(default=None)
+	_warning_is_error: str | None = field(default=None)
+	close_unassigned: bool | None = field(default=None)
+	_changefreeze01_ok: bool | None = field(default=None)
+	_maintenance01_ok: bool | None = field(default=None)
+	_force: bool | None = field(default=None)
+	_ticketclash01_ok: bool | None = field(default=None)
+	_milestonedate01_ok: bool | None = field(default=None)
+	_ignoremilestonedates: bool | None = field(default=None)
+	elapsed_response_hours: float | None = field(default=None)
+	elapsed_resolution_hours: float | None = field(default=None)
+	sla_start_date: datetime | None = field(default=None)
+	_print_generate: bool | None = field(default=None)
+	printhtml: str | None = field(default=None)
+	pdf_attachment_id: int | None = field(default=None)
+	journeys: list | None = field(default=None)
+	_dontupdate_devops: bool | None = field(default=None)
+	category_note_1: str | None = field(default=None)
+	category_user_note_1: str | None = field(default=None)
+	category_include_note_1: bool | None = field(default=None)
+	category_itil_1: int | None = field(default=None)
+	category_note_2: str | None = field(default=None)
+	category_user_note_2: str | None = field(default=None)
+	category_include_note_2: bool | None = field(default=None)
+	category_itil_2: int | None = field(default=None)
+	category_note_3: str | None = field(default=None)
+	category_user_note_3: str | None = field(default=None)
+	category_include_note_3: bool | None = field(default=None)
+	category_itil_3: int | None = field(default=None)
+	category_note_4: str | None = field(default=None)
+	category_user_note_4: str | None = field(default=None)
+	category_include_note_4: bool | None = field(default=None)
+	category_itil_4: int | None = field(default=None)
+	_iszapier: bool | None = field(default=None)
+	ncentral_ticketid: str | None = field(default=None)
+	_isnotify: bool | None = field(default=None)
+	created_from_action_id: int | None = field(default=None)
+	created_from_action_name: str | None = field(default=None)
+	createacknowledgement: bool | None = field(default=None)
+	donotapplytemplateintheapi: bool | None = field(default=None)
+	_create_outstanding_appointments: bool | None = field(default=None)
+	_create_outstanding_appointment_email: bool | None = field(default=None)
+	_acknowledgealert: bool | None = field(default=None)
+	orionacknowledgedbyname: str | None = field(default=None)
+	third_party_parent_id: str | None = field(default=None)
+	third_party_problem_id: str | None = field(default=None)
+	opened_by: str | None = field(default=None)
+	resolved_by: str | None = field(default=None)
+	sendtosplunkoncall: bool | None = field(default=None)
+	splunkoncalltarget: int | None = field(default=None)
+	splunkoncalltarget_id: str | None = field(default=None)
+	prepay_balance_hours: float | None = field(default=None)
+	prepay_balance_amount: float | None = field(default=None)
+	parent_ticket_type_name: str | None = field(default=None)
+	createdfrom_ticket_type_name: str | None = field(default=None)
+	clonedfrom_ticket_type_name: str | None = field(default=None)
+	syncro_alert_id: int | None = field(default=None)
+	mark_as_read_only: bool | None = field(default=None)
+	audit_log: list | None = field(default=None)
+	matched_rules: list | None = field(default=None)
+	usertype: int | None = field(default=None)
+	actionworkflowset: bool | None = field(default=None)
+	childrenlefttocreate: bool | None = field(default=None)
+	resourcetype_name: str | None = field(default=None)
+	resource_booking_timeslot: datetime | None = field(default=None)
+	resource_booking_asset: int | None = field(default=None)
+	matched_rule_ids: str | None = field(default=None)
+	forceruleupdate: bool | None = field(default=None)
+	teams_user_id: str | None = field(default=None)
+	_isteams: bool | None = field(default=None)
+	article_description: str | None = field(default=None)
+	article_resolution: str | None = field(default=None)
+	article_notes: str | None = field(default=None)
+	tags: list | None = field(default=None)
+	dontcreatechild: bool | None = field(default=None)
+	needcreatechild: bool | None = field(default=None)
+	sentinel_id: str | None = field(default=None)
+	sentinel_resourcegroup: str | None = field(default=None)
+	sentinel_subscriptionid: str | None = field(default=None)
+	sentinel_workspace: str | None = field(default=None)
+	faultapprovalexists: bool | None = field(default=None)
+	_validate_only: bool | None = field(default=None)
+	_validation_key: str | None = field(default=None)
+	azuremonitor_id: str | None = field(default=None)
+	domotz_alertid: int | None = field(default=None)
+	domotz_deviceid: int | None = field(default=None)
+	domerge: bool | None = field(default=None)
+	isnew: bool | None = field(default=None)
+	contract_balance: str | None = field(default=None)
+	bookingurl: str | None = field(default=None)
+	isclone: bool | None = field(default=None)
+	clonedfrom: int | None = field(default=None)
+	slatimeremaining: float | None = field(default=None)
+	customfieldvalidationreason: str | None = field(default=None)
+	_has_automations: bool | None = field(default=None)
+	chat_count: int | None = field(default=None)
+	_dont_update_project_dates: bool | None = field(default=None)
+	_dontupdate_jira: bool | None = field(default=None)
+	sentinel_url: str | None = field(default=None)
+	sentinel_display_id: int | None = field(default=None)
+	postloggedview: int | None = field(default=None)
+	addigy_alert_id: str | None = field(default=None)
+	ninja_alert_type: str | None = field(default=None)
+	_match_thirdparty_id: str | None = field(default=None)
+	_match_integration_id: int | None = field(default=None)
+	_match_integration_name: str | None = field(default=None)
+	kaseya_agent_id: str | None = field(default=None)
+	kaseya_asset_name: str | None = field(default=None)
+	salesforce_contactid: str | None = field(default=None)
+	salesforce_accountid: str | None = field(default=None)
+	salesforce_parentid: str | None = field(default=None)
+	salesforce_status: str | None = field(default=None)
+	newrelic_id: str | None = field(default=None)
+	newrelicincident_id: str | None = field(default=None)
+	backup_radar_id: int | None = field(default=None)
+	backup_radar_state: int | None = field(default=None)
+	linktypesarray: list | None = field(default=None)
+	kaseyaid: str | None = field(default=None)
+	_dontupdate_salesforce: bool | None = field(default=None)
+	salesforce_stage: int | None = field(default=None)
+	_newticket_quickclose: bool | None = field(default=None)
+	service_request_detail_id: int | None = field(default=None)
+	check_status_freeze: bool | None = field(default=None)
+	clear_feedback: bool | None = field(default=None)
+	facebook_message_id: str | None = field(default=None)
+	twitter_message_id: int | None = field(default=None)
+	requesttype_published_id: str | None = field(default=None)
+	chat_key_id: str | None = field(default=None)
+	parent_itil_ticket_type: int | None = field(default=None)
+	parent_release_note: str | None = field(default=None)
+	parent_release_name: str | None = field(default=None)
+	parent_release2_name: str | None = field(default=None)
+	parent_release3_name: str | None = field(default=None)
+	pagerdutyservice_name: str | None = field(default=None)
+	_dontupdate_pagerduty: bool | None = field(default=None)
+	_dont_fire_automations: bool | None = field(default=None)
+	teamsmessage: str | None = field(default=None)
+	zoom_default_message: str | None = field(default=None)
+	default_teams_chat_name: str | None = field(default=None)
+	show_chat_create: bool | None = field(default=None)
+	htmlmessage: str | None = field(default=None)
+	halolink_ticketid: int | None = field(default=None)
+	override_opening_action_who: bool | None = field(default=None)
+	unotes: str | None = field(default=None)
+	smemo: str | None = field(default=None)
+	amemo: str | None = field(default=None)
+	_matchintacctclass: bool | None = field(default=None)
+	intacct_class: str | None = field(default=None)
+	intacct_class_name: str | None = field(default=None)
+	device_name: str | None = field(default=None)
+	milestones: list | None = field(default=None)
+	disable_milestone_modification: bool | None = field(default=None)
+	email_message_id: str | None = field(default=None)
+	seenby: str | None = field(default=None)
+	recaptcha_token: str | None = field(default=None)
+	resource_booking_site: int | None = field(default=None)
+	extratabs: list | None = field(default=None)
+	new_approvalprocess_role_id: int | None = field(default=None)
+	new_approvalprocess_customfieldid: int | None = field(default=None)
+	linked_ecommerce_order_number: str | None = field(default=None)
+	linked_ecommerce_order_url: str | None = field(default=None)
+	parent_milestones: list | None = field(default=None)
+	vectors: list | None = field(default=None)
+	ai_matched_tickets: list | None = field(default=None)
+	ai_matched_tickets_incidents: list | None = field(default=None)
+	ai_matched_tickets_requests: list | None = field(default=None)
+	ai_matched_tickets_problems: list | None = field(default=None)
+	ai_matched_articles: list | None = field(default=None)
+	ai_suggestions: list | None = field(default=None)
+	_apply_ai_suggestions: list | None = field(default=None)
+	_dismiss_ai_suggestions: list | None = field(default=None)
+	suggested_category1: str | None = field(default=None)
+	forwarded_by: int | None = field(default=None)
+	instagram_message_id: str | None = field(default=None)
+	default_reporter: int | None = field(default=None)
+	defaultsendattachments: bool | None = field(default=None)
+	devops_key: str | None = field(default=None)
+	related_tickets: list | None = field(default=None)
+	new_related_tickets: list | None = field(default=None)
+	unrelate_from_ticket_id: int | None = field(default=None)
+	ecommerce_orders: list | None = field(default=None)
+	workflow_history: list | None = field(default=None)
+	connectwisermm_ticketid: str | None = field(default=None)
+	colour_rule: int | None = field(default=None)
+	google_reviewdata: list | None = field(default=None)
+	google_questiondata: list | None = field(default=None)
+	original_agent: int | None = field(default=None)
+	oppjobtitle: str | None = field(default=None)
+	do_lookups: bool | None = field(default=None)
+	liongard_system_id: int | None = field(default=None)
+	bigpanda_id: str | None = field(default=None)
+	contributors: list | None = field(default=None)
+	internet_message_id: str | None = field(default=None)
+	matching_value: str | None = field(default=None)
+	sqlimport_id: int | None = field(default=None)
+	respondbydateadjusted: bool | None = field(default=None)
+	date_dependencies: list | None = field(default=None)
+	new_milestone_ticket: int | None = field(default=None)
+	assets_columns: list | None = field(default=None)
+	slaresponseexcuse: str | None = field(default=None)
+	can_add_cc_followers: bool | None = field(default=None)
+	_fromchatprofileid: str | None = field(default=None)
+	lapsafe_count: int | None = field(default=None)
+	olas: list | None = field(default=None)
+	new_workflow_history: list | None = field(default=None)
+	default_slack_channel_name: str | None = field(default=None)
+	show_channel_create: bool | None = field(default=None)
+	slack_channel_id: str | None = field(default=None)
+	slack_callback_id: str | None = field(default=None)
+	ai_suggested_priority: str | None = field(default=None)
+	ai_suggested_resolution: str | None = field(default=None)
+	ai_generated_summary: str | None = field(default=None)
+	ai_search_query: str | None = field(default=None)
+	ai_suggested_type: str | None = field(default=None)
+	ai_sentiment_analysis: str | None = field(default=None)
+	ai_satisfaction_level: str | None = field(default=None)
+	ai_tonality: str | None = field(default=None)
+	_isagentuser: bool | None = field(default=None)
+	ai_survey_score: int | None = field(default=None)
+	ai_survey_comment: str | None = field(default=None)
+	freshdesk_ticket_data: list | None = field(default=None)
+	freshdesk_group_name: str | None = field(default=None)
+	freshdesk_agent_name: str | None = field(default=None)
+	freshdesk_agent_email: str | None = field(default=None)
+	freshdesk_product_name: str | None = field(default=None)
+	matched_kb_id_acessible_to_user: bool | None = field(default=None)
+	remotesession_count: int | None = field(default=None)
+	search_index_sync_timestamp: datetime | None = field(default=None)
+	search_index_sync_batches: int | None = field(default=None)
+	new_whe_: datetime | None = field(default=None)
+	new_actioncode: int | None = field(default=None)
+	notepad: str | None = field(default=None)
+	embedding_match_timestamp: datetime | None = field(default=None)
+	_re_index: bool | None = field(default=None)
+	_fetch_matches: bool | None = field(default=None)
+	workflow_move_date_override: datetime | None = field(default=None)
+	lookup_search: str | None = field(default=None)
+	agent_booking_type: int | None = field(default=None)
+	agent_booking: list | None = field(default=None)
+	pandadoc_attachment: int | None = field(default=None)
+	pandadoc_attachment_name: str | None = field(default=None)
+	pandadoc_attachment_url: str | None = field(default=None)
+	thirdparty_url: str | None = field(default=None)
+	security_signal_id: str | None = field(default=None)
+	datadog_id: str | None = field(default=None)
+	ai_conversation_summary: str | None = field(default=None)
+	incomingevent_count: int | None = field(default=None)
+	azure_connection_id: int | None = field(default=None)
+	kblinkid: int | None = field(default=None)
+	ticket_client_to_invoice_to_id: int | None = field(default=None)
+	ticket_client_to_invoice_to_name: str | None = field(default=None)
+	_prevent_outgoing: bool | None = field(default=None)
+	dont_copy_history: bool | None = field(default=None)
+	user_linked_sites: list | None = field(default=None)
+	prepay_threshold: list | None = field(default=None)
+	automation_entity_type: int | None = field(default=None)
+	make_automation_entity_inactive: bool | None = field(default=None)
+	is_downtime: bool | None = field(default=None)
+	add_tags: list | None = field(default=None)
+	locked_by_agentid: int | None = field(default=None)
+	_forceunlock: bool | None = field(default=None)
+	_is_aisuggestion_merge: bool | None = field(default=None)
+	service_linked_device: int | None = field(default=None)
+	quick_ticket_link_text: str | None = field(default=None)
+	_override_child_merge_type: int | None = field(default=None)
+	next_review_date: datetime | None = field(default=None)
+	kb_pdf_template: int | None = field(default=None)
+	kb_pdftemplate_name: str | None = field(default=None)
+	template_when_linked: int | None = field(default=None)
+	templatewhenlinked_name: str | None = field(default=None)
+	statement_of_work_added: bool | None = field(default=None)
+	_remove_pipeline_stage: bool | None = field(default=None)
+	order_line_price: float | None = field(default=None)
+	order_line_composite_key: list | None = field(default=None)
+	risk_score: float | None = field(default=None)
+	from_catalogue: bool | None = field(default=None)
+	enduser_role_ids: list | None = field(default=None)
+	order_sequence: int | None = field(default=None)
+	order_update_to: int | None = field(default=None)
+	order_update_from: int | None = field(default=None)
+	workflow_html_to_show_on_progress: str | None = field(default=None)
+	requesttype_group_id: int | None = field(default=None)
+	is_ai_indexable: bool | None = field(default=None)
+	qualifications_matched: str | None = field(default=None)
+	hoursinvoiced: float | None = field(default=None)
+	_kbduplicate01_ok: bool | None = field(default=None)
+	kb_ai_summary: str | None = field(default=None)
+	duplicate_kbs: str | None = field(default=None)
+	billing_type: int | None = field(default=None)
+	supplier_reference: str | None = field(default=None)
+	top_level_name: str | None = field(default=None)
+	deleted_date: datetime | None = field(default=None)
+	isbeingclosed: bool | None = field(default=None)
+	maximumRestrictedPriority: int | None = field(default=None)
+	primary_service_name: str | None = field(default=None)
+	idsummary: str | None = field(default=None)
+	scomclearance: str | None = field(default=None)
+	scomalertid: str | None = field(default=None)
+	statusseq: int | None = field(default=None)
+	statuscolor: str | None = field(default=None)
+	next_appointment_type: int | None = field(default=None)
+	account_manager: str | None = field(default=None)
+	orionalert: int | None = field(default=None)
+	orionnote: str | None = field(default=None)
+	orionwho: int | None = field(default=None)
+	product_key: str | None = field(default=None)
+	rapid7_action_count: str | None = field(default=None)
+	rapid7_ticketrrn: str | None = field(default=None)
+	rapid7_ticketinvid: str | None = field(default=None)
+	ninja_id: str | None = field(default=None)
+	teams_ticket_icon: str | None = field(default=None)
+	lastactiondateteams: str | None = field(default=None)
+	priority_name: str | None = field(default=None)
+	sitepostcode: str | None = field(default=None)
+	mailbox: str | None = field(default=None)
+	userdepartments: str | None = field(default=None)
+	startdatetime: datetime | None = field(default=None)
+	enddatetime: datetime | None = field(default=None)
+	closure_agent_id: int | None = field(default=None)
+	closed_in_integration_system: bool | None = field(default=None)
+	createdfromautomationstdid: int | None = field(default=None)
+	created_from_automation_entityid: int | None = field(default=None)
+	status_change_frozen: bool | None = field(default=None)
+	approval_status: int | None = field(default=None)
+	opp_country_name: str | None = field(default=None)
+	overrideticketcost: float | None = field(default=None)
+	budgethours: str | None = field(default=None)
+	created_by: str | None = field(default=None)
+	additional_agents: list | None = field(default=None)
+	client_to_invoice_to_id: int | None = field(default=None)
+	primary_issue: list | None = field(default=None)
+	primary_workitem: list | None = field(default=None)
+	billing_plan_text: str | None = field(default=None)
+	default_appointment_summary: str | None = field(default=None)
+	default_appointment_details: str | None = field(default=None)
+	agent_signature: str | None = field(default=None)
+	customer_signature: str | None = field(default=None)
+	new_agent_signature: str | None = field(default=None)
+	new_customer_signature: str | None = field(default=None)
+	invoiceable_time: float | None = field(default=None)
+	owning_service: int | None = field(default=None)
+	owning_service_name: str | None = field(default=None)
+	ticket_timezone: str | None = field(default=None)
+	_importtypeid: int | None = field(default=None)
+	_importthirdpartyid: str | None = field(default=None)
+	_importtype: str | None = field(default=None)
+	new_external_link: list | None = field(default=None)
+	import_details_id: int | None = field(default=None)
+	_isupdateimport: bool | None = field(default=None)
 
 	def __post_init__(self):
 		if self.dateoccurred:
-			self.dateoccurred = datetime.strptime(self.dateoccurred, "%Y-%m-%dT%H:%M:%S")
+			self.dateoccurred = datetime.fromisoformat(self.dateoccurred)
 		if self.projectearlieststart:
-			self.projectearlieststart = datetime.strptime(self.projectearlieststart, "%Y-%m-%dT%H:%M:%S")
+			self.projectearlieststart = datetime.fromisoformat(self.projectearlieststart)
 		if self.projectlatestend:
-			self.projectlatestend = datetime.strptime(self.projectlatestend, "%Y-%m-%dT%H:%M:%S")
+			self.projectlatestend = datetime.fromisoformat(self.projectlatestend)
 		if self.respondbydate:
-			self.respondbydate = datetime.strptime(self.respondbydate, "%Y-%m-%dT%H:%M:%S")
+			self.respondbydate = datetime.fromisoformat(self.respondbydate)
 		if self.responsedate:
-			self.responsedate = datetime.strptime(self.responsedate, "%Y-%m-%dT%H:%M:%S")
+			self.responsedate = datetime.fromisoformat(self.responsedate)
 		if self.first_responsedate:
-			self.first_responsedate = datetime.strptime(self.first_responsedate, "%Y-%m-%dT%H:%M:%S")
+			self.first_responsedate = datetime.fromisoformat(self.first_responsedate)
 		if self.responsestartdate:
-			self.responsestartdate = datetime.strptime(self.responsestartdate, "%Y-%m-%dT%H:%M:%S")
+			self.responsestartdate = datetime.fromisoformat(self.responsestartdate)
 		if self.fixbydate:
-			self.fixbydate = datetime.strptime(self.fixbydate, "%Y-%m-%dT%H:%M:%S")
+			self.fixbydate = datetime.fromisoformat(self.fixbydate)
 		if self.dateclosed:
-			self.dateclosed = datetime.strptime(self.dateclosed, "%Y-%m-%dT%H:%M:%S")
+			self.dateclosed = datetime.fromisoformat(self.dateclosed)
 		if self.dateassigned:
-			self.dateassigned = datetime.strptime(self.dateassigned, "%Y-%m-%dT%H:%M:%S")
+			self.dateassigned = datetime.fromisoformat(self.dateassigned)
 		if self.slaactiondate:
-			self.slaactiondate = datetime.strptime(self.slaactiondate, "%Y-%m-%dT%H:%M:%S")
+			self.slaactiondate = datetime.fromisoformat(self.slaactiondate)
 		if self.lastactiondate:
-			self.lastactiondate = datetime.strptime(self.lastactiondate, "%Y-%m-%dT%H:%M:%S")
+			self.lastactiondate = datetime.fromisoformat(self.lastactiondate)
 		if self.last_update:
-			self.last_update = datetime.strptime(self.last_update, "%Y-%m-%dT%H:%M:%S")
+			self.last_update = datetime.fromisoformat(self.last_update)
 		if self.lastchildactiondate:
-			self.lastchildactiondate = datetime.strptime(self.lastchildactiondate, "%Y-%m-%dT%H:%M:%S")
+			self.lastchildactiondate = datetime.fromisoformat(self.lastchildactiondate)
 		if self.lastincomingemail:
-			self.lastincomingemail = datetime.strptime(self.lastincomingemail, "%Y-%m-%dT%H:%M:%S")
+			self.lastincomingemail = datetime.fromisoformat(self.lastincomingemail)
 		if self.nextactivitydate:
-			self.nextactivitydate = datetime.strptime(self.nextactivitydate, "%Y-%m-%dT%H:%M:%S")
+			self.nextactivitydate = datetime.fromisoformat(self.nextactivitydate)
 		if self.nextactivityorappointmentdate:
-			self.nextactivityorappointmentdate = datetime.strptime(self.nextactivityorappointmentdate, "%Y-%m-%dT%H:%M:%S")
+			self.nextactivityorappointmentdate = datetime.fromisoformat(self.nextactivityorappointmentdate)
 		if self.startdate:
-			self.startdate = datetime.strptime(self.startdate, "%Y-%m-%dT%H:%M:%S")
+			self.startdate = datetime.fromisoformat(self.startdate)
 		if self.targetdate:
-			self.targetdate = datetime.strptime(self.targetdate, "%Y-%m-%dT%H:%M:%S")
+			self.targetdate = datetime.fromisoformat(self.targetdate)
 		if self.deadlinedate:
-			self.deadlinedate = datetime.strptime(self.deadlinedate, "%Y-%m-%dT%H:%M:%S")
+			self.deadlinedate = datetime.fromisoformat(self.deadlinedate)
 		if self.followupdate:
-			self.followupdate = datetime.strptime(self.followupdate, "%Y-%m-%dT%H:%M:%S")
+			self.followupdate = datetime.fromisoformat(self.followupdate)
 		if self.opptrialdate:
-			self.opptrialdate = datetime.strptime(self.opptrialdate, "%Y-%m-%dT%H:%M:%S")
+			self.opptrialdate = datetime.fromisoformat(self.opptrialdate)
 		if self.oppdemodate:
-			self.oppdemodate = datetime.strptime(self.oppdemodate, "%Y-%m-%dT%H:%M:%S")
+			self.oppdemodate = datetime.fromisoformat(self.oppdemodate)
 		if self.oppdiscountdate:
-			self.oppdiscountdate = datetime.strptime(self.oppdiscountdate, "%Y-%m-%dT%H:%M:%S")
+			self.oppdiscountdate = datetime.fromisoformat(self.oppdiscountdate)
 		if self.oppconverteddate:
-			self.oppconverteddate = datetime.strptime(self.oppconverteddate, "%Y-%m-%dT%H:%M:%S")
+			self.oppconverteddate = datetime.fromisoformat(self.oppconverteddate)
 		if self.nextappointmentdate:
-			self.nextappointmentdate = datetime.strptime(self.nextappointmentdate, "%Y-%m-%dT%H:%M:%S")
+			self.nextappointmentdate = datetime.fromisoformat(self.nextappointmentdate)
 		if self.action_datetime:
-			self.action_datetime = datetime.strptime(self.action_datetime, "%Y-%m-%dT%H:%M:%S")
+			self.action_datetime = datetime.fromisoformat(self.action_datetime)
 		if self.milestone_startdate:
-			self.milestone_startdate = datetime.strptime(self.milestone_startdate, "%Y-%m-%dT%H:%M:%S")
+			self.milestone_startdate = datetime.fromisoformat(self.milestone_startdate)
 		if self.milestone_enddate:
-			self.milestone_enddate = datetime.strptime(self.milestone_enddate, "%Y-%m-%dT%H:%M:%S")
+			self.milestone_enddate = datetime.fromisoformat(self.milestone_enddate)
 		if self.date_fully_closed:
-			self.date_fully_closed = datetime.strptime(self.date_fully_closed, "%Y-%m-%dT%H:%M:%S")
+			self.date_fully_closed = datetime.fromisoformat(self.date_fully_closed)
 		if self.datecreated:
-			self.datecreated = datetime.strptime(self.datecreated, "%Y-%m-%dT%H:%M:%S")
+			self.datecreated = datetime.fromisoformat(self.datecreated)
 		if self.supplier_date:
-			self.supplier_date = datetime.strptime(self.supplier_date, "%Y-%m-%dT%H:%M:%S")
+			self.supplier_date = datetime.fromisoformat(self.supplier_date)
 		if self.supplier_responsedate:
-			self.supplier_responsedate = datetime.strptime(self.supplier_responsedate, "%Y-%m-%dT%H:%M:%S")
+			self.supplier_responsedate = datetime.fromisoformat(self.supplier_responsedate)
 		if self.supplier_respondbydate:
-			self.supplier_respondbydate = datetime.strptime(self.supplier_respondbydate, "%Y-%m-%dT%H:%M:%S")
+			self.supplier_respondbydate = datetime.fromisoformat(self.supplier_respondbydate)
 		if self.supplier_dateclosed:
-			self.supplier_dateclosed = datetime.strptime(self.supplier_dateclosed, "%Y-%m-%dT%H:%M:%S")
+			self.supplier_dateclosed = datetime.fromisoformat(self.supplier_dateclosed)
 		if self.supplier_fixbydate:
-			self.supplier_fixbydate = datetime.strptime(self.supplier_fixbydate, "%Y-%m-%dT%H:%M:%S")
+			self.supplier_fixbydate = datetime.fromisoformat(self.supplier_fixbydate)
 		if self.invoicedate:
-			self.invoicedate = datetime.strptime(self.invoicedate, "%Y-%m-%dT%H:%M:%S")
+			self.invoicedate = datetime.fromisoformat(self.invoicedate)
 		if self.invoicepaiddate:
-			self.invoicepaiddate = datetime.strptime(self.invoicepaiddate, "%Y-%m-%dT%H:%M:%S")
+			self.invoicepaiddate = datetime.fromisoformat(self.invoicepaiddate)
 		if self.planneddate:
-			self.planneddate = datetime.strptime(self.planneddate, "%Y-%m-%dT%H:%M:%S")
+			self.planneddate = datetime.fromisoformat(self.planneddate)
 		if self.planneddateend:
-			self.planneddateend = datetime.strptime(self.planneddateend, "%Y-%m-%dT%H:%M:%S")
+			self.planneddateend = datetime.fromisoformat(self.planneddateend)
 		if self.lastrecurringemailsentdate:
-			self.lastrecurringemailsentdate = datetime.strptime(self.lastrecurringemailsentdate, "%Y-%m-%dT%H:%M:%S")
+			self.lastrecurringemailsentdate = datetime.fromisoformat(self.lastrecurringemailsentdate)
 		if self.slaholdreminderdatelastemailed:
-			self.slaholdreminderdatelastemailed = datetime.strptime(self.slaholdreminderdatelastemailed, "%Y-%m-%dT%H:%M:%S")
+			self.slaholdreminderdatelastemailed = datetime.fromisoformat(self.slaholdreminderdatelastemailed)
 		if self.closurereminderdatelastemailed:
-			self.closurereminderdatelastemailed = datetime.strptime(self.closurereminderdatelastemailed, "%Y-%m-%dT%H:%M:%S")
+			self.closurereminderdatelastemailed = datetime.fromisoformat(self.closurereminderdatelastemailed)
 		if self.auditdate:
-			self.auditdate = datetime.strptime(self.auditdate, "%Y-%m-%dT%H:%M:%S")
+			self.auditdate = datetime.fromisoformat(self.auditdate)
 		if self.auditfaileddate:
-			self.auditfaileddate = datetime.strptime(self.auditfaileddate, "%Y-%m-%dT%H:%M:%S")
+			self.auditfaileddate = datetime.fromisoformat(self.auditfaileddate)
 		if self.workflow_stepstarted:
-			self.workflow_stepstarted = datetime.strptime(self.workflow_stepstarted, "%Y-%m-%dT%H:%M:%S")
+			self.workflow_stepstarted = datetime.fromisoformat(self.workflow_stepstarted)
 		if self.lastbugzillasync:
-			self.lastbugzillasync = datetime.strptime(self.lastbugzillasync, "%Y-%m-%dT%H:%M:%S")
+			self.lastbugzillasync = datetime.fromisoformat(self.lastbugzillasync)
 		if self.sla_start_date:
-			self.sla_start_date = datetime.strptime(self.sla_start_date, "%Y-%m-%dT%H:%M:%S")
+			self.sla_start_date = datetime.fromisoformat(self.sla_start_date)
 		if self.orionacknowledgedate:
-			self.orionacknowledgedate = datetime.strptime(self.orionacknowledgedate, "%Y-%m-%dT%H:%M:%S")
+			self.orionacknowledgedate = datetime.fromisoformat(self.orionacknowledgedate)
 		if self.laststatuschangestatusdate:
-			self.laststatuschangestatusdate = datetime.strptime(self.laststatuschangestatusdate, "%Y-%m-%dT%H:%M:%S")
+			self.laststatuschangestatusdate = datetime.fromisoformat(self.laststatuschangestatusdate)
 		if self.resource_booking_timeslot:
-			self.resource_booking_timeslot = datetime.strptime(self.resource_booking_timeslot, "%Y-%m-%dT%H:%M:%S")
+			self.resource_booking_timeslot = datetime.fromisoformat(self.resource_booking_timeslot)
 		if self.reviewed_date:
-			self.reviewed_date = datetime.strptime(self.reviewed_date, "%Y-%m-%dT%H:%M:%S")
+			self.reviewed_date = datetime.fromisoformat(self.reviewed_date)
 		if self.search_index_sync_timestamp:
-			self.search_index_sync_timestamp = datetime.strptime(self.search_index_sync_timestamp, "%Y-%m-%dT%H:%M:%S")
+			self.search_index_sync_timestamp = datetime.fromisoformat(self.search_index_sync_timestamp)
 		if self.new_whe_:
-			self.new_whe_ = datetime.strptime(self.new_whe_, "%Y-%m-%dT%H:%M:%S")
+			self.new_whe_ = datetime.fromisoformat(self.new_whe_)
 		if self.embedding_match_timestamp:
-			self.embedding_match_timestamp = datetime.strptime(self.embedding_match_timestamp, "%Y-%m-%dT%H:%M:%S")
+			self.embedding_match_timestamp = datetime.fromisoformat(self.embedding_match_timestamp)
 		if self.workflow_move_date_override:
-			self.workflow_move_date_override = datetime.strptime(self.workflow_move_date_override, "%Y-%m-%dT%H:%M:%S")
+			self.workflow_move_date_override = datetime.fromisoformat(self.workflow_move_date_override)
 		if self.next_review_date:
-			self.next_review_date = datetime.strptime(self.next_review_date, "%Y-%m-%dT%H:%M:%S")
+			self.next_review_date = datetime.fromisoformat(self.next_review_date)
 		if self.deleted_date:
-			self.deleted_date = datetime.strptime(self.deleted_date, "%Y-%m-%dT%H:%M:%S")
+			self.deleted_date = datetime.fromisoformat(self.deleted_date)
 		if self.startdatetime:
-			self.startdatetime = datetime.strptime(self.startdatetime, "%Y-%m-%dT%H:%M:%S")
+			self.startdatetime = datetime.fromisoformat(self.startdatetime)
 		if self.enddatetime:
-			self.enddatetime = datetime.strptime(self.enddatetime, "%Y-%m-%dT%H:%M:%S")
+			self.enddatetime = datetime.fromisoformat(self.enddatetime)
 # Debug method for creating items from dictionary - This comment is required or dedent dedents everything
 	@classmethod
 	def from_dict(cls, dictionary:dict):
