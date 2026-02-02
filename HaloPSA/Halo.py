@@ -359,7 +359,7 @@ class _Actions: #TODO what permissions are required here
         return resp
     
     def search(self,
-        count:Optional[int] = None,
+        count:Optional[int] = 50,
         ticket_id:Optional[int] = None,
         startdate:Optional[str] = None,
         enddate:Optional[str] = None,
@@ -376,19 +376,19 @@ class _Actions: #TODO what permissions are required here
         ischildnotes:Optional[bool] = None,
         **others
         ):
-        """Search/filter Actions.  Requires Ticket ID, or start and end date.  If neither are provided, nothing will be returned.
+        """Search/filter Actions.  Requires Ticket ID or start and end date.  If neither are provided, nothing will be returned.
         
         Date range can be 1 day at most.
         
         Last tested: YYYY/MM/DD, V[HALO VERSION]
 
         Args:
-            count (int, optional): Maximum actions to return.
+            count (int, optional): Maximum actions to return. Defaults to 50.
             ticket_id (int, optional): Ticket ID.
-            startdate (str, optional): Start Date (format 2025-03-04T12:53:05) Time is optional.
-            enddate (str, optional): End Date (format 2025-03-04T12:53:05) Time is optional.
+            startdate (str, optional): Start Date (format: YYYY-MM-DDTHH:MM:SS). Time is optional.
+            enddate (str, optional): End Date (format: YYYY-MM-DDTHH:MM:SS). Time is optional.
             agentonly (bool, optional): Only get actions done by Agents. Defaults to False.
-            conversationonly (bool, optional): Only get actions relating to the Agent to End User conversation. Defaults to None.
+            conversationonly (bool, optional): Only get actions relating to the Agent to End User conversation.
             supplieronly (bool, optional): Only get actions relating to Suppliers. Defaults to None.
             importantonly (bool, optional): Only get important actions. Defaults to None.
             slaonly (bool, optional): Only get SLA hold and release actions. Defaults to None.
@@ -397,7 +397,7 @@ class _Actions: #TODO what permissions are required here
             includehtmlnote (bool, optional): _description_. Defaults to None.
             includehtmlemail (bool, optional): _description_. Defaults to None.
             includeattachments (bool, optional): _description_. Defaults to None.
-            ischildnotes (bool, optional): _description_. Defaults to None.
+            ischildnotes (bool, optional): _description_.
 
         Returns:
             list: List of actions.
@@ -1483,7 +1483,9 @@ class _Tickets:
         count:int=50,
         **others
                ):
-
+        #TODO docstring!
+        #per_action (bool, optional): Return ticket actions.
+        #pending_review (bool, optional): Return actions that are pending review. `per_action` must also be set to True. 
         rawParams = locals().copy() # TODO don't use locals copy
         
         resp = self._mh._search(url=self.url, others=rawParams)
