@@ -165,9 +165,10 @@ def create_dataclass(dataclass_rules:dict, child_schema:child_schema_types="igno
             elif proptype == 'boolean':
                 prop_str += " bool"
             
-            elif proptype == 'string':
+            # String and datetime handling
+            elif proptype in ['string', 'str'] or proptype == "datetime":
                 # Datetime format handling
-                if propformat and propformat == "date-time":
+                if propformat and propformat == "date-time" or proptype == "datetime":
                     prop_str += " datetime"
                     if rules and "format" in rules:
                         # Handle multiple datetime formats for a single item
@@ -189,7 +190,7 @@ def create_dataclass(dataclass_rules:dict, child_schema:child_schema_types="igno
                     else:
                         #TODO maybe this should always be added to datetime fields?
                         post_init_rules.append(f"if self.{prop_name}:\n\tself.{prop_name} = datetime.fromisoformat(self.{prop_name})") # If no specific date string is provided, then use a generic one
-                        
+                 
                 else:
                     prop_str += " str"
             
@@ -206,6 +207,10 @@ def create_dataclass(dataclass_rules:dict, child_schema:child_schema_types="igno
                 else:
                     print(f"WARN: {prop_name} has unhandled number type: {propformat}. Defaulting to int")
                     prop_str += " int" #TODO see if there are other types
+                
+            elif proptype in ["dict"]:
+                prop_str += " dict"
+                
             else:
                 print(f"ERROR: {prop_name} did not match any types. Type is: {proptype}")
                 raise ValueError("see console, this is for debug")
@@ -299,7 +304,7 @@ def create_methods(method_rules:dict):
 
 pass
 # Mark fields as optional from a list
-def set_optional_properties(properties:list, schema_name:str, import_rules_file:str="helpers/import_rules.json"):
+def set_optional_properties(properties:list, schema_name:str, import_rules_file:str="helpers/dataclass_rules.json"):
     with open(import_rules_file, 'r') as jsonfile:
         import_rules = json.loads(jsonfile.read())
         
@@ -323,7 +328,7 @@ def set_optional_properties(properties:list, schema_name:str, import_rules_file:
         jsonfile.writelines(json.dumps(import_rules))
 
 # Paste your exception string in and let the script do the rest
-def list_from_exception(schema_name:str, exception:Optional[Exception]=None, import_rules_file:str="helpers/import_rules.json"):
+def list_from_exception(schema_name:str, exception:Optional[Exception]=None, import_rules_file:str="helpers/dataclass_rules.json"):
     #TODO this might not always start with "TypeError"
     if exception:
         #TODO use regex for this r"arguments?:"
@@ -348,6 +353,8 @@ def list_from_exception(schema_name:str, exception:Optional[Exception]=None, imp
     set_optional_properties(properties=properties, schema_name=schema_name, import_rules_file=import_rules_file)
     
 
+items = ['targetdate']
+set_optional_properties(items, schema_name="Faults")
 
 
 # THIS IS A LAZY WORKAROUND
@@ -367,6 +374,7 @@ while True:
         list_from_exception(schema_name="Faults", exception=result)
         #pass
         #create_dataclass(schemas_to_import, replace_existing=True)
+    
     else:
         break
     

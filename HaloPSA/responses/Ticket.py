@@ -20,7 +20,6 @@ class Ticket: #/components/schemas/Faults
 	status_id: int | None
 	tickettype_id: int | None
 	sla_id: int | None
-	sla_name: str | None
 	priority_id: int | None
 	client_id: int | None
 	client_name: str | None
@@ -38,7 +37,6 @@ class Ticket: #/components/schemas/Faults
 	estimate: float | None
 	estimatedays: float | None
 	timetaken: float | None
-	supplier_name: str | None
 	child_count: int | None
 	attachment_count: int | None
 	flagged: bool | None
@@ -56,11 +54,9 @@ class Ticket: #/components/schemas/Faults
 	department_id: int | None
 	matched_kb_id: int | None
 	product_id: int | None
-	product_name: str | None
 	release_id: int | None
 	release2_id: int | None
 	release3_id: int | None
-	workflow_name: str | None
 	lastincomingemail: datetime
 	workflow_id: int | None
 	workflow_step: int | None
@@ -72,12 +68,9 @@ class Ticket: #/components/schemas/Faults
 	urgency: int | None
 	starttime: str | None
 	starttimeslot: int | None
-	targetdate: datetime | None
 	targettime: str | None
 	targettimeslot: int | None
 	deadlinedate: datetime | None
-	oppcountry: str | None
-	oppregion: str | None
 	oppvalueadjusted: float | None
 	cost: float | None
 	quantity: int | None
@@ -91,171 +84,14 @@ class Ticket: #/components/schemas/Faults
 	releasenotegroup_id: int | None
 	supplier_status: int | None
 	appointment_type: int | None
-	customfields: list | None
 	section_timezone: str | None
 	projectinternaltask: bool | None
 	impactlevel: int | None
 	reviewed: bool | None
 	merged_into_id: int | None
-	details_html: str | None
-	takenby: str | None
-	datecreated: datetime | None
-	createdfrom_id: int | None
-	top_level_id: int | None
-	site_sla_id: int | None
-	supplier_contract_id: int | None
-	supplier_breachrespsent: bool | None
-	supplier_breachfixbysent: bool | None
-	showforusers: bool | None
-	messsent: str | None
-	agreedcleared: bool | None
-	backoutplan: str | None
-	communicationplan: str | None
-	testplan: str | None
-	riskdescription: str | None
 	risklevel: int | None
-	impactdescription: str | None
-	surveysent: bool | None
-	approval_process_step_name: str | None
-	inform3rdpartysystem: bool | None
-	surveyneeded: bool | None
-	knownerror: bool | None
-	development: bool | None
-	changeseq: int | None
-	mailboxid: int | None
-	actisbillabledefault: bool | None
-	chargerate: int | None
-	timezonename: str | None
-	forwardinboundupdates: bool | None
-	loggedoutofhdworkinghours: bool | None
-	acctmaninformedsurvey: bool | None
-	laststatuschangeinformed: int | None
-	loggedonbehalfby: str | None
-	auditstatus: int | None
-	auditunum: int | None
-	auditdate: datetime | None
-	oppdontaddtomailinglist: bool | None
-	sendprintrequest: int | None
-	pagerdutyid: str | None
-	pagerdutyincidentidstring: str | None
-	pagerdutystatus: int | None
-	component_id: int | None
-	version_id: int | None
-	mailentryid: str | None
-	contract_id: int | None
-	workflow_stepstarted: datetime | None
-	laststatuschangeinformedmanager: int | None
-	currency: int | None
-	projectconsignmentheaderid: int | None
-	projectconsignmentdetailid: int | None
-	servicefailurestid: int | None
-	hdid: int | None
-	deleted: bool | None
-	matched_rule_id: int | None
-	ignore_kb_match: bool | None
-	deadlinenotificationhours: float | None
-	showonroadmap: bool | None
-	phonenumberfrom: str | None
-	addressfrom: str | None
-	changeinformation_html: str | None
-	team_department_id: int | None
-	newaction_emailfrom: int | None
-	_canupdate: bool | None
-	appointment_count: int | None
-	open_chat_count: int | None
-	task_count: int | None
-	email_start_tag_override: str | None
-	email_end_tag_override: str | None
-	follower_count: int | None
-	todo_count: int | None
-	service_count: int | None
-	businessapp_count: int | None
-	is_opportunity: bool | None
-	is_project: bool | None
-	items_issued_count: int | None
-	quotation_count: int | None
-	salesorder_count: int | None
-	purchaseorder_count: int | None
-	invoice_line_count: int | None
-	budgettype_id: int | None
-	azure_tenants_name: str | None
-	canbechild: bool | None
-	locked: bool | None
-	has_related: bool | None
-	pagerdutyeragent: int | None
-	devops_agent: str | None
-	devops_comment_count: int | None
-	your_vote: int | None
-	your_vote_comment: str | None
-	scomalertstate: int | None
-	orionalertid: int | None
-	orionalertactiveid: int | None
-	orionacknowledgestate: int | None
-	orionclosestate: int | None
-	orionacknowledgedby: int | None
-	orionacknowledgedate: datetime | None
-	orionacknowledgenote: str | None
-	orionalertname: str | None
-	servicenow_id: str | None
-	splunkoncall_id: str | None
-	splunkoncallurl: str | None
-	splunkoncallstatus: int | None
-	connectwise_id: int | None
-	connectwise_project_id: int | None
-	servicenow_number: str | None
-	autotask_id: int | None
-	autotask_number: str | None
-	atera_alert_id: int | None
-	laststatuschangestatus: int | None
-	laststatuschangestatusdate: datetime | None
-	meraki_device: str | None
-	meraki_alert_type: str | None
-	powershell_script_count: int | None
-	devops_workitem_count: int | None
-	ninja_alert_id: str | None
-	ninja_device_id: int | None
-	isbillable: bool | None
-	itemsarebillable: bool | None
-	who: str | None
-	resourcetype_id: int | None
-	resource_booking_type: int | None
-	faultapprovalfailed: bool | None
-	article_type: int | None
-	automate_id: int | None
-	device_automate_id: int | None
-	auvik_id: str | None
-	auvik_url: str | None
-	jira_issue_count: int | None
-	call_log_count: int | None
-	freshdesk_id: int | None
-	external_links: list | None
-	alluserscanview: int | None
-	sync_to_salesforce: bool | None
-	visible_child_tickets: int
-	expenses: list | None
-	ncentral_details_id: int | None
-	supplier_contact_id: int | None
-	pagerdutyservice: str | None
-	linked_halo_ticket_count: int | None
-	whatsappcreatedfromid: str | None
-	sms_override: str | None
-	thirdpartyreviewscore: int | None
-	datto_alert_state: int | None
-	reviewed_date: datetime | None
-	is_sensitive: bool | None
-	contract_schedule_plan_id: int | None
-	hide_feedback: bool | None
-	ola_count: int | None
-	ai_suggested_urgency: int | None
-	ai_suggested_impact: int | None
-	_can_view_att: bool | None
-	_can_upload_att: bool | None
-	_can_download_att: bool | None
-	_can_edit_att: bool | None
-	_can_view_action_history: bool | None
 	table: list
 	use: str | None
-	canbevotedfor: bool | None
 	ticketage: float | None
 	useful_count: int | None
 	notuseful_count: int | None
@@ -263,14 +99,15 @@ class Ticket: #/components/schemas/Faults
 	servicestatusnote: str | None
 	itil_requesttype_id: int | None
 	ticket_tags: str | None
-	opp_region_name: str | None
 	invoiceseperatelyoverride: bool | None
 	purchaseordernumber: str | None
-	billable_time: float | None
 	_open_search_score: int
-	reference: str | None
+	lastnote_date: datetime
+	guid: str
+	viewers: list
 	status_name: str | None = field(default=None)
 	tickettype_name: str | None = field(default=None)
+	sla_name: str | None = field(default=None)
 	agent_name: str | None = field(default=None)
 	categoryid_1: int | None = field(default=None)
 	categoryid_2: int | None = field(default=None)
@@ -291,6 +128,7 @@ class Ticket: #/components/schemas/Faults
 	totalmileage: float | None = field(default=None)
 	itemsprice: float | None = field(default=None)
 	items: str | None = field(default=None)
+	supplier_name: str | None = field(default=None)
 	parent_id: int | None = field(default=None)
 	child_count_open: int | None = field(default=None)
 	responsedate: datetime | None = field(default=None)
@@ -313,12 +151,14 @@ class Ticket: #/components/schemas/Faults
 	emailcclist: str | None = field(default=None)
 	emailcclistsupplier: str | None = field(default=None)
 	release_note: str | None = field(default=None)
+	product_name: str | None = field(default=None)
 	release_name: str | None = field(default=None)
 	release2_name: str | None = field(default=None)
 	release3_name: str | None = field(default=None)
 	child_ticket_id_string: str | None = field(default=None)
 	asset_key_field_string: str | None = field(default=None)
 	asset_type_name: str | None = field(default=None)
+	workflow_name: str | None = field(default=None)
 	workflow_stage: str | None = field(default=None)
 	workflow_stage_id: int | None = field(default=None)
 	workflow_stage_number: str | None = field(default=None)
@@ -337,6 +177,7 @@ class Ticket: #/components/schemas/Faults
 	startdate: datetime | None = field(default=None)
 	startdate_timezone: str | None = field(default=None)
 	startdate_with_timezone: list | None = field(default=None)
+	targetdate: datetime | None = field(default=None)
 	targetdate_timezone: str | None = field(default=None)
 	targetdate_with_timezone: list | None = field(default=None)
 	targetpercused: float | None = field(default=None)
@@ -352,6 +193,8 @@ class Ticket: #/components/schemas/Faults
 	oppaddr3: str | None = field(default=None)
 	oppaddr4: str | None = field(default=None)
 	opppostcode: str | None = field(default=None)
+	oppcountry: str | None = field(default=None)
+	oppregion: str | None = field(default=None)
 	opptype: str | None = field(default=None)
 	oppvalue: float | None = field(default=None)
 	oppvalue_monthly: float | None = field(default=None)
@@ -380,6 +223,7 @@ class Ticket: #/components/schemas/Faults
 	third_party_id: int | None = field(default=None)
 	third_party_id_string: str | None = field(default=None)
 	contract_refextra: str | None = field(default=None)
+	customfields: list | None = field(default=None)
 	timeentries: list | None = field(default=None)
 	itilname: str | None = field(default=None)
 	related_service_descriptions: str | None = field(default=None)
@@ -433,20 +277,27 @@ class Ticket: #/components/schemas/Faults
 	main_project_id: int | None = field(default=None)
 	is_maintenance: bool | None = field(default=None)
 	phonenumber: str | None = field(default=None)
+	details_html: str | None = field(default=None)
+	takenby: str | None = field(default=None)
+	datecreated: datetime | None = field(default=None)
+	createdfrom_id: int | None = field(default=None)
 	createdfrom_summary: str | None = field(default=None)
 	clonedfrom_id: int | None = field(default=None)
 	clonedfrom_summary: str | None = field(default=None)
 	closure_note: str | None = field(default=None)
 	closure_note_html: str | None = field(default=None)
 	closure_time: float | None = field(default=None)
+	top_level_id: int | None = field(default=None)
 	customer_relationships: str | None = field(default=None)
 	asset_number: int | None = field(default=None)
 	asset_site: int | None = field(default=None)
 	slastate: str | None = field(default=None)
 	slaexcuse: str | None = field(default=None)
+	site_sla_id: int | None = field(default=None)
 	client_reference: str | None = field(default=None)
 	supplier_slaexcuse: str | None = field(default=None)
 	supplier_date: datetime | None = field(default=None)
+	supplier_contract_id: int | None = field(default=None)
 	supplier_contract_ref: str | None = field(default=None)
 	supplier_sla_id: int | None = field(default=None)
 	supplier_priority_id: int | None = field(default=None)
@@ -458,8 +309,12 @@ class Ticket: #/components/schemas/Faults
 	supplier_slatimeelapsed: float | None = field(default=None)
 	supplier_dateclosed: datetime | None = field(default=None)
 	supplier_fixbydate: datetime | None = field(default=None)
+	supplier_breachrespsent: bool | None = field(default=None)
+	supplier_breachfixbysent: bool | None = field(default=None)
 	changestate: str | None = field(default=None)
 	approvedby: int | None = field(default=None)
+	showforusers: bool | None = field(default=None)
+	messsent: str | None = field(default=None)
 	satisfactionlevel: int | None = field(default=None)
 	satisfactioncomment: str | None = field(default=None)
 	invoicenumber: str | None = field(default=None)
@@ -470,25 +325,38 @@ class Ticket: #/components/schemas/Faults
 	mileage: float | None = field(default=None)
 	planneddate: datetime | None = field(default=None)
 	ccaddress: str | None = field(default=None)
+	agreedcleared: bool | None = field(default=None)
 	responsetime: float | None = field(default=None)
 	first_responsetime: float | None = field(default=None)
 	alsoinform: str | None = field(default=None)
 	justification: str | None = field(default=None)
+	backoutplan: str | None = field(default=None)
+	communicationplan: str | None = field(default=None)
+	testplan: str | None = field(default=None)
+	riskdescription: str | None = field(default=None)
+	impactdescription: str | None = field(default=None)
 	service_id: int | None = field(default=None)
 	isparentservice: bool | None = field(default=None)
+	surveysent: bool | None = field(default=None)
 	planneddateend: datetime | None = field(default=None)
 	currentfaactionnumber: int | None = field(default=None)
 	approval_process_step: int | None = field(default=None)
+	approval_process_step_name: str | None = field(default=None)
 	approval_cab_name: str | None = field(default=None)
 	approval_process_id: int | None = field(default=None)
 	faultcodeopen: int | None = field(default=None)
 	faultcode: int | None = field(default=None)
 	laststatus3rdparty: int | None = field(default=None)
+	inform3rdpartysystem: bool | None = field(default=None)
 	deliverycontact: str | None = field(default=None)
 	delivery_address: list | None = field(default=None)
+	surveyneeded: bool | None = field(default=None)
+	knownerror: bool | None = field(default=None)
+	development: bool | None = field(default=None)
 	causedby: int | None = field(default=None)
 	messsentlast: str | None = field(default=None)
 	unapprovedchangestatus: int | None = field(default=None)
+	changeseq: int | None = field(default=None)
 	lastrecurringemailsentdate: datetime | None = field(default=None)
 	template_id: int | None = field(default=None)
 	template_name: str | None = field(default=None)
@@ -496,9 +364,17 @@ class Ticket: #/components/schemas/Faults
 	slaholdreminderdatelastemailed: datetime | None = field(default=None)
 	closurereminderdatelastemailed: datetime | None = field(default=None)
 	assetstring: str | None = field(default=None)
+	mailboxid: int | None = field(default=None)
 	alerttype: str | None = field(default=None)
+	actisbillabledefault: bool | None = field(default=None)
 	emaildisplayname: str | None = field(default=None)
 	emailpriority: int | None = field(default=None)
+	chargerate: int | None = field(default=None)
+	timezonename: str | None = field(default=None)
+	forwardinboundupdates: bool | None = field(default=None)
+	loggedoutofhdworkinghours: bool | None = field(default=None)
+	acctmaninformedsurvey: bool | None = field(default=None)
+	laststatuschangeinformed: int | None = field(default=None)
 	gfialerttype: str | None = field(default=None)
 	quotedescription: str | None = field(default=None)
 	quotelabouramount: float | None = field(default=None)
@@ -517,33 +393,64 @@ class Ticket: #/components/schemas/Faults
 	twitterid: int | None = field(default=None)
 	facebook_id: str | None = field(default=None)
 	fixbydateadjusted: bool | None = field(default=None)
+	loggedonbehalfby: str | None = field(default=None)
 	alternativecontactno: str | None = field(default=None)
 	operationalserviceid: int | None = field(default=None)
 	requestdetailsprinted: bool | None = field(default=None)
 	serviceformprinted: bool | None = field(default=None)
+	auditstatus: int | None = field(default=None)
+	auditunum: int | None = field(default=None)
+	auditdate: datetime | None = field(default=None)
 	auditnote: str | None = field(default=None)
 	auditfaileddate: datetime | None = field(default=None)
 	auditfailednote: str | None = field(default=None)
 	userrequestedapprover: int | None = field(default=None)
+	oppdontaddtomailinglist: bool | None = field(default=None)
+	sendprintrequest: int | None = field(default=None)
+	pagerdutyid: str | None = field(default=None)
+	pagerdutyincidentidstring: str | None = field(default=None)
+	pagerdutystatus: int | None = field(default=None)
 	pagerdutyurl: str | None = field(default=None)
 	pagerdutyincidentid: str | None = field(default=None)
 	opportunity_third_party_url: str | None = field(default=None)
 	pr_link: str | None = field(default=None)
 	github_repository: str | None = field(default=None)
+	component_id: int | None = field(default=None)
 	component_name: str | None = field(default=None)
+	version_id: int | None = field(default=None)
 	version_name: str | None = field(default=None)
+	mailentryid: str | None = field(default=None)
+	contract_id: int | None = field(default=None)
 	contract_ref: str | None = field(default=None)
 	billing_address: list | None = field(default=None)
+	workflow_stepstarted: datetime | None = field(default=None)
 	lessonslearned: str | None = field(default=None)
+	laststatuschangeinformedmanager: int | None = field(default=None)
 	lastbugzillasync: datetime | None = field(default=None)
 	sapid: str | None = field(default=None)
 	sapattachmentsuuid: str | None = field(default=None)
+	currency: int | None = field(default=None)
+	projectconsignmentheaderid: int | None = field(default=None)
+	projectconsignmentdetailid: int | None = field(default=None)
+	servicefailurestid: int | None = field(default=None)
+	hdid: int | None = field(default=None)
+	deleted: bool | None = field(default=None)
+	matched_rule_id: int | None = field(default=None)
 	matched_rule_name: str | None = field(default=None)
 	matched_rule_dont_show_notification: bool | None = field(default=None)
+	ignore_kb_match: bool | None = field(default=None)
+	deadlinenotificationhours: float | None = field(default=None)
 	asset_type: int | None = field(default=None)
+	showonroadmap: bool | None = field(default=None)
 	roadmapnote: str | None = field(default=None)
+	phonenumberfrom: str | None = field(default=None)
+	addressfrom: str | None = field(default=None)
+	changeinformation_html: str | None = field(default=None)
+	team_department_id: int | None = field(default=None)
 	sendack: bool | None = field(default=None)
+	newaction_emailfrom: int | None = field(default=None)
 	newaction_emailfrom_address_override: str | None = field(default=None)
+	_canupdate: bool | None = field(default=None)
 	_mustupdateticketuser: bool | None = field(default=None)
 	_spam: bool | None = field(default=None)
 	_spamblock: bool | None = field(default=None)
@@ -558,6 +465,9 @@ class Ticket: #/components/schemas/Faults
 	new_approvalprocess_cab_id: int | None = field(default=None)
 	approvers: list | None = field(default=None)
 	approvers_history: list | None = field(default=None)
+	appointment_count: int | None = field(default=None)
+	open_chat_count: int | None = field(default=None)
+	task_count: int | None = field(default=None)
 	create_article: bool | None = field(default=None)
 	qualifications: list | None = field(default=None)
 	target_adjust: int | None = field(default=None)
@@ -585,15 +495,28 @@ class Ticket: #/components/schemas/Faults
 	_reclose: bool | None = field(default=None)
 	_reclose_oid: int | None = field(default=None)
 	_recover: bool | None = field(default=None)
+	email_start_tag_override: str | None = field(default=None)
+	email_end_tag_override: str | None = field(default=None)
+	follower_count: int | None = field(default=None)
 	contact_address: list | None = field(default=None)
 	chat_id: int | None = field(default=None)
 	actioncode: int | None = field(default=None)
 	clone_count: int | None = field(default=None)
 	copy_milestone: bool | None = field(default=None)
+	todo_count: int | None = field(default=None)
 	todo_list: list | None = field(default=None)
+	service_count: int | None = field(default=None)
+	businessapp_count: int | None = field(default=None)
 	unsubscribedfromserviceid: int | None = field(default=None)
+	is_opportunity: bool | None = field(default=None)
+	is_project: bool | None = field(default=None)
+	items_issued_count: int | None = field(default=None)
 	items_issued: list | None = field(default=None)
 	project_items_issued: list | None = field(default=None)
+	quotation_count: int | None = field(default=None)
+	salesorder_count: int | None = field(default=None)
+	purchaseorder_count: int | None = field(default=None)
+	invoice_line_count: int | None = field(default=None)
 	third_party_client_id: str | None = field(default=None)
 	_refreshresponse: bool | None = field(default=None)
 	_isimport: bool | None = field(default=None)
@@ -605,6 +528,7 @@ class Ticket: #/components/schemas/Faults
 	sendtopagerduty: bool | None = field(default=None)
 	splunkurl: str | None = field(default=None)
 	splunksearch: str | None = field(default=None)
+	budgettype_id: int | None = field(default=None)
 	budgettype_name: str | None = field(default=None)
 	budgets: list | None = field(default=None)
 	process_ai: bool | None = field(default=None)
@@ -618,15 +542,20 @@ class Ticket: #/components/schemas/Faults
 	form_id: str | None = field(default=None)
 	database_lookup_result: list | None = field(default=None)
 	azure_tenants: str | None = field(default=None)
+	azure_tenants_name: str | None = field(default=None)
 	_warning: str | None = field(default=None)
 	_warning_is_error: str | None = field(default=None)
 	close_unassigned: bool | None = field(default=None)
+	canbechild: bool | None = field(default=None)
 	_changefreeze01_ok: bool | None = field(default=None)
 	_maintenance01_ok: bool | None = field(default=None)
 	_force: bool | None = field(default=None)
 	_ticketclash01_ok: bool | None = field(default=None)
 	_milestonedate01_ok: bool | None = field(default=None)
 	_ignoremilestonedates: bool | None = field(default=None)
+	locked: bool | None = field(default=None)
+	has_related: bool | None = field(default=None)
+	pagerdutyeragent: int | None = field(default=None)
 	elapsed_response_hours: float | None = field(default=None)
 	elapsed_resolution_hours: float | None = field(default=None)
 	sla_start_date: datetime | None = field(default=None)
@@ -634,6 +563,7 @@ class Ticket: #/components/schemas/Faults
 	printhtml: str | None = field(default=None)
 	pdf_attachment_id: int | None = field(default=None)
 	journeys: list | None = field(default=None)
+	devops_agent: str | None = field(default=None)
 	_dontupdate_devops: bool | None = field(default=None)
 	category_note_1: str | None = field(default=None)
 	category_user_note_1: str | None = field(default=None)
@@ -651,17 +581,30 @@ class Ticket: #/components/schemas/Faults
 	category_user_note_4: str | None = field(default=None)
 	category_include_note_4: bool | None = field(default=None)
 	category_itil_4: int | None = field(default=None)
+	devops_comment_count: int | None = field(default=None)
 	_iszapier: bool | None = field(default=None)
 	ncentral_ticketid: str | None = field(default=None)
 	_isnotify: bool | None = field(default=None)
 	created_from_action_id: int | None = field(default=None)
 	created_from_action_name: str | None = field(default=None)
 	createacknowledgement: bool | None = field(default=None)
+	your_vote: int | None = field(default=None)
+	your_vote_comment: str | None = field(default=None)
 	donotapplytemplateintheapi: bool | None = field(default=None)
 	_create_outstanding_appointments: bool | None = field(default=None)
 	_create_outstanding_appointment_email: bool | None = field(default=None)
+	scomalertstate: int | None = field(default=None)
+	orionalertid: int | None = field(default=None)
+	orionalertactiveid: int | None = field(default=None)
+	orionacknowledgestate: int | None = field(default=None)
+	orionclosestate: int | None = field(default=None)
+	orionacknowledgedby: int | None = field(default=None)
+	orionacknowledgedate: datetime | None = field(default=None)
 	_acknowledgealert: bool | None = field(default=None)
+	orionacknowledgenote: str | None = field(default=None)
 	orionacknowledgedbyname: str | None = field(default=None)
+	orionalertname: str | None = field(default=None)
+	servicenow_id: str | None = field(default=None)
 	third_party_parent_id: str | None = field(default=None)
 	third_party_problem_id: str | None = field(default=None)
 	opened_by: str | None = field(default=None)
@@ -669,28 +612,52 @@ class Ticket: #/components/schemas/Faults
 	sendtosplunkoncall: bool | None = field(default=None)
 	splunkoncalltarget: int | None = field(default=None)
 	splunkoncalltarget_id: str | None = field(default=None)
+	splunkoncall_id: str | None = field(default=None)
+	splunkoncallurl: str | None = field(default=None)
+	splunkoncallstatus: int | None = field(default=None)
+	connectwise_id: int | None = field(default=None)
+	connectwise_project_id: int | None = field(default=None)
 	prepay_balance_hours: float | None = field(default=None)
 	prepay_balance_amount: float | None = field(default=None)
+	servicenow_number: str | None = field(default=None)
 	parent_ticket_type_name: str | None = field(default=None)
 	createdfrom_ticket_type_name: str | None = field(default=None)
 	clonedfrom_ticket_type_name: str | None = field(default=None)
+	autotask_id: int | None = field(default=None)
+	autotask_number: str | None = field(default=None)
+	atera_alert_id: int | None = field(default=None)
 	syncro_alert_id: int | None = field(default=None)
+	laststatuschangestatus: int | None = field(default=None)
+	laststatuschangestatusdate: datetime | None = field(default=None)
 	mark_as_read_only: bool | None = field(default=None)
 	audit_log: list | None = field(default=None)
+	meraki_device: str | None = field(default=None)
+	meraki_alert_type: str | None = field(default=None)
 	matched_rules: list | None = field(default=None)
+	powershell_script_count: int | None = field(default=None)
+	devops_workitem_count: int | None = field(default=None)
+	ninja_alert_id: str | None = field(default=None)
+	ninja_device_id: int | None = field(default=None)
 	usertype: int | None = field(default=None)
 	actionworkflowset: bool | None = field(default=None)
+	isbillable: bool | None = field(default=None)
+	itemsarebillable: bool | None = field(default=None)
 	childrenlefttocreate: bool | None = field(default=None)
+	who: str | None = field(default=None)
+	resourcetype_id: int | None = field(default=None)
 	resourcetype_name: str | None = field(default=None)
+	resource_booking_type: int | None = field(default=None)
 	resource_booking_timeslot: datetime | None = field(default=None)
 	resource_booking_asset: int | None = field(default=None)
 	matched_rule_ids: str | None = field(default=None)
 	forceruleupdate: bool | None = field(default=None)
 	teams_user_id: str | None = field(default=None)
 	_isteams: bool | None = field(default=None)
+	faultapprovalfailed: bool | None = field(default=None)
 	article_description: str | None = field(default=None)
 	article_resolution: str | None = field(default=None)
 	article_notes: str | None = field(default=None)
+	article_type: int | None = field(default=None)
 	tags: list | None = field(default=None)
 	dontcreatechild: bool | None = field(default=None)
 	needcreatechild: bool | None = field(default=None)
@@ -706,6 +673,10 @@ class Ticket: #/components/schemas/Faults
 	domotz_deviceid: int | None = field(default=None)
 	domerge: bool | None = field(default=None)
 	isnew: bool | None = field(default=None)
+	automate_id: int | None = field(default=None)
+	device_automate_id: int | None = field(default=None)
+	auvik_id: str | None = field(default=None)
+	auvik_url: str | None = field(default=None)
 	contract_balance: str | None = field(default=None)
 	bookingurl: str | None = field(default=None)
 	isclone: bool | None = field(default=None)
@@ -716,11 +687,15 @@ class Ticket: #/components/schemas/Faults
 	chat_count: int | None = field(default=None)
 	_dont_update_project_dates: bool | None = field(default=None)
 	_dontupdate_jira: bool | None = field(default=None)
+	jira_issue_count: int | None = field(default=None)
+	call_log_count: int | None = field(default=None)
 	sentinel_url: str | None = field(default=None)
 	sentinel_display_id: int | None = field(default=None)
 	postloggedview: int | None = field(default=None)
 	addigy_alert_id: str | None = field(default=None)
 	ninja_alert_type: str | None = field(default=None)
+	freshdesk_id: int | None = field(default=None)
+	external_links: list | None = field(default=None)
 	_match_thirdparty_id: str | None = field(default=None)
 	_match_integration_id: int | None = field(default=None)
 	_match_integration_name: str | None = field(default=None)
@@ -736,21 +711,28 @@ class Ticket: #/components/schemas/Faults
 	backup_radar_state: int | None = field(default=None)
 	linktypesarray: list | None = field(default=None)
 	kaseyaid: str | None = field(default=None)
+	alluserscanview: int | None = field(default=None)
 	_dontupdate_salesforce: bool | None = field(default=None)
+	sync_to_salesforce: bool | None = field(default=None)
 	salesforce_stage: int | None = field(default=None)
 	_newticket_quickclose: bool | None = field(default=None)
 	service_request_detail_id: int | None = field(default=None)
+	visible_child_tickets: int | None = field(default=None)
 	check_status_freeze: bool | None = field(default=None)
+	expenses: list | None = field(default=None)
 	clear_feedback: bool | None = field(default=None)
 	facebook_message_id: str | None = field(default=None)
 	twitter_message_id: int | None = field(default=None)
+	ncentral_details_id: int | None = field(default=None)
 	requesttype_published_id: str | None = field(default=None)
 	chat_key_id: str | None = field(default=None)
+	supplier_contact_id: int | None = field(default=None)
 	parent_itil_ticket_type: int | None = field(default=None)
 	parent_release_note: str | None = field(default=None)
 	parent_release_name: str | None = field(default=None)
 	parent_release2_name: str | None = field(default=None)
 	parent_release3_name: str | None = field(default=None)
+	pagerdutyservice: str | None = field(default=None)
 	pagerdutyservice_name: str | None = field(default=None)
 	_dontupdate_pagerduty: bool | None = field(default=None)
 	_dont_fire_automations: bool | None = field(default=None)
@@ -759,14 +741,17 @@ class Ticket: #/components/schemas/Faults
 	default_teams_chat_name: str | None = field(default=None)
 	show_chat_create: bool | None = field(default=None)
 	htmlmessage: str | None = field(default=None)
+	linked_halo_ticket_count: int | None = field(default=None)
 	halolink_ticketid: int | None = field(default=None)
 	override_opening_action_who: bool | None = field(default=None)
+	whatsappcreatedfromid: str | None = field(default=None)
 	unotes: str | None = field(default=None)
 	smemo: str | None = field(default=None)
 	amemo: str | None = field(default=None)
 	_matchintacctclass: bool | None = field(default=None)
 	intacct_class: str | None = field(default=None)
 	intacct_class_name: str | None = field(default=None)
+	sms_override: str | None = field(default=None)
 	device_name: str | None = field(default=None)
 	milestones: list | None = field(default=None)
 	disable_milestone_modification: bool | None = field(default=None)
@@ -790,7 +775,12 @@ class Ticket: #/components/schemas/Faults
 	_apply_ai_suggestions: list | None = field(default=None)
 	_dismiss_ai_suggestions: list | None = field(default=None)
 	suggested_category1: str | None = field(default=None)
+	thirdpartyreviewscore: int | None = field(default=None)
+	datto_alert_state: int | None = field(default=None)
 	forwarded_by: int | None = field(default=None)
+	reviewed_date: datetime | None = field(default=None)
+	is_sensitive: bool | None = field(default=None)
+	contract_schedule_plan_id: int | None = field(default=None)
 	instagram_message_id: str | None = field(default=None)
 	default_reporter: int | None = field(default=None)
 	defaultsendattachments: bool | None = field(default=None)
@@ -799,6 +789,7 @@ class Ticket: #/components/schemas/Faults
 	new_related_tickets: list | None = field(default=None)
 	unrelate_from_ticket_id: int | None = field(default=None)
 	ecommerce_orders: list | None = field(default=None)
+	hide_feedback: bool | None = field(default=None)
 	workflow_history: list | None = field(default=None)
 	connectwisermm_ticketid: str | None = field(default=None)
 	colour_rule: int | None = field(default=None)
@@ -822,12 +813,15 @@ class Ticket: #/components/schemas/Faults
 	_fromchatprofileid: str | None = field(default=None)
 	lapsafe_count: int | None = field(default=None)
 	olas: list | None = field(default=None)
+	ola_count: int | None = field(default=None)
 	new_workflow_history: list | None = field(default=None)
 	default_slack_channel_name: str | None = field(default=None)
 	show_channel_create: bool | None = field(default=None)
 	slack_channel_id: str | None = field(default=None)
 	slack_callback_id: str | None = field(default=None)
 	ai_suggested_priority: str | None = field(default=None)
+	ai_suggested_urgency: int | None = field(default=None)
+	ai_suggested_impact: int | None = field(default=None)
 	ai_suggested_resolution: str | None = field(default=None)
 	ai_generated_summary: str | None = field(default=None)
 	ai_search_query: str | None = field(default=None)
@@ -892,6 +886,11 @@ class Ticket: #/components/schemas/Faults
 	_remove_pipeline_stage: bool | None = field(default=None)
 	order_line_price: float | None = field(default=None)
 	order_line_composite_key: list | None = field(default=None)
+	_can_view_att: bool | None = field(default=None)
+	_can_upload_att: bool | None = field(default=None)
+	_can_download_att: bool | None = field(default=None)
+	_can_edit_att: bool | None = field(default=None)
+	_can_view_action_history: bool | None = field(default=None)
 	risk_score: float | None = field(default=None)
 	from_catalogue: bool | None = field(default=None)
 	enduser_role_ids: list | None = field(default=None)
@@ -907,6 +906,7 @@ class Ticket: #/components/schemas/Faults
 	kb_ai_summary: str | None = field(default=None)
 	duplicate_kbs: str | None = field(default=None)
 	billing_type: int | None = field(default=None)
+	canbevotedfor: bool | None = field(default=None)
 	supplier_reference: str | None = field(default=None)
 	top_level_name: str | None = field(default=None)
 	deleted_date: datetime | None = field(default=None)
@@ -943,6 +943,7 @@ class Ticket: #/components/schemas/Faults
 	status_change_frozen: bool | None = field(default=None)
 	approval_status: int | None = field(default=None)
 	opp_country_name: str | None = field(default=None)
+	opp_region_name: str | None = field(default=None)
 	overrideticketcost: float | None = field(default=None)
 	budgethours: str | None = field(default=None)
 	created_by: str | None = field(default=None)
@@ -957,16 +958,24 @@ class Ticket: #/components/schemas/Faults
 	customer_signature: str | None = field(default=None)
 	new_agent_signature: str | None = field(default=None)
 	new_customer_signature: str | None = field(default=None)
+	billable_time: float | None = field(default=None)
 	invoiceable_time: float | None = field(default=None)
 	owning_service: int | None = field(default=None)
 	owning_service_name: str | None = field(default=None)
 	ticket_timezone: str | None = field(default=None)
+	reference: str | None = field(default=None)
 	_importtypeid: int | None = field(default=None)
 	_importthirdpartyid: str | None = field(default=None)
 	_importtype: str | None = field(default=None)
 	new_external_link: list | None = field(default=None)
 	import_details_id: int | None = field(default=None)
 	_isupdateimport: bool | None = field(default=None)
+	first_respond_by_date: datetime | None = field(default=None)
+	priority: str | None = field(default=None)
+	sla_first_response_state: str | None = field(default=None)
+	tickettype: str | None = field(default=None)
+	outcomes: list | None = field(default=None)
+	user: dict | None = field(default=None)
 
 	def __post_init__(self):
 		if self.dateoccurred:
@@ -1089,6 +1098,10 @@ class Ticket: #/components/schemas/Faults
 			self.startdatetime = datetime.fromisoformat(self.startdatetime)
 		if self.enddatetime:
 			self.enddatetime = datetime.fromisoformat(self.enddatetime)
+		if self.lastnote_date:
+			self.lastnote_date = datetime.fromisoformat(self.lastnote_date)
+		if self.first_respond_by_date:
+			self.first_respond_by_date = datetime.fromisoformat(self.first_respond_by_date)
 # Debug method for creating items from dictionary - This comment is required or dedent dedents everything
 	@classmethod
 	def from_dict(cls, dictionary:dict):

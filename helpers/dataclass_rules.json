@@ -532,6 +532,96 @@
             "site": {
                 "optional": true,
                 "comment": "Not returned on single invoice.get() if no site is assigned even if includedetails is set to True"
+            },
+            "client_name": {
+                "optional": true
+            },
+            "duedate": {
+                "optional": true
+            },
+            "sage_business_cloud_details_id": {
+                "optional": true
+            },
+            "sage_business_cloud_id": {
+                "optional": true
+            },
+            "exact_id": {
+                "optional": true
+            },
+            "exact_division": {
+                "optional": true
+            },
+            "xero_line_tax": {
+                "optional": true
+            },
+            "schedule_ignore_delete": {
+                "optional": true
+            },
+            "assigned_agent": {
+                "optional": true
+            },
+            "approval_status": {
+                "optional": true
+            },
+            "approvalagent": {
+                "optional": true
+            },
+            "approvalemailaddress": {
+                "optional": true
+            },
+            "approvalnote": {
+                "optional": true
+            },
+            "approvalagentid": {
+                "optional": true
+            },
+            "approvaldatetime": {
+                "optional": true
+            },
+            "xero_online_invoice_payment_url": {
+                "optional": true
+            },
+            "supplier_id": {
+                "optional": true
+            },
+            "include_in_autopay": {
+                "optional": true
+            },
+            "twilio_invoice": {
+                "optional": true
+            },
+            "invoice_separately": {
+                "optional": true
+            },
+            "minimum_price_active": {
+                "optional": true
+            },
+            "minimum_amount": {
+                "optional": true
+            },
+            "voided": {
+                "optional": true
+            },
+            "mark_credit_as_used": {
+                "optional": true
+            },
+            "is_down_payment": {
+                "optional": true
+            },
+            "client": {
+                "optional": true
+            },
+            "thirdpartyinvoicenumber": {
+                "optional": true
+            },
+            "dateposted": {
+                "optional": true
+            },
+            "last_synced": {
+                "optional": true
+            },
+            "tax_total": {
+                "optional": true
             }
         },
         "additional_properties": {
@@ -543,6 +633,9 @@
             },
             "client": {
                 "type": "list"
+            },
+            "organisation_id": {
+                "type": "str"
             }
         }
     },
@@ -2660,9 +2753,559 @@
             },
             "andbillable_time": {
                 "optional": true
+            },
+            "sla_name": {
+                "optional": true
+            },
+            "supplier_name": {
+                "optional": true
+            },
+            "product_name": {
+                "optional": true
+            },
+            "workflow_name": {
+                "optional": true
+            },
+            "oppcountry": {
+                "optional": true
+            },
+            "oppregion": {
+                "optional": true
+            },
+            "customfields": {
+                "optional": true
+            },
+            "details_html": {
+                "optional": true
+            },
+            "takenby": {
+                "optional": true
+            },
+            "datecreated": {
+                "optional": true
+            },
+            "createdfrom_id": {
+                "optional": true
+            },
+            "top_level_id": {
+                "optional": true
+            },
+            "site_sla_id": {
+                "optional": true
+            },
+            "supplier_contract_id": {
+                "optional": true
+            },
+            "supplier_breachrespsent": {
+                "optional": true
+            },
+            "supplier_breachfixbysent": {
+                "optional": true
+            },
+            "showforusers": {
+                "optional": true
+            },
+            "messsent": {
+                "optional": true
+            },
+            "agreedcleared": {
+                "optional": true
+            },
+            "backoutplan": {
+                "optional": true
+            },
+            "communicationplan": {
+                "optional": true
+            },
+            "testplan": {
+                "optional": true
+            },
+            "riskdescription": {
+                "optional": true
+            },
+            "impactdescription": {
+                "optional": true
+            },
+            "surveysent": {
+                "optional": true
+            },
+            "approval_process_step_name": {
+                "optional": true
+            },
+            "inform3rdpartysystem": {
+                "optional": true
+            },
+            "surveyneeded": {
+                "optional": true
+            },
+            "knownerror": {
+                "optional": true
+            },
+            "development": {
+                "optional": true
+            },
+            "changeseq": {
+                "optional": true
+            },
+            "mailboxid": {
+                "optional": true
+            },
+            "actisbillabledefault": {
+                "optional": true
+            },
+            "chargerate": {
+                "optional": true
+            },
+            "timezonename": {
+                "optional": true
+            },
+            "forwardinboundupdates": {
+                "optional": true
+            },
+            "loggedoutofhdworkinghours": {
+                "optional": true
+            },
+            "acctmaninformedsurvey": {
+                "optional": true
+            },
+            "laststatuschangeinformed": {
+                "optional": true
+            },
+            "loggedonbehalfby": {
+                "optional": true
+            },
+            "auditstatus": {
+                "optional": true
+            },
+            "auditunum": {
+                "optional": true
+            },
+            "auditdate": {
+                "optional": true
+            },
+            "oppdontaddtomailinglist": {
+                "optional": true
+            },
+            "sendprintrequest": {
+                "optional": true
+            },
+            "pagerdutyid": {
+                "optional": true
+            },
+            "pagerdutyincidentidstring": {
+                "optional": true
+            },
+            "pagerdutystatus": {
+                "optional": true
+            },
+            "component_id": {
+                "optional": true
+            },
+            "version_id": {
+                "optional": true
+            },
+            "mailentryid": {
+                "optional": true
+            },
+            "contract_id": {
+                "optional": true
+            },
+            "workflow_stepstarted": {
+                "optional": true
+            },
+            "laststatuschangeinformedmanager": {
+                "optional": true
+            },
+            "currency": {
+                "optional": true
+            },
+            "projectconsignmentheaderid": {
+                "optional": true
+            },
+            "projectconsignmentdetailid": {
+                "optional": true
+            },
+            "servicefailurestid": {
+                "optional": true
+            },
+            "hdid": {
+                "optional": true
+            },
+            "deleted": {
+                "optional": true
+            },
+            "matched_rule_id": {
+                "optional": true
+            },
+            "ignore_kb_match": {
+                "optional": true
+            },
+            "deadlinenotificationhours": {
+                "optional": true
+            },
+            "showonroadmap": {
+                "optional": true
+            },
+            "phonenumberfrom": {
+                "optional": true
+            },
+            "addressfrom": {
+                "optional": true
+            },
+            "changeinformation_html": {
+                "optional": true
+            },
+            "team_department_id": {
+                "optional": true
+            },
+            "newaction_emailfrom": {
+                "optional": true
+            },
+            "_canupdate": {
+                "optional": true
+            },
+            "appointment_count": {
+                "optional": true
+            },
+            "open_chat_count": {
+                "optional": true
+            },
+            "task_count": {
+                "optional": true
+            },
+            "email_start_tag_override": {
+                "optional": true
+            },
+            "email_end_tag_override": {
+                "optional": true
+            },
+            "follower_count": {
+                "optional": true
+            },
+            "todo_count": {
+                "optional": true
+            },
+            "service_count": {
+                "optional": true
+            },
+            "businessapp_count": {
+                "optional": true
+            },
+            "is_opportunity": {
+                "optional": true
+            },
+            "is_project": {
+                "optional": true
+            },
+            "items_issued_count": {
+                "optional": true
+            },
+            "quotation_count": {
+                "optional": true
+            },
+            "salesorder_count": {
+                "optional": true
+            },
+            "purchaseorder_count": {
+                "optional": true
+            },
+            "invoice_line_count": {
+                "optional": true
+            },
+            "budgettype_id": {
+                "optional": true
+            },
+            "azure_tenants_name": {
+                "optional": true
+            },
+            "canbechild": {
+                "optional": true
+            },
+            "locked": {
+                "optional": true
+            },
+            "has_related": {
+                "optional": true
+            },
+            "pagerdutyeragent": {
+                "optional": true
+            },
+            "devops_agent": {
+                "optional": true
+            },
+            "devops_comment_count": {
+                "optional": true
+            },
+            "your_vote": {
+                "optional": true
+            },
+            "your_vote_comment": {
+                "optional": true
+            },
+            "scomalertstate": {
+                "optional": true
+            },
+            "orionalertid": {
+                "optional": true
+            },
+            "orionalertactiveid": {
+                "optional": true
+            },
+            "orionacknowledgestate": {
+                "optional": true
+            },
+            "orionclosestate": {
+                "optional": true
+            },
+            "orionacknowledgedby": {
+                "optional": true
+            },
+            "orionacknowledgedate": {
+                "optional": true
+            },
+            "orionacknowledgenote": {
+                "optional": true
+            },
+            "orionalertname": {
+                "optional": true
+            },
+            "servicenow_id": {
+                "optional": true
+            },
+            "splunkoncall_id": {
+                "optional": true
+            },
+            "splunkoncallurl": {
+                "optional": true
+            },
+            "splunkoncallstatus": {
+                "optional": true
+            },
+            "connectwise_id": {
+                "optional": true
+            },
+            "connectwise_project_id": {
+                "optional": true
+            },
+            "servicenow_number": {
+                "optional": true
+            },
+            "autotask_id": {
+                "optional": true
+            },
+            "autotask_number": {
+                "optional": true
+            },
+            "atera_alert_id": {
+                "optional": true
+            },
+            "laststatuschangestatus": {
+                "optional": true
+            },
+            "laststatuschangestatusdate": {
+                "optional": true
+            },
+            "meraki_device": {
+                "optional": true
+            },
+            "meraki_alert_type": {
+                "optional": true
+            },
+            "powershell_script_count": {
+                "optional": true
+            },
+            "devops_workitem_count": {
+                "optional": true
+            },
+            "ninja_alert_id": {
+                "optional": true
+            },
+            "ninja_device_id": {
+                "optional": true
+            },
+            "isbillable": {
+                "optional": true
+            },
+            "itemsarebillable": {
+                "optional": true
+            },
+            "who": {
+                "optional": true
+            },
+            "resourcetype_id": {
+                "optional": true
+            },
+            "resource_booking_type": {
+                "optional": true
+            },
+            "faultapprovalfailed": {
+                "optional": true
+            },
+            "article_type": {
+                "optional": true
+            },
+            "automate_id": {
+                "optional": true
+            },
+            "device_automate_id": {
+                "optional": true
+            },
+            "auvik_id": {
+                "optional": true
+            },
+            "auvik_url": {
+                "optional": true
+            },
+            "jira_issue_count": {
+                "optional": true
+            },
+            "call_log_count": {
+                "optional": true
+            },
+            "freshdesk_id": {
+                "optional": true
+            },
+            "external_links": {
+                "optional": true
+            },
+            "alluserscanview": {
+                "optional": true
+            },
+            "sync_to_salesforce": {
+                "optional": true
+            },
+            "visible_child_tickets": {
+                "optional": true
+            },
+            "expenses": {
+                "optional": true
+            },
+            "ncentral_details_id": {
+                "optional": true
+            },
+            "supplier_contact_id": {
+                "optional": true
+            },
+            "pagerdutyservice": {
+                "optional": true
+            },
+            "linked_halo_ticket_count": {
+                "optional": true
+            },
+            "whatsappcreatedfromid": {
+                "optional": true
+            },
+            "sms_override": {
+                "optional": true
+            },
+            "thirdpartyreviewscore": {
+                "optional": true
+            },
+            "datto_alert_state": {
+                "optional": true
+            },
+            "reviewed_date": {
+                "optional": true
+            },
+            "is_sensitive": {
+                "optional": true
+            },
+            "contract_schedule_plan_id": {
+                "optional": true
+            },
+            "hide_feedback": {
+                "optional": true
+            },
+            "ola_count": {
+                "optional": true
+            },
+            "ai_suggested_urgency": {
+                "optional": true
+            },
+            "ai_suggested_impact": {
+                "optional": true
+            },
+            "_can_view_att": {
+                "optional": true
+            },
+            "_can_upload_att": {
+                "optional": true
+            },
+            "_can_download_att": {
+                "optional": true
+            },
+            "_can_edit_att": {
+                "optional": true
+            },
+            "_can_view_action_history": {
+                "optional": true
+            },
+            "canbevotedfor": {
+                "optional": true
+            },
+            "opp_region_name": {
+                "optional": true
+            },
+            "billable_time": {
+                "optional": true
+            },
+            "reference": {
+                "optional": true
+            },
+            "targetdate": {
+                "optional": true
+            },
+            "priority": {
+                "optional": true
+            },
+            "first_respond_by_date": {
+                "optional": true
+            },
+            "user": {
+                "optional": true
+            },
+            "tickettype": {
+                "optional": true
+            },
+            "outcomes": {
+                "optional": true
+            },
+            "sla_first_response_state": {
+                "optional": true
             }
         },
-        "additional_properties": {}
+        "additional_properties": {
+            "lastnote_date": {
+                "type": "datetime"
+            },
+            "first_respond_by_date": {
+                "type": "datetime"
+            },
+            "guid": {
+                "type": "str"
+            },
+            "priority": {
+                "type": "str"
+            },
+            "sla_first_response_state": {
+                "type": "str"
+            },
+            "tickettype": {
+                "type": "str"
+            },
+            "outcomes": {
+                "type": "list",
+                "comment": "This should be made into its own object"
+            },
+            "viewers": {
+                "type": "list",
+                "comment": "This should be made into its own object"
+            },
+            "user": {
+                "type": "dict",
+                "comment": "This should be made into its own object"
+            }
+        }
     },
     "Actions": {
         "class_name": "Action",

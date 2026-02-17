@@ -17,17 +17,13 @@ class Invoice: #/components/schemas/InvoiceHeader
 	id: int
 	use: str | None
 	client_id: int | None
-	client_name: str | None
 	sitenumber: int | None
 	uid: int | None
 	invoicenumber: str | None
-	thirdpartyinvoicenumber: str | None
 	posted: bool | None
 	name: str | None
 	invoice_date: datetime | None
 	schedule_date: datetime | None
-	dateposted: datetime | None
-	last_synced: datetime | None
 	last_modified: datetime | None
 	salesorder_id: int | None
 	datetype: int | None
@@ -55,7 +51,6 @@ class Invoice: #/components/schemas/InvoiceHeader
 	lines: list | None
 	pdftemplate_id: int | None
 	total: float
-	duedate: datetime | None
 	is_recurring_invoice: bool | None
 	recurring_invoice_id: int | None
 	add_contract_assets: int | None
@@ -88,44 +83,22 @@ class Invoice: #/components/schemas/InvoiceHeader
 	dbc_company_id: str | None
 	creditlinkedtoinvoiceid: int | None
 	creditlinkedtoinvoiceid_thirdpartynumber: str | None
-	sage_business_cloud_details_id: int | None
-	sage_business_cloud_id: str | None
-	exact_id: str | None
-	exact_division: int | None
-	xero_line_tax: str | None
-	schedule_ignore_delete: bool | None
-	assigned_agent: int | None
 	assigned_agent_name: str | None
-	approval_status: int | None
-	approvalagent: int | None
-	approvalemailaddress: str | None
-	approvalnote: str | None
-	approvalagentid: int | None
-	approvaldatetime: datetime | None
 	requires_approval: bool | None
-	xero_online_invoice_payment_url: str | None
 	take_payment_on_duedate: int | None
 	credit_total: float | None
 	customer_paid_total: float | None
-	supplier_id: int | None
-	include_in_autopay: bool | None
-	twilio_invoice: bool | None
-	invoice_separately: bool | None
-	minimum_price_active: bool | None
-	minimum_amount: float | None
-	voided: bool | None
-	mark_credit_as_used: bool | None
 	invoice_display: str | None
 	change_seq: int | None
-	is_down_payment: bool | None
 	recognised_from_invoice: int | None
-	tax_total: float | None
 	revenue: float | None
 	type: int
-	client: list
+	organisation_id: str
 	disabled: bool | None = field(default=None)
+	client_name: str | None = field(default=None)
 	site_name: str | None = field(default=None)
 	accountsid: str | None = field(default=None)
+	thirdpartyinvoicenumber: str | None = field(default=None)
 	address1: str | None = field(default=None)
 	address2: str | None = field(default=None)
 	address3: str | None = field(default=None)
@@ -139,6 +112,8 @@ class Invoice: #/components/schemas/InvoiceHeader
 	tel_number: str | None = field(default=None)
 	contactname: str | None = field(default=None)
 	global_tax_code: str | None = field(default=None)
+	dateposted: datetime | None = field(default=None)
+	last_synced: datetime | None = field(default=None)
 	notes_1: str | None = field(default=None)
 	notes_2: str | None = field(default=None)
 	notes_3: str | None = field(default=None)
@@ -160,6 +135,7 @@ class Invoice: #/components/schemas/InvoiceHeader
 	pdftemplate_name: str | None = field(default=None)
 	composite_tax_total: float | None = field(default=None)
 	reference: str | None = field(default=None)
+	duedate: datetime | None = field(default=None)
 	last_reminder_sent: datetime | None = field(default=None)
 	_is_invoice_run: bool | None = field(default=None)
 	_billing_cut_off: datetime | None = field(default=None)
@@ -200,8 +176,21 @@ class Invoice: #/components/schemas/InvoiceHeader
 	_xmlwarning: str | None = field(default=None)
 	creditlinkedtoinvoiceid_typeid: int | None = field(default=None)
 	purchaseorder_id: int | None = field(default=None)
+	sage_business_cloud_details_id: int | None = field(default=None)
+	sage_business_cloud_id: str | None = field(default=None)
+	exact_id: str | None = field(default=None)
+	exact_division: int | None = field(default=None)
+	xero_line_tax: str | None = field(default=None)
 	invoice_auto_increase_period: int | None = field(default=None)
 	invoice_percent_increase: float | None = field(default=None)
+	schedule_ignore_delete: bool | None = field(default=None)
+	assigned_agent: int | None = field(default=None)
+	approval_status: int | None = field(default=None)
+	approvalagent: int | None = field(default=None)
+	approvalemailaddress: str | None = field(default=None)
+	approvalnote: str | None = field(default=None)
+	approvalagentid: int | None = field(default=None)
+	approvaldatetime: datetime | None = field(default=None)
 	approvalticketid: int | None = field(default=None)
 	ticket_summary: str | None = field(default=None)
 	ticket_note: str | None = field(default=None)
@@ -212,6 +201,7 @@ class Invoice: #/components/schemas/InvoiceHeader
 	new_approvalprocess_users: list | None = field(default=None)
 	new_approvalprocess_cab: list | None = field(default=None)
 	approval_process_id: int | None = field(default=None)
+	xero_online_invoice_payment_url: str | None = field(default=None)
 	generic_online_invoice_payment_url: str | None = field(default=None)
 	intacct_save_location: str | None = field(default=None)
 	intacctseparatetaxline: int | None = field(default=None)
@@ -223,16 +213,22 @@ class Invoice: #/components/schemas/InvoiceHeader
 	intacct_project: str | None = field(default=None)
 	intacct_project_name: str | None = field(default=None)
 	_create_credit_note: bool | None = field(default=None)
+	supplier_id: int | None = field(default=None)
 	supplier_name: str | None = field(default=None)
 	_dont_fire_automations: bool | None = field(default=None)
 	_is_process: bool | None = field(default=None)
 	_is_task_schedule: bool | None = field(default=None)
 	payments_pending: int | None = field(default=None)
+	include_in_autopay: bool | None = field(default=None)
 	_forcethirdpartysync: bool | None = field(default=None)
 	client_to_invoice_to_id: int | None = field(default=None)
 	creation_source: str | None = field(default=None)
 	typeid: int | None = field(default=None)
+	twilio_invoice: bool | None = field(default=None)
+	invoice_separately: bool | None = field(default=None)
+	minimum_price_active: bool | None = field(default=None)
 	minimum_line_description: str | None = field(default=None)
+	minimum_amount: float | None = field(default=None)
 	avalara_details_id: int | None = field(default=None)
 	qbo_term_name: str | None = field(default=None)
 	qbo_term_id: int | None = field(default=None)
@@ -241,10 +237,12 @@ class Invoice: #/components/schemas/InvoiceHeader
 	exact_payment_conditon_id: str | None = field(default=None)
 	exact_payment_conditon: list | None = field(default=None)
 	avalara_details_name: str | None = field(default=None)
+	voided: bool | None = field(default=None)
 	credit_date: datetime | None = field(default=None)
 	credit_outstanding_for_customer: float | None = field(default=None)
 	credit_outstanding: float | None = field(default=None)
 	credit_used: float | None = field(default=None)
+	mark_credit_as_used: bool | None = field(default=None)
 	apply_credit: bool | None = field(default=None)
 	apply_credit_id: int | None = field(default=None)
 	apply_credit_amount: float | None = field(default=None)
@@ -288,9 +286,11 @@ class Invoice: #/components/schemas/InvoiceHeader
 	last_change_seq: int | None = field(default=None)
 	ignore_change_seq: bool | None = field(default=None)
 	invoice_template_id: int | None = field(default=None)
+	is_down_payment: bool | None = field(default=None)
 	is_recognition: bool | None = field(default=None)
 	xero_default_payment_nominalcode: str | None = field(default=None)
 	_dotaxsync: bool | None = field(default=None)
+	tax_total: float | None = field(default=None)
 	external_links: list | None = field(default=None)
 	_importtypeid: int | None = field(default=None)
 	_importthirdpartyid: str | None = field(default=None)
@@ -299,6 +299,7 @@ class Invoice: #/components/schemas/InvoiceHeader
 	import_details_id: int | None = field(default=None)
 	_isupdateimport: bool | None = field(default=None)
 	site: list | None = field(default=None)
+	client: list | None = field(default=None)
 
 	def __post_init__(self):
 		if self.invoice_date:

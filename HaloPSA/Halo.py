@@ -154,16 +154,17 @@ class Halo:
         self.TicketTypes = _TicketTypes(mh=self._mh)
         self.Tickets = _Tickets(mh=self._mh)
         self.Users = _Users(mh=self._mh)
+        
         # Undocumented
         self.AssetChange = _AssetChange(mh=self._mh)
         self.DistributionLists = _DistributionLists(mh=self._mh)
         self.TopLevel = _TopLevel(mh=self._mh)
         self.Currency = _Currency(mh=self._mh)
+        self.SalesOrder = _SalesOrder(mh=self._mh)
         self.SoftwareLicences = _SoftwareLicences(mh=self._mh)
         self.UserRoles = _UserRoles(mh=self._mh)
         self.InvoiceChange = _InvoiceChange(mh=self._mh)
-        
-
+      
 class _MethodsHelper:
     """Halo Method Helper"""
     def _create_token(self, clientid:str, secret:str, scope:str='all'): # Return auth token from Halo.
@@ -950,7 +951,7 @@ class _Invoices:
         order:Optional[str] = None,
         orderdesc:Optional[bool] = None,
         search:Optional[str] = None,
-        count:Optional[int] = None,
+        count:Optional[int] = 100, # Defaults to 100
         ticket_id:Optional[int] = None,
         client_id:Optional[int] = None,
         site_id:Optional[int] = None,
@@ -1938,3 +1939,65 @@ class _InvoiceChange:
         resp = self._mh._update(url=self.url, queue_mode=queue_mode, others=others)
         return resp
 
+class _SalesOrder:
+    """Sales order Endpoint
+
+    Get, create, and update sales orders.
+
+     No official documentation.
+
+    Requires _ permission.
+
+    Progress (Temporary)
+    - Get:
+    - Search:
+    - Update:
+    - Delete: 
+    """
+    def __init__(self, mh:_MethodsHelper):
+        self._mh = mh
+        self.url = mh.url + '/SalesOrder'
+        
+        
+    def get(self, id:int, **others): #TODO test me #TODO Confirm variables
+        """Get [Brief description]
+
+        Requires _ permission [ONLY INCLUDE IF PERMISSION DIFFERS FROM OVERALL ENDPOINT]
+
+        Last tested: YYYY/MM/DD, V[HALO VERSION]
+        """
+        resp = self._mh._get(url=self.url, id=id, others=others)
+        return resp
+    
+    def search(self, **others): #TODO test me
+        """Search [Brief description]
+
+        Requires _ permission [ONLY INCLUDE IF PERMISSION DIFFERS FROM OVERALL ENDPOINT]
+
+        Last tested: YYYY/MM/DD, V[HALO VERSION]
+        """
+        resp = self._mh._search(url=self.url, others=others)
+        return resp
+    
+    #TODO Should create and update be split?
+    def update(self,
+               id:Optional[int] = None,
+               lines:Optional[list] = None,
+               **others
+               ): #TODO test me
+        """Update or create a sales order.
+        
+        When creating a sales order, a user ID must be provided.
+        
+
+        Requires ? permission
+
+        Last tested: 2026/02/12, V[HALO VERSION]
+        """
+        
+        rawParams = locals().copy()
+        resp = self._mh._requester('post', self.url, self._mh._format_requests(rawParams))
+        return resp
+        
+        
+        
