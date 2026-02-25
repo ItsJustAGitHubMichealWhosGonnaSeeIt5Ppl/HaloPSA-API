@@ -22,8 +22,10 @@ Issues = "https://github.com/ItsJustAGitHubMichealWhosGonnaSeeIt5Ppl/HaloPSA-API
 requires = ["setuptools >= 61.0"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools]
-packages = ["HaloPSA"]
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["HaloPSA*"]
+exclude = ["helpers*"]
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
