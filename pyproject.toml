@@ -26,4 +26,4 @@ build-backend = "setuptools.build_meta"
 dependencies = {file = ["requirements.txt"]}
 
 [tools.setuptools.packages.find]
-exclude = ["helpers*"]
+include = ["HaloPSA*"]
