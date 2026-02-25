@@ -2,7 +2,7 @@
 dynamic = ["dependencies"]
 keywords = ['HaloPSA','HaloPSA API']
 name = "HaloPSA"
-version = "2.0.1"
+version = "2.0.2"
 authors = [{ name="Fryan O", email="FryanO@proton.me" },]
 description = "Python wrapper for the HaloPSA API"
 readme = "README.md"
@@ -21,11 +21,6 @@ Issues = "https://github.com/ItsJustAGitHubMichealWhosGonnaSeeIt5Ppl/HaloPSA-API
 [build-system]
 requires = ["setuptools >= 61.0"]
 build-backend = "setuptools.build_meta"
-
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["HaloPSA*"]
-exclude = ["helpers*"]
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
