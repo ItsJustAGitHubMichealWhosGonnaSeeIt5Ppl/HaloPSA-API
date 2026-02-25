@@ -1816,7 +1816,7 @@ class _SoftwareLicences:
 
     Progress (Temporary)
     - Get: Working
-    - Search: Untested
+    - Search: Working
     - Update: Untested
     - Delete: Not implemented
     """
@@ -1838,10 +1838,27 @@ class _SoftwareLicences:
         resp = self._mh._get(url=self.url, id=id, others=others)
         return resp
     
-    def search(self, **others):
+    def search(self, 
+        pageinate:bool=False,
+        page_size:int=50,
+        page_no:int=1,
+        client_id: Optional[int] = None,
+        count: Optional[int] = None,
+        licence_type:Optional[int] = None,
+        includeinactive:Optional[bool] = False,
+        include_licence_usage:Optional[bool] = False,
+        order:Optional[str] = None,
+        orderdesc:Optional[bool] = None,
+        **others
+        ):
         """Search Software Licenses/Subscriptions.
-
-        Last tested: 2025/04/15, V2.188.7
+        
+        If `include_licensc_usage` is True, the following fields are included:
+            licences_in_use (int)
+            licences_in_use_user (int)
+            licences_available (int)
+        
+        Last tested: 2026/02/17, V2.188.7
         """
         resp = self._mh._search(url=self.url, others=others)
         return resp
