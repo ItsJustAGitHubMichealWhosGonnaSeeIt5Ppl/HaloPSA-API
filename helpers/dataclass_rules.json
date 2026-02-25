@@ -1,0 +1,3315 @@
+{
+    "InvoiceHeader": {
+        "class_name": "Invoice",
+        "property_rules": {
+            "currency_code_name": {
+                "optional": true
+            },
+            "disabled": {
+                "optional": true
+            },
+            "accountsid": {
+                "optional": true
+            },
+            "address1": {
+                "optional": true
+            },
+            "address2": {
+                "optional": true
+            },
+            "address3": {
+                "optional": true
+            },
+            "address4": {
+                "optional": true
+            },
+            "address5": {
+                "optional": true
+            },
+            "deladdress1": {
+                "optional": true
+            },
+            "deladdress2": {
+                "optional": true
+            },
+            "deladdress3": {
+                "optional": true
+            },
+            "deladdress4": {
+                "optional": true
+            },
+            "deladdress5": {
+                "optional": true
+            },
+            "tel_number": {
+                "optional": true
+            },
+            "contactname": {
+                "optional": true
+            },
+            "global_tax_code": {
+                "optional": true
+            },
+            "notes_1": {
+                "optional": true
+            },
+            "notes_2": {
+                "optional": true
+            },
+            "notes_3": {
+                "optional": true
+            },
+            "taken_by": {
+                "optional": true
+            },
+            "order_number": {
+                "optional": true
+            },
+            "cust_order_number": {
+                "optional": true
+            },
+            "payment_ref": {
+                "optional": true
+            },
+            "global_nom_code": {
+                "optional": true
+            },
+            "global_details": {
+                "optional": true
+            },
+            "invoice_type_code": {
+                "optional": true
+            },
+            "amount_remaining": {
+                "optional": true
+            },
+            "add_lines": {
+                "optional": true
+            },
+            "_print_preview": {
+                "optional": true
+            },
+            "_print_generate": {
+                "optional": true
+            },
+            "printhtml": {
+                "optional": true
+            },
+            "pdf_attachment_id": {
+                "optional": true
+            },
+            "pdf_attachment_date_created": {
+                "optional": true
+            },
+            "composite_tax_total": {
+                "optional": true
+            },
+            "last_reminder_sent": {
+                "optional": true
+            },
+            "_is_invoice_run": {
+                "optional": true
+            },
+            "_billing_cut_off": {
+                "optional": true
+            },
+            "schedule_id": {
+                "optional": true
+            },
+            "lastcreated": {
+                "optional": true
+            },
+            "nextcreationdate": {
+                "optional": true
+            },
+            "period": {
+                "optional": true
+            },
+            "schedule": {
+                "optional": true
+            },
+            "create_recurring_invoice": {
+                "optional": true
+            },
+            "take_auto_payment": {
+                "optional": true
+            },
+            "force_creation": {
+                "optional": true
+            },
+            "_create_from_areaitems": {
+                "optional": true
+            },
+            "_create_from_contract": {
+                "optional": true
+            },
+            "_validateonly": {
+                "optional": true
+            },
+            "_sendmassinvoice": {
+                "optional": true
+            },
+            "xero_branding_theme": {
+                "optional": true
+            },
+            "mailboxid": {
+                "optional": true
+            },
+            "period_type": {
+                "optional": true
+            },
+            "kashflowid": {
+                "optional": true
+            },
+            "time": {
+                "optional": true
+            },
+            "startdate": {
+                "optional": true
+            },
+            "enddate": {
+                "optional": true
+            },
+            "daysplus": {
+                "optional": true
+            },
+            "invoiceday": {
+                "optional": true
+            },
+            "periodname": {
+                "optional": true
+            },
+            "_isimport": {
+                "optional": true
+            },
+            "duedatename": {
+                "optional": true
+            },
+            "invoice_prorata_periods_ahead": {
+                "optional": true
+            },
+            "nextcreationperiod": {
+                "optional": true
+            },
+            "intacct_recordno": {
+                "optional": true
+            },
+            "period_start_date": {
+                "optional": true
+            },
+            "period_end_date": {
+                "optional": true
+            },
+            "markaspaid": {
+                "optional": true
+            },
+            "markaspaidmoduleid": {
+                "optional": true
+            },
+            "reviewrequired": {
+                "optional": true
+            },
+            "_warning": {
+                "optional": true
+            },
+            "_xmlwarning": {
+                "optional": true
+            },
+            "creditlinkedtoinvoiceid_typeid": {
+                "optional": true
+            },
+            "purchaseorder_id": {
+                "optional": true
+            },
+            "invoice_auto_increase_period": {
+                "optional": true
+            },
+            "invoice_percent_increase": {
+                "optional": true
+            },
+            "approvalticketid": {
+                "optional": true
+            },
+            "ticket_summary": {
+                "optional": true
+            },
+            "ticket_note": {
+                "optional": true
+            },
+            "approval_start": {
+                "optional": true
+            },
+            "new_approvalprocess_agent_id": {
+                "optional": true
+            },
+            "new_approvalprocess_email": {
+                "optional": true
+            },
+            "new_approvalprocess_cab_id": {
+                "optional": true
+            },
+            "new_approvalprocess_users": {
+                "optional": true
+            },
+            "new_approvalprocess_cab": {
+                "optional": true
+            },
+            "approval_process_id": {
+                "optional": true
+            },
+            "generic_online_invoice_payment_url": {
+                "optional": true
+            },
+            "intacct_save_location": {
+                "optional": true
+            },
+            "intacctseparatetaxline": {
+                "optional": true
+            },
+            "intacct_class": {
+                "optional": true
+            },
+            "intacct_class_name": {
+                "optional": true
+            },
+            "contains_calculated_quantity": {
+                "optional": true
+            },
+            "intacct_tax_solution": {
+                "optional": true
+            },
+            "intacct_tax_solution_name": {
+                "optional": true
+            },
+            "intacct_project": {
+                "optional": true
+            },
+            "intacct_project_name": {
+                "optional": true
+            },
+            "_create_credit_note": {
+                "optional": true
+            },
+            "_dont_fire_automations": {
+                "optional": true
+            },
+            "_is_process": {
+                "optional": true
+            },
+            "_is_task_schedule": {
+                "optional": true
+            },
+            "payments_pending": {
+                "optional": true
+            },
+            "_forcethirdpartysync": {
+                "optional": true
+            },
+            "client_to_invoice_to_id": {
+                "optional": true
+            },
+            "creation_source": {
+                "optional": true
+            },
+            "typeid": {
+                "optional": true
+            },
+            "minimum_line_description": {
+                "optional": true
+            },
+            "avalara_details_id": {
+                "optional": true
+            },
+            "qbo_term_name": {
+                "optional": true
+            },
+            "qbo_term_id": {
+                "optional": true
+            },
+            "qbo_term": {
+                "optional": true
+            },
+            "exact_payment_conditon_name": {
+                "optional": true
+            },
+            "exact_payment_conditon_id": {
+                "optional": true
+            },
+            "exact_payment_conditon": {
+                "optional": true
+            },
+            "credit_date": {
+                "optional": true
+            },
+            "credit_outstanding": {
+                "optional": true
+            },
+            "credit_used": {
+                "optional": true
+            },
+            "apply_credit": {
+                "optional": true
+            },
+            "apply_credit_id": {
+                "optional": true
+            },
+            "apply_credit_amount": {
+                "optional": true
+            },
+            "apply_credit_description": {
+                "optional": true
+            },
+            "apply_credit_long_description": {
+                "optional": true
+            },
+            "apply_credit_tax_type": {
+                "optional": true
+            },
+            "_novalidate": {
+                "optional": true
+            },
+            "sqlimport_id": {
+                "optional": true
+            },
+            "invoice_match_id": {
+                "optional": true
+            },
+            "sync_include_paid": {
+                "optional": true
+            },
+            "dont_set_original_client_id": {
+                "optional": true
+            },
+            "_docommitsync": {
+                "optional": true
+            },
+            "_ignore_dont_send_invoice": {
+                "optional": true
+            },
+            "sendinvoicereminder": {
+                "optional": true
+            },
+            "ticket_client_to_invoice_to_id": {
+                "optional": true
+            },
+            "originaddress1": {
+                "optional": true
+            },
+            "originaddress2": {
+                "optional": true
+            },
+            "originaddress3": {
+                "optional": true
+            },
+            "originaddress4": {
+                "optional": true
+            },
+            "originaddress5": {
+                "optional": true
+            },
+            "most_recent_invoice_id": {
+                "optional": true
+            },
+            "most_recent_invoice_type": {
+                "optional": true
+            },
+            "update_invoice_conversion_rate": {
+                "optional": true
+            },
+            "dont_sync_to_3rd_party": {
+                "optional": true
+            },
+            "is_invoice_screen": {
+                "optional": true
+            },
+            "csp_invoice_id": {
+                "optional": true
+            },
+            "cloned_from_client_id": {
+                "optional": true
+            },
+            "bcd_posted": {
+                "optional": true
+            },
+            "invoice_totals": {
+                "optional": true
+            },
+            "immediate_prorata_recurring_invoice_id": {
+                "optional": true
+            },
+            "toplevel_name": {
+                "optional": true
+            },
+            "suppliers_order_reference": {
+                "optional": true
+            },
+            "apply_credit_credit_outstanding": {
+                "optional": true
+            },
+            "quickbooks_close_period_date": {
+                "optional": true
+            },
+            "quickbooks_period_closed": {
+                "optional": true
+            },
+            "last_change_seq": {
+                "optional": true
+            },
+            "ignore_change_seq": {
+                "optional": true
+            },
+            "invoice_template_id": {
+                "optional": true
+            },
+            "is_recognition": {
+                "optional": true
+            },
+            "_dotaxsync": {
+                "optional": true
+            },
+            "_importtypeid": {
+                "optional": true
+            },
+            "_importthirdpartyid": {
+                "optional": true
+            },
+            "_importtype": {
+                "optional": true
+            },
+            "new_external_link": {
+                "optional": true
+            },
+            "import_details_id": {
+                "optional": true
+            },
+            "_isupdateimport": {
+                "optional": true
+            },
+            "pdftemplate_name": {
+                "optional": true
+            },
+            "payments": {
+                "optional": true
+            },
+            "supplier_name": {
+                "optional": true
+            },
+            "avalara_details_name": {
+                "optional": true
+            },
+            "credit_outstanding_for_customer": {
+                "optional": true
+            },
+            "custombuttons": {
+                "optional": true
+            },
+            "extratabs": {
+                "optional": true
+            },
+            "conversion_rate": {
+                "optional": true
+            },
+            "note_count": {
+                "optional": true
+            },
+            "xero_default_payment_nominalcode": {
+                "optional": true
+            },
+            "external_links": {
+                "optional": true
+            },
+            "last_change_agent": {
+                "optional": true,
+                "comment": "If no change is ever made, this field doesn't seem to be returned"
+            },
+            "reference": {
+                "optional": true
+            },
+            "site_name": {
+                "optional": true,
+                "comment": "Not returned on single invoice.get() if no site is assigned even if includedetails is set to True"
+            },
+            "site": {
+                "optional": true,
+                "comment": "Not returned on single invoice.get() if no site is assigned even if includedetails is set to True"
+            },
+            "client_name": {
+                "optional": true
+            },
+            "duedate": {
+                "optional": true
+            },
+            "sage_business_cloud_details_id": {
+                "optional": true
+            },
+            "sage_business_cloud_id": {
+                "optional": true
+            },
+            "exact_id": {
+                "optional": true
+            },
+            "exact_division": {
+                "optional": true
+            },
+            "xero_line_tax": {
+                "optional": true
+            },
+            "schedule_ignore_delete": {
+                "optional": true
+            },
+            "assigned_agent": {
+                "optional": true
+            },
+            "approval_status": {
+                "optional": true
+            },
+            "approvalagent": {
+                "optional": true
+            },
+            "approvalemailaddress": {
+                "optional": true
+            },
+            "approvalnote": {
+                "optional": true
+            },
+            "approvalagentid": {
+                "optional": true
+            },
+            "approvaldatetime": {
+                "optional": true
+            },
+            "xero_online_invoice_payment_url": {
+                "optional": true
+            },
+            "supplier_id": {
+                "optional": true
+            },
+            "include_in_autopay": {
+                "optional": true
+            },
+            "twilio_invoice": {
+                "optional": true
+            },
+            "invoice_separately": {
+                "optional": true
+            },
+            "minimum_price_active": {
+                "optional": true
+            },
+            "minimum_amount": {
+                "optional": true
+            },
+            "voided": {
+                "optional": true
+            },
+            "mark_credit_as_used": {
+                "optional": true
+            },
+            "is_down_payment": {
+                "optional": true
+            },
+            "client": {
+                "optional": true
+            },
+            "thirdpartyinvoicenumber": {
+                "optional": true
+            },
+            "dateposted": {
+                "optional": true
+            },
+            "last_synced": {
+                "optional": true
+            },
+            "tax_total": {
+                "optional": true
+            }
+        },
+        "additional_properties": {
+            "type": {
+                "type": "int"
+            },
+            "site": {
+                "type": "list"
+            },
+            "client": {
+                "type": "list"
+            },
+            "organisation_id": {
+                "type": "str"
+            }
+        }
+    },
+    "Faults": {
+        "class_name": "Ticket",
+        "property_rules": {
+            "status_name": {
+                "optional": true
+            },
+            "tickettype_name": {
+                "optional": true
+            },
+            "agent_name": {
+                "optional": true
+            },
+            "categoryid_1": {
+                "optional": true
+            },
+            "categoryid_2": {
+                "optional": true
+            },
+            "categoryid_3": {
+                "optional": true
+            },
+            "categoryid_4": {
+                "optional": true
+            },
+            "category_1_display": {
+                "optional": true
+            },
+            "category_2_display": {
+                "optional": true
+            },
+            "category_3_display": {
+                "optional": true
+            },
+            "category_4_display": {
+                "optional": true
+            },
+            "projecttimepercentage": {
+                "optional": true
+            },
+            "projectcompletionpercentage": {
+                "optional": true
+            },
+            "projectearlieststart": {
+                "optional": true
+            },
+            "projectlatestend": {
+                "optional": true
+            },
+            "faigeneratedsummary_list": {
+                "optional": true
+            },
+            "chargehours": {
+                "optional": true
+            },
+            "nonchargehours": {
+                "optional": true
+            },
+            "travelhours": {
+                "optional": true
+            },
+            "totalmileage": {
+                "optional": true
+            },
+            "itemsprice": {
+                "optional": true
+            },
+            "items": {
+                "optional": true
+            },
+            "parent_id": {
+                "optional": true
+            },
+            "child_count_open": {
+                "optional": true
+            },
+            "responsedate": {
+                "optional": true
+            },
+            "first_responsedate": {
+                "optional": true
+            },
+            "responsestartdate": {
+                "optional": true
+            },
+            "slaresponsestate": {
+                "optional": true
+            },
+            "dateclosed": {
+                "optional": true
+            },
+            "dateassigned": {
+                "optional": true
+            },
+            "parentguid": {
+                "optional": true
+            },
+            "parentassign": {
+                "optional": true
+            },
+            "lastchildactiondate": {
+                "optional": true
+            },
+            "emailtolistsupplier": {
+                "optional": true
+            },
+            "emailcclistsupplier": {
+                "optional": true
+            },
+            "release_note": {
+                "optional": true
+            },
+            "release_name": {
+                "optional": true
+            },
+            "release2_name": {
+                "optional": true
+            },
+            "release3_name": {
+                "optional": true
+            },
+            "child_ticket_id_string": {
+                "optional": true
+            },
+            "asset_key_field_string": {
+                "optional": true
+            },
+            "asset_type_name": {
+                "optional": true
+            },
+            "workflow_stage": {
+                "optional": true
+            },
+            "workflow_stage_id": {
+                "optional": true
+            },
+            "workflow_stage_number": {
+                "optional": true
+            },
+            "child_ticket_ids": {
+                "optional": true
+            },
+            "nextactivitydate": {
+                "optional": true
+            },
+            "nextactivityorappointmentdate": {
+                "optional": true
+            },
+            "inventory_number": {
+                "optional": true
+            },
+            "pipeline_stage_name": {
+                "optional": true
+            },
+            "hasbeenclosed": {
+                "optional": true
+            },
+            "unread_child_action_count": {
+                "optional": true
+            },
+            "unread_related_action_count": {
+                "optional": true
+            },
+            "child_action_count": {
+                "optional": true
+            },
+            "parent_subject": {
+                "optional": true
+            },
+            "related_action_count": {
+                "optional": true
+            },
+            "startdate": {
+                "optional": true
+            },
+            "startdate_timezone": {
+                "optional": true
+            },
+            "startdate_with_timezone": {
+                "optional": true
+            },
+            "targetdate_timezone": {
+                "optional": true
+            },
+            "targetdate_with_timezone": {
+                "optional": true
+            },
+            "targetpercused": {
+                "optional": true
+            },
+            "targettimeleft": {
+                "optional": true
+            },
+            "followupdate": {
+                "optional": true
+            },
+            "oppcustomertitle": {
+                "optional": true
+            },
+            "opptel": {
+                "optional": true
+            },
+            "oppvalue": {
+                "optional": true
+            },
+            "oppvalue_monthly": {
+                "optional": true
+            },
+            "oppvalue_annual": {
+                "optional": true
+            },
+            "oppvalue_oneoff": {
+                "optional": true
+            },
+            "oppconversionprobability": {
+                "optional": true
+            },
+            "oppprofit": {
+                "optional": true
+            },
+            "oppcurrentsystem": {
+                "optional": true
+            },
+            "oppcompetitors": {
+                "optional": true
+            },
+            "opptrialdate": {
+                "optional": true
+            },
+            "oppdemodate": {
+                "optional": true
+            },
+            "oppdiscountdate": {
+                "optional": true
+            },
+            "oppattemptsmade": {
+                "optional": true
+            },
+            "oppconverteddate": {
+                "optional": true
+            },
+            "oppproductchosen": {
+                "optional": true
+            },
+            "oppreason": {
+                "optional": true
+            },
+            "opphear": {
+                "optional": true
+            },
+            "oppclosurecategory": {
+                "optional": true
+            },
+            "projecttimebudget": {
+                "optional": true
+            },
+            "projectmoneybudget": {
+                "optional": true
+            },
+            "projecttimeactual": {
+                "optional": true
+            },
+            "projectmoneyactual": {
+                "optional": true
+            },
+            "lastnote": {
+                "optional": true
+            },
+            "releasenotegroup_name": {
+                "optional": true
+            },
+            "third_party_id": {
+                "optional": true
+            },
+            "third_party_id_string": {
+                "optional": true
+            },
+            "contract_refextra": {
+                "optional": true
+            },
+            "itilname": {
+                "optional": true
+            },
+            "related_service_descriptions": {
+                "optional": true
+            },
+            "related_businessapps_descriptions": {
+                "optional": true
+            },
+            "related_service_category_names": {
+                "optional": true
+            },
+            "appointment_id": {
+                "optional": true
+            },
+            "nextappointmentdate": {
+                "optional": true
+            },
+            "firstname": {
+                "optional": true
+            },
+            "lastname": {
+                "optional": true
+            },
+            "connectedinstance_id": {
+                "optional": true
+            },
+            "web_url": {
+                "optional": true
+            },
+            "api_url": {
+                "optional": true
+            },
+            "action_number": {
+                "optional": true
+            },
+            "action_ticket_id": {
+                "optional": true
+            },
+            "action_datetime": {
+                "optional": true
+            },
+            "action_outcome": {
+                "optional": true
+            },
+            "action_chargerate": {
+                "optional": true
+            },
+            "action_contract_ref": {
+                "optional": true
+            },
+            "action_note": {
+                "optional": true
+            },
+            "ticket_invoices_for_each_site": {
+                "optional": true
+            },
+            "salesorder_id": {
+                "optional": true
+            },
+            "orderhead_id": {
+                "optional": true
+            },
+            "budgettype": {
+                "optional": true
+            },
+            "requesttype_name": {
+                "optional": true
+            },
+            "recalculate_billing": {
+                "optional": true
+            },
+            "supplier_id": {
+                "optional": true
+            },
+            "pr_id": {
+                "optional": true
+            },
+            "branch_id": {
+                "optional": true
+            },
+            "branch_name": {
+                "optional": true
+            },
+            "update_milestone_id": {
+                "optional": true
+            },
+            "milestone_id": {
+                "optional": true
+            },
+            "milestone_name": {
+                "optional": true
+            },
+            "milestone_billing_type": {
+                "optional": true
+            },
+            "milestone_value": {
+                "optional": true
+            },
+            "milestone_sequence": {
+                "optional": true
+            },
+            "milestone_status": {
+                "optional": true
+            },
+            "milestone_startdate": {
+                "optional": true
+            },
+            "milestone_enddate": {
+                "optional": true
+            },
+            "colour": {
+                "optional": true
+            },
+            "action_agent_name": {
+                "optional": true
+            },
+            "reassigncount": {
+                "optional": true
+            },
+            "parent_status": {
+                "optional": true
+            },
+            "parent_agent": {
+                "optional": true
+            },
+            "child_status": {
+                "optional": true
+            },
+            "date_fully_closed": {
+                "optional": true
+            },
+            "lastaction_chargerate": {
+                "optional": true
+            },
+            "hover_summary": {
+                "optional": true
+            },
+            "slatimeelapsed": {
+                "optional": true
+            },
+            "ai_summary": {
+                "optional": true
+            },
+            "search_score": {
+                "optional": true
+            },
+            "main_project_id": {
+                "optional": true
+            },
+            "is_maintenance": {
+                "optional": true
+            },
+            "phonenumber": {
+                "optional": true
+            },
+            "createdfrom_summary": {
+                "optional": true
+            },
+            "clonedfrom_id": {
+                "optional": true
+            },
+            "clonedfrom_summary": {
+                "optional": true
+            },
+            "closure_note": {
+                "optional": true
+            },
+            "closure_note_html": {
+                "optional": true
+            },
+            "closure_time": {
+                "optional": true
+            },
+            "asset_number": {
+                "optional": true
+            },
+            "asset_site": {
+                "optional": true
+            },
+            "slastate": {
+                "optional": true
+            },
+            "slaexcuse": {
+                "optional": true
+            },
+            "client_reference": {
+                "optional": true
+            },
+            "supplier_slaexcuse": {
+                "optional": true
+            },
+            "supplier_date": {
+                "optional": true
+            },
+            "supplier_contract_ref": {
+                "optional": true
+            },
+            "supplier_sla_id": {
+                "optional": true
+            },
+            "supplier_priority_id": {
+                "optional": true
+            },
+            "supplier_responsestate": {
+                "optional": true
+            },
+            "supplier_responsedate": {
+                "optional": true
+            },
+            "supplier_responsetime": {
+                "optional": true
+            },
+            "supplier_respondbydate": {
+                "optional": true
+            },
+            "supplier_slastate": {
+                "optional": true
+            },
+            "supplier_slatimeelapsed": {
+                "optional": true
+            },
+            "supplier_dateclosed": {
+                "optional": true
+            },
+            "supplier_fixbydate": {
+                "optional": true
+            },
+            "changestate": {
+                "optional": true
+            },
+            "approvedby": {
+                "optional": true
+            },
+            "satisfactionlevel": {
+                "optional": true
+            },
+            "satisfactioncomment": {
+                "optional": true
+            },
+            "invoicenumber": {
+                "optional": true
+            },
+            "invoicenote": {
+                "optional": true
+            },
+            "invoicedate": {
+                "optional": true
+            },
+            "invoicepaiddate": {
+                "optional": true
+            },
+            "nonbillable_time": {
+                "optional": true
+            },
+            "mileage": {
+                "optional": true
+            },
+            "planneddate": {
+                "optional": true
+            },
+            "ccaddress": {
+                "optional": true
+            },
+            "responsetime": {
+                "optional": true
+            },
+            "first_responsetime": {
+                "optional": true
+            },
+            "justification": {
+                "optional": true
+            },
+            "service_id": {
+                "optional": true
+            },
+            "isparentservice": {
+                "optional": true
+            },
+            "planneddateend": {
+                "optional": true
+            },
+            "currentfaactionnumber": {
+                "optional": true
+            },
+            "approval_process_step": {
+                "optional": true
+            },
+            "approval_process_id": {
+                "optional": true
+            },
+            "faultcodeopen": {
+                "optional": true
+            },
+            "faultcode": {
+                "optional": true
+            },
+            "laststatus3rdparty": {
+                "optional": true
+            },
+            "deliverycontact": {
+                "optional": true
+            },
+            "delivery_address": {
+                "optional": true
+            },
+            "causedby": {
+                "optional": true
+            },
+            "messsentlast": {
+                "optional": true
+            },
+            "unapprovedchangestatus": {
+                "optional": true
+            },
+            "lastrecurringemailsentdate": {
+                "optional": true
+            },
+            "template_id": {
+                "optional": true
+            },
+            "template_name": {
+                "optional": true
+            },
+            "child_template_id": {
+                "optional": true
+            },
+            "slaholdreminderdatelastemailed": {
+                "optional": true
+            },
+            "closurereminderdatelastemailed": {
+                "optional": true
+            },
+            "assetstring": {
+                "optional": true
+            },
+            "alerttype": {
+                "optional": true
+            },
+            "emaildisplayname": {
+                "optional": true
+            },
+            "emailpriority": {
+                "optional": true
+            },
+            "gfialerttype": {
+                "optional": true
+            },
+            "quotedescription": {
+                "optional": true
+            },
+            "quotelabouramount": {
+                "optional": true
+            },
+            "quotepriority": {
+                "optional": true
+            },
+            "budgetcode": {
+                "optional": true
+            },
+            "actualcost": {
+                "optional": true
+            },
+            "invoicestatus": {
+                "optional": true
+            },
+            "invoicedescription": {
+                "optional": true
+            },
+            "invoicelabouramount": {
+                "optional": true
+            },
+            "invoicematerialsamount": {
+                "optional": true
+            },
+            "firsttimefix": {
+                "optional": true
+            },
+            "quotematerialsamount": {
+                "optional": true
+            },
+            "ukasaccredited": {
+                "optional": true
+            },
+            "labno": {
+                "optional": true
+            },
+            "twitterscreenname": {
+                "optional": true
+            },
+            "twitterid": {
+                "optional": true
+            },
+            "facebook_id": {
+                "optional": true
+            },
+            "fixbydateadjusted": {
+                "optional": true
+            },
+            "alternativecontactno": {
+                "optional": true
+            },
+            "operationalserviceid": {
+                "optional": true
+            },
+            "requestdetailsprinted": {
+                "optional": true
+            },
+            "serviceformprinted": {
+                "optional": true
+            },
+            "auditnote": {
+                "optional": true
+            },
+            "auditfaileddate": {
+                "optional": true
+            },
+            "auditfailednote": {
+                "optional": true
+            },
+            "userrequestedapprover": {
+                "optional": true
+            },
+            "pagerdutyurl": {
+                "optional": true
+            },
+            "pagerdutyincidentid": {
+                "optional": true
+            },
+            "opportunity_third_party_url": {
+                "optional": true
+            },
+            "pr_link": {
+                "optional": true
+            },
+            "github_repository": {
+                "optional": true
+            },
+            "component_name": {
+                "optional": true
+            },
+            "version_name": {
+                "optional": true
+            },
+            "contract_ref": {
+                "optional": true
+            },
+            "billing_address": {
+                "optional": true
+            },
+            "lessonslearned": {
+                "optional": true
+            },
+            "lastbugzillasync": {
+                "optional": true
+            },
+            "sapid": {
+                "optional": true
+            },
+            "sapattachmentsuuid": {
+                "optional": true
+            },
+            "matched_rule_name": {
+                "optional": true
+            },
+            "matched_rule_dont_show_notification": {
+                "optional": true
+            },
+            "asset_type": {
+                "optional": true
+            },
+            "roadmapnote": {
+                "optional": true
+            },
+            "sendack": {
+                "optional": true
+            },
+            "newaction_emailfrom_address_override": {
+                "optional": true
+            },
+            "_mustupdateticketuser": {
+                "optional": true
+            },
+            "_spam": {
+                "optional": true
+            },
+            "_spamblock": {
+                "optional": true
+            },
+            "users_name": {
+                "optional": true
+            },
+            "sibling_count_open": {
+                "optional": true
+            },
+            "parent_summary": {
+                "optional": true
+            },
+            "parent_status_name": {
+                "optional": true
+            },
+            "new_approvalprocess": {
+                "optional": true
+            },
+            "new_approvalprocess_agent_id": {
+                "optional": true
+            },
+            "new_approvalprocess_user_id": {
+                "optional": true
+            },
+            "new_approvalprocess_email": {
+                "optional": true
+            },
+            "new_approvalprocess_cab_id": {
+                "optional": true
+            },
+            "approvers": {
+                "optional": true
+            },
+            "approvers_history": {
+                "optional": true
+            },
+            "create_article": {
+                "optional": true
+            },
+            "qualifications": {
+                "optional": true
+            },
+            "target_adjust": {
+                "optional": true
+            },
+            "start_adjust": {
+                "optional": true
+            },
+            "dont_do_rules": {
+                "optional": true
+            },
+            "dont_do_databaselookups": {
+                "optional": true
+            },
+            "apply_rules": {
+                "optional": true
+            },
+            "apply_this_rule": {
+                "optional": true
+            },
+            "_forcereassign": {
+                "optional": true
+            },
+            "_appointment01_ok": {
+                "optional": true
+            },
+            "_agent01_ok": {
+                "optional": true
+            },
+            "_agent02_ok": {
+                "optional": true
+            },
+            "_asset01_ok": {
+                "optional": true
+            },
+            "return_this": {
+                "optional": true
+            },
+            "_validate_form": {
+                "optional": true
+            },
+            "_validate_updates": {
+                "optional": true
+            },
+            "attachments": {
+                "optional": true
+            },
+            "documents": {
+                "optional": true
+            },
+            "current_action_type": {
+                "optional": true
+            },
+            "current_action_name": {
+                "optional": true
+            },
+            "_ispreview": {
+                "optional": true
+            },
+            "assets": {
+                "optional": true
+            },
+            "nochangesequpdate": {
+                "optional": true
+            },
+            "_reclose": {
+                "optional": true
+            },
+            "_reclose_oid": {
+                "optional": true
+            },
+            "_recover": {
+                "optional": true
+            },
+            "contact_address": {
+                "optional": true
+            },
+            "chat_id": {
+                "optional": true
+            },
+            "actioncode": {
+                "optional": true
+            },
+            "clone_count": {
+                "optional": true
+            },
+            "copy_milestone": {
+                "optional": true
+            },
+            "todo_list": {
+                "optional": true
+            },
+            "unsubscribedfromserviceid": {
+                "optional": true
+            },
+            "items_issued": {
+                "optional": true
+            },
+            "project_items_issued": {
+                "optional": true
+            },
+            "third_party_client_id": {
+                "optional": true
+            },
+            "_refreshresponse": {
+                "optional": true
+            },
+            "_isimport": {
+                "optional": true
+            },
+            "_isalert": {
+                "optional": true
+            },
+            "_novalidate": {
+                "optional": true
+            },
+            "is_closure_reminder_closure": {
+                "optional": true
+            },
+            "is_slahold_reminder_closure": {
+                "optional": true
+            },
+            "_importid": {
+                "optional": true
+            },
+            "sendtopagerduty": {
+                "optional": true
+            },
+            "splunkurl": {
+                "optional": true
+            },
+            "splunksearch": {
+                "optional": true
+            },
+            "budgettype_name": {
+                "optional": true
+            },
+            "budgets": {
+                "optional": true
+            },
+            "process_ai": {
+                "optional": true
+            },
+            "send_remoteinvite": {
+                "optional": true
+            },
+            "invite_emaillist": {
+                "optional": true
+            },
+            "third_party_call_id": {
+                "optional": true
+            },
+            "remotetechid": {
+                "optional": true
+            },
+            "linkremotesession": {
+                "optional": true
+            },
+            "remotesessionid": {
+                "optional": true
+            },
+            "utcoffset": {
+                "optional": true
+            },
+            "form_id": {
+                "optional": true
+            },
+            "database_lookup_result": {
+                "optional": true
+            },
+            "azure_tenants": {
+                "optional": true
+            },
+            "_warning": {
+                "optional": true
+            },
+            "_warning_is_error": {
+                "optional": true
+            },
+            "close_unassigned": {
+                "optional": true
+            },
+            "_changefreeze01_ok": {
+                "optional": true
+            },
+            "_maintenance01_ok": {
+                "optional": true
+            },
+            "_force": {
+                "optional": true
+            },
+            "_ticketclash01_ok": {
+                "optional": true
+            },
+            "_milestonedate01_ok": {
+                "optional": true
+            },
+            "_ignoremilestonedates": {
+                "optional": true
+            },
+            "elapsed_response_hours": {
+                "optional": true
+            },
+            "elapsed_resolution_hours": {
+                "optional": true
+            },
+            "sla_start_date": {
+                "optional": true
+            },
+            "_print_generate": {
+                "optional": true
+            },
+            "printhtml": {
+                "optional": true
+            },
+            "pdf_attachment_id": {
+                "optional": true
+            },
+            "_dontupdate_devops": {
+                "optional": true
+            },
+            "category_note_1": {
+                "optional": true
+            },
+            "category_user_note_1": {
+                "optional": true
+            },
+            "category_include_note_1": {
+                "optional": true
+            },
+            "category_itil_1": {
+                "optional": true
+            },
+            "category_note_2": {
+                "optional": true
+            },
+            "category_user_note_2": {
+                "optional": true
+            },
+            "category_include_note_2": {
+                "optional": true
+            },
+            "category_itil_2": {
+                "optional": true
+            },
+            "category_note_3": {
+                "optional": true
+            },
+            "category_user_note_3": {
+                "optional": true
+            },
+            "category_include_note_3": {
+                "optional": true
+            },
+            "category_itil_3": {
+                "optional": true
+            },
+            "category_note_4": {
+                "optional": true
+            },
+            "category_user_note_4": {
+                "optional": true
+            },
+            "category_include_note_4": {
+                "optional": true
+            },
+            "category_itil_4": {
+                "optional": true
+            },
+            "_iszapier": {
+                "optional": true
+            },
+            "ncentral_ticketid": {
+                "optional": true
+            },
+            "_isnotify": {
+                "optional": true
+            },
+            "created_from_action_id": {
+                "optional": true
+            },
+            "created_from_action_name": {
+                "optional": true
+            },
+            "createacknowledgement": {
+                "optional": true
+            },
+            "donotapplytemplateintheapi": {
+                "optional": true
+            },
+            "_create_outstanding_appointments": {
+                "optional": true
+            },
+            "_create_outstanding_appointment_email": {
+                "optional": true
+            },
+            "_acknowledgealert": {
+                "optional": true
+            },
+            "orionacknowledgedbyname": {
+                "optional": true
+            },
+            "third_party_parent_id": {
+                "optional": true
+            },
+            "third_party_problem_id": {
+                "optional": true
+            },
+            "opened_by": {
+                "optional": true
+            },
+            "resolved_by": {
+                "optional": true
+            },
+            "sendtosplunkoncall": {
+                "optional": true
+            },
+            "splunkoncalltarget": {
+                "optional": true
+            },
+            "splunkoncalltarget_id": {
+                "optional": true
+            },
+            "prepay_balance_hours": {
+                "optional": true
+            },
+            "prepay_balance_amount": {
+                "optional": true
+            },
+            "parent_ticket_type_name": {
+                "optional": true
+            },
+            "createdfrom_ticket_type_name": {
+                "optional": true
+            },
+            "clonedfrom_ticket_type_name": {
+                "optional": true
+            },
+            "syncro_alert_id": {
+                "optional": true
+            },
+            "mark_as_read_only": {
+                "optional": true
+            },
+            "audit_log": {
+                "optional": true
+            },
+            "matched_rules": {
+                "optional": true
+            },
+            "usertype": {
+                "optional": true
+            },
+            "actionworkflowset": {
+                "optional": true
+            },
+            "childrenlefttocreate": {
+                "optional": true
+            },
+            "resourcetype_name": {
+                "optional": true
+            },
+            "resource_booking_timeslot": {
+                "optional": true
+            },
+            "resource_booking_asset": {
+                "optional": true
+            },
+            "matched_rule_ids": {
+                "optional": true
+            },
+            "forceruleupdate": {
+                "optional": true
+            },
+            "teams_user_id": {
+                "optional": true
+            },
+            "_isteams": {
+                "optional": true
+            },
+            "article_description": {
+                "optional": true
+            },
+            "article_resolution": {
+                "optional": true
+            },
+            "article_notes": {
+                "optional": true
+            },
+            "tags": {
+                "optional": true
+            },
+            "dontcreatechild": {
+                "optional": true
+            },
+            "needcreatechild": {
+                "optional": true
+            },
+            "sentinel_id": {
+                "optional": true
+            },
+            "sentinel_resourcegroup": {
+                "optional": true
+            },
+            "sentinel_subscriptionid": {
+                "optional": true
+            },
+            "sentinel_workspace": {
+                "optional": true
+            },
+            "_validate_only": {
+                "optional": true
+            },
+            "_validation_key": {
+                "optional": true
+            },
+            "azuremonitor_id": {
+                "optional": true
+            },
+            "domotz_alertid": {
+                "optional": true
+            },
+            "domotz_deviceid": {
+                "optional": true
+            },
+            "domerge": {
+                "optional": true
+            },
+            "isnew": {
+                "optional": true
+            },
+            "contract_balance": {
+                "optional": true
+            },
+            "bookingurl": {
+                "optional": true
+            },
+            "isclone": {
+                "optional": true
+            },
+            "clonedfrom": {
+                "optional": true
+            },
+            "slatimeremaining": {
+                "optional": true
+            },
+            "customfieldvalidationreason": {
+                "optional": true
+            },
+            "_has_automations": {
+                "optional": true
+            },
+            "chat_count": {
+                "optional": true
+            },
+            "_dont_update_project_dates": {
+                "optional": true
+            },
+            "_dontupdate_jira": {
+                "optional": true
+            },
+            "sentinel_url": {
+                "optional": true
+            },
+            "sentinel_display_id": {
+                "optional": true
+            },
+            "postloggedview": {
+                "optional": true
+            },
+            "addigy_alert_id": {
+                "optional": true
+            },
+            "ninja_alert_type": {
+                "optional": true
+            },
+            "_match_thirdparty_id": {
+                "optional": true
+            },
+            "_match_integration_id": {
+                "optional": true
+            },
+            "_match_integration_name": {
+                "optional": true
+            },
+            "kaseya_agent_id": {
+                "optional": true
+            },
+            "kaseya_asset_name": {
+                "optional": true
+            },
+            "salesforce_contactid": {
+                "optional": true
+            },
+            "salesforce_accountid": {
+                "optional": true
+            },
+            "salesforce_parentid": {
+                "optional": true
+            },
+            "salesforce_status": {
+                "optional": true
+            },
+            "newrelic_id": {
+                "optional": true
+            },
+            "newrelicincident_id": {
+                "optional": true
+            },
+            "backup_radar_id": {
+                "optional": true
+            },
+            "backup_radar_state": {
+                "optional": true
+            },
+            "linktypesarray": {
+                "optional": true
+            },
+            "kaseyaid": {
+                "optional": true
+            },
+            "_dontupdate_salesforce": {
+                "optional": true
+            },
+            "salesforce_stage": {
+                "optional": true
+            },
+            "_newticket_quickclose": {
+                "optional": true
+            },
+            "service_request_detail_id": {
+                "optional": true
+            },
+            "check_status_freeze": {
+                "optional": true
+            },
+            "clear_feedback": {
+                "optional": true
+            },
+            "facebook_message_id": {
+                "optional": true
+            },
+            "twitter_message_id": {
+                "optional": true
+            },
+            "requesttype_published_id": {
+                "optional": true
+            },
+            "chat_key_id": {
+                "optional": true
+            },
+            "parent_itil_ticket_type": {
+                "optional": true
+            },
+            "parent_release_note": {
+                "optional": true
+            },
+            "parent_release_name": {
+                "optional": true
+            },
+            "parent_release2_name": {
+                "optional": true
+            },
+            "parent_release3_name": {
+                "optional": true
+            },
+            "pagerdutyservice_name": {
+                "optional": true
+            },
+            "_dontupdate_pagerduty": {
+                "optional": true
+            },
+            "_dont_fire_automations": {
+                "optional": true
+            },
+            "teamsmessage": {
+                "optional": true
+            },
+            "zoom_default_message": {
+                "optional": true
+            },
+            "default_teams_chat_name": {
+                "optional": true
+            },
+            "show_chat_create": {
+                "optional": true
+            },
+            "htmlmessage": {
+                "optional": true
+            },
+            "halolink_ticketid": {
+                "optional": true
+            },
+            "override_opening_action_who": {
+                "optional": true
+            },
+            "unotes": {
+                "optional": true
+            },
+            "smemo": {
+                "optional": true
+            },
+            "amemo": {
+                "optional": true
+            },
+            "_matchintacctclass": {
+                "optional": true
+            },
+            "intacct_class": {
+                "optional": true
+            },
+            "intacct_class_name": {
+                "optional": true
+            },
+            "device_name": {
+                "optional": true
+            },
+            "milestones": {
+                "optional": true
+            },
+            "disable_milestone_modification": {
+                "optional": true
+            },
+            "seenby": {
+                "optional": true
+            },
+            "recaptcha_token": {
+                "optional": true
+            },
+            "resource_booking_site": {
+                "optional": true
+            },
+            "new_approvalprocess_role_id": {
+                "optional": true
+            },
+            "new_approvalprocess_customfieldid": {
+                "optional": true
+            },
+            "linked_ecommerce_order_number": {
+                "optional": true
+            },
+            "linked_ecommerce_order_url": {
+                "optional": true
+            },
+            "parent_milestones": {
+                "optional": true
+            },
+            "vectors": {
+                "optional": true
+            },
+            "ai_matched_tickets": {
+                "optional": true
+            },
+            "ai_matched_tickets_incidents": {
+                "optional": true
+            },
+            "ai_matched_tickets_requests": {
+                "optional": true
+            },
+            "ai_matched_tickets_problems": {
+                "optional": true
+            },
+            "ai_matched_articles": {
+                "optional": true
+            },
+            "ai_suggestions": {
+                "optional": true
+            },
+            "_apply_ai_suggestions": {
+                "optional": true
+            },
+            "_dismiss_ai_suggestions": {
+                "optional": true
+            },
+            "suggested_category1": {
+                "optional": true
+            },
+            "forwarded_by": {
+                "optional": true
+            },
+            "instagram_message_id": {
+                "optional": true
+            },
+            "default_reporter": {
+                "optional": true
+            },
+            "defaultsendattachments": {
+                "optional": true
+            },
+            "devops_key": {
+                "optional": true
+            },
+            "related_tickets": {
+                "optional": true
+            },
+            "new_related_tickets": {
+                "optional": true
+            },
+            "unrelate_from_ticket_id": {
+                "optional": true
+            },
+            "ecommerce_orders": {
+                "optional": true
+            },
+            "connectwisermm_ticketid": {
+                "optional": true
+            },
+            "colour_rule": {
+                "optional": true
+            },
+            "google_reviewdata": {
+                "optional": true
+            },
+            "google_questiondata": {
+                "optional": true
+            },
+            "original_agent": {
+                "optional": true
+            },
+            "oppjobtitle": {
+                "optional": true
+            },
+            "do_lookups": {
+                "optional": true
+            },
+            "liongard_system_id": {
+                "optional": true
+            },
+            "bigpanda_id": {
+                "optional": true
+            },
+            "matching_value": {
+                "optional": true
+            },
+            "sqlimport_id": {
+                "optional": true
+            },
+            "respondbydateadjusted": {
+                "optional": true
+            },
+            "date_dependencies": {
+                "optional": true
+            },
+            "new_milestone_ticket": {
+                "optional": true
+            },
+            "assets_columns": {
+                "optional": true
+            },
+            "slaresponseexcuse": {
+                "optional": true
+            },
+            "can_add_cc_followers": {
+                "optional": true
+            },
+            "_fromchatprofileid": {
+                "optional": true
+            },
+            "lapsafe_count": {
+                "optional": true
+            },
+            "olas": {
+                "optional": true
+            },
+            "new_workflow_history": {
+                "optional": true
+            },
+            "default_slack_channel_name": {
+                "optional": true
+            },
+            "show_channel_create": {
+                "optional": true
+            },
+            "slack_channel_id": {
+                "optional": true
+            },
+            "slack_callback_id": {
+                "optional": true
+            },
+            "ai_suggested_priority": {
+                "optional": true
+            },
+            "ai_suggested_resolution": {
+                "optional": true
+            },
+            "ai_generated_summary": {
+                "optional": true
+            },
+            "ai_search_query": {
+                "optional": true
+            },
+            "ai_suggested_type": {
+                "optional": true
+            },
+            "ai_sentiment_analysis": {
+                "optional": true
+            },
+            "ai_satisfaction_level": {
+                "optional": true
+            },
+            "ai_tonality": {
+                "optional": true
+            },
+            "_isagentuser": {
+                "optional": true
+            },
+            "ai_survey_score": {
+                "optional": true
+            },
+            "ai_survey_comment": {
+                "optional": true
+            },
+            "freshdesk_ticket_data": {
+                "optional": true
+            },
+            "freshdesk_group_name": {
+                "optional": true
+            },
+            "freshdesk_agent_name": {
+                "optional": true
+            },
+            "freshdesk_agent_email": {
+                "optional": true
+            },
+            "freshdesk_product_name": {
+                "optional": true
+            },
+            "matched_kb_id_acessible_to_user": {
+                "optional": true
+            },
+            "remotesession_count": {
+                "optional": true
+            },
+            "search_index_sync_timestamp": {
+                "optional": true
+            },
+            "search_index_sync_batches": {
+                "optional": true
+            },
+            "new_whe_": {
+                "optional": true
+            },
+            "new_actioncode": {
+                "optional": true
+            },
+            "notepad": {
+                "optional": true
+            },
+            "embedding_match_timestamp": {
+                "optional": true
+            },
+            "_re_index": {
+                "optional": true
+            },
+            "_fetch_matches": {
+                "optional": true
+            },
+            "workflow_move_date_override": {
+                "optional": true
+            },
+            "lookup_search": {
+                "optional": true
+            },
+            "agent_booking_type": {
+                "optional": true
+            },
+            "agent_booking": {
+                "optional": true
+            },
+            "pandadoc_attachment": {
+                "optional": true
+            },
+            "pandadoc_attachment_name": {
+                "optional": true
+            },
+            "pandadoc_attachment_url": {
+                "optional": true
+            },
+            "thirdparty_url": {
+                "optional": true
+            },
+            "security_signal_id": {
+                "optional": true
+            },
+            "datadog_id": {
+                "optional": true
+            },
+            "ai_conversation_summary": {
+                "optional": true
+            },
+            "incomingevent_count": {
+                "optional": true
+            },
+            "azure_connection_id": {
+                "optional": true
+            },
+            "kblinkid": {
+                "optional": true
+            },
+            "ticket_client_to_invoice_to_id": {
+                "optional": true
+            },
+            "ticket_client_to_invoice_to_name": {
+                "optional": true
+            },
+            "_prevent_outgoing": {
+                "optional": true
+            },
+            "dont_copy_history": {
+                "optional": true
+            },
+            "user_linked_sites": {
+                "optional": true
+            },
+            "prepay_threshold": {
+                "optional": true
+            },
+            "automation_entity_type": {
+                "optional": true
+            },
+            "make_automation_entity_inactive": {
+                "optional": true
+            },
+            "is_downtime": {
+                "optional": true
+            },
+            "add_tags": {
+                "optional": true
+            },
+            "locked_by_agentid": {
+                "optional": true
+            },
+            "_forceunlock": {
+                "optional": true
+            },
+            "_is_aisuggestion_merge": {
+                "optional": true
+            },
+            "service_linked_device": {
+                "optional": true
+            },
+            "quick_ticket_link_text": {
+                "optional": true
+            },
+            "_override_child_merge_type": {
+                "optional": true
+            },
+            "next_review_date": {
+                "optional": true
+            },
+            "kb_pdf_template": {
+                "optional": true
+            },
+            "kb_pdftemplate_name": {
+                "optional": true
+            },
+            "template_when_linked": {
+                "optional": true
+            },
+            "templatewhenlinked_name": {
+                "optional": true
+            },
+            "statement_of_work_added": {
+                "optional": true
+            },
+            "_remove_pipeline_stage": {
+                "optional": true
+            },
+            "order_line_price": {
+                "optional": true
+            },
+            "order_line_composite_key": {
+                "optional": true
+            },
+            "risk_score": {
+                "optional": true
+            },
+            "from_catalogue": {
+                "optional": true
+            },
+            "enduser_role_ids": {
+                "optional": true
+            },
+            "order_sequence": {
+                "optional": true
+            },
+            "order_update_to": {
+                "optional": true
+            },
+            "order_update_from": {
+                "optional": true
+            },
+            "workflow_html_to_show_on_progress": {
+                "optional": true
+            },
+            "requesttype_group_id": {
+                "optional": true
+            },
+            "is_ai_indexable": {
+                "optional": true
+            },
+            "qualifications_matched": {
+                "optional": true
+            },
+            "_kbduplicate01_ok": {
+                "optional": true
+            },
+            "kb_ai_summary": {
+                "optional": true
+            },
+            "duplicate_kbs": {
+                "optional": true
+            },
+            "billing_type": {
+                "optional": true
+            },
+            "supplier_reference": {
+                "optional": true
+            },
+            "top_level_name": {
+                "optional": true
+            },
+            "deleted_date": {
+                "optional": true
+            },
+            "isbeingclosed": {
+                "optional": true
+            },
+            "maximumRestrictedPriority": {
+                "optional": true
+            },
+            "primary_service_name": {
+                "optional": true
+            },
+            "idsummary": {
+                "optional": true
+            },
+            "scomclearance": {
+                "optional": true
+            },
+            "scomalertid": {
+                "optional": true
+            },
+            "statusseq": {
+                "optional": true
+            },
+            "statuscolor": {
+                "optional": true
+            },
+            "next_appointment_type": {
+                "optional": true
+            },
+            "account_manager": {
+                "optional": true
+            },
+            "orionalert": {
+                "optional": true
+            },
+            "orionnote": {
+                "optional": true
+            },
+            "orionwho": {
+                "optional": true
+            },
+            "product_key": {
+                "optional": true
+            },
+            "rapid7_action_count": {
+                "optional": true
+            },
+            "rapid7_ticketrrn": {
+                "optional": true
+            },
+            "rapid7_ticketinvid": {
+                "optional": true
+            },
+            "ninja_id": {
+                "optional": true
+            },
+            "teams_ticket_icon": {
+                "optional": true
+            },
+            "lastactiondateteams": {
+                "optional": true
+            },
+            "priority_name": {
+                "optional": true
+            },
+            "sitepostcode": {
+                "optional": true
+            },
+            "mailbox": {
+                "optional": true
+            },
+            "userdepartments": {
+                "optional": true
+            },
+            "startdatetime": {
+                "optional": true
+            },
+            "enddatetime": {
+                "optional": true
+            },
+            "closure_agent_id": {
+                "optional": true
+            },
+            "closed_in_integration_system": {
+                "optional": true
+            },
+            "createdfromautomationstdid": {
+                "optional": true
+            },
+            "created_from_automation_entityid": {
+                "optional": true
+            },
+            "status_change_frozen": {
+                "optional": true
+            },
+            "approval_status": {
+                "optional": true
+            },
+            "overrideticketcost": {
+                "optional": true
+            },
+            "budgethours": {
+                "optional": true
+            },
+            "created_by": {
+                "optional": true
+            },
+            "client_to_invoice_to_id": {
+                "optional": true
+            },
+            "primary_issue": {
+                "optional": true
+            },
+            "primary_workitem": {
+                "optional": true
+            },
+            "billing_plan_text": {
+                "optional": true
+            },
+            "default_appointment_summary": {
+                "optional": true
+            },
+            "default_appointment_details": {
+                "optional": true
+            },
+            "agent_signature": {
+                "optional": true
+            },
+            "customer_signature": {
+                "optional": true
+            },
+            "new_agent_signature": {
+                "optional": true
+            },
+            "new_customer_signature": {
+                "optional": true
+            },
+            "invoiceable_time": {
+                "optional": true
+            },
+            "owning_service": {
+                "optional": true
+            },
+            "owning_service_name": {
+                "optional": true
+            },
+            "ticket_timezone": {
+                "optional": true
+            },
+            "_importtypeid": {
+                "optional": true
+            },
+            "_importthirdpartyid": {
+                "optional": true
+            },
+            "_importtype": {
+                "optional": true
+            },
+            "new_external_link": {
+                "optional": true
+            },
+            "import_details_id": {
+                "optional": true
+            },
+            "and_isupdateimport": {
+                "optional": true
+            },
+            "oppaddr1": {
+                "optional": true
+            },
+            "oppaddr2": {
+                "optional": true
+            },
+            "oppaddr3": {
+                "optional": true
+            },
+            "oppaddr4": {
+                "optional": true
+            },
+            "opppostcode": {
+                "optional": true
+            },
+            "_isupdateimport": {
+                "optional": true
+            },
+            "oppcompanyname": {
+                "optional": true
+            },
+            "opptype": {
+                "optional": true
+            },
+            "andopptimezonename": {
+                "optional": true
+            },
+            "opptimezonename": {
+                "optional": true
+            },
+            "slaactiondate": {
+                "optional": true
+            },
+            "slapercused": {
+                "optional": true
+            },
+            "slatimeleft": {
+                "optional": true
+            },
+            "andcurrentelapsedhours": {
+                "optional": true
+            },
+            "currentelapsedhours": {
+                "optional": true
+            },
+            "emailcclist": {
+                "optional": true
+            },
+            "workflow_seq": {
+                "optional": true
+            },
+            "alsoinform": {
+                "optional": true
+            },
+            "email_message_id": {
+                "optional": true
+            },
+            "workflow_history": {
+                "optional": true
+            },
+            "andinternet_message_id": {
+                "optional": true
+            },
+            "internet_message_id": {
+                "optional": true
+            },
+            "customer_relationships": {
+                "optional": true
+            },
+            "reportedby": {
+                "optional": true
+            },
+            "user_email": {
+                "optional": true
+            },
+            "emailtolist": {
+                "optional": true
+            },
+            "oppcontactname": {
+                "optional": true
+            },
+            "andoppemailaddress": {
+                "optional": true
+            },
+            "oppemailaddress": {
+                "optional": true
+            },
+            "timeentries": {
+                "optional": true
+            },
+            "approval_cab_name": {
+                "optional": true
+            },
+            "popup_notes": {
+                "optional": true
+            },
+            "journeys": {
+                "optional": true
+            },
+            "faultapprovalexists": {
+                "optional": true
+            },
+            "extratabs": {
+                "optional": true
+            },
+            "contributors": {
+                "optional": true
+            },
+            "hoursinvoiced": {
+                "optional": true
+            },
+            "opp_country_name": {
+                "optional": true
+            },
+            "additional_agents": {
+                "optional": true
+            },
+            "andbillable_time": {
+                "optional": true
+            },
+            "sla_name": {
+                "optional": true
+            },
+            "supplier_name": {
+                "optional": true
+            },
+            "product_name": {
+                "optional": true
+            },
+            "workflow_name": {
+                "optional": true
+            },
+            "oppcountry": {
+                "optional": true
+            },
+            "oppregion": {
+                "optional": true
+            },
+            "customfields": {
+                "optional": true
+            },
+            "details_html": {
+                "optional": true
+            },
+            "takenby": {
+                "optional": true
+            },
+            "datecreated": {
+                "optional": true
+            },
+            "createdfrom_id": {
+                "optional": true
+            },
+            "top_level_id": {
+                "optional": true
+            },
+            "site_sla_id": {
+                "optional": true
+            },
+            "supplier_contract_id": {
+                "optional": true
+            },
+            "supplier_breachrespsent": {
+                "optional": true
+            },
+            "supplier_breachfixbysent": {
+                "optional": true
+            },
+            "showforusers": {
+                "optional": true
+            },
+            "messsent": {
+                "optional": true
+            },
+            "agreedcleared": {
+                "optional": true
+            },
+            "backoutplan": {
+                "optional": true
+            },
+            "communicationplan": {
+                "optional": true
+            },
+            "testplan": {
+                "optional": true
+            },
+            "riskdescription": {
+                "optional": true
+            },
+            "impactdescription": {
+                "optional": true
+            },
+            "surveysent": {
+                "optional": true
+            },
+            "approval_process_step_name": {
+                "optional": true
+            },
+            "inform3rdpartysystem": {
+                "optional": true
+            },
+            "surveyneeded": {
+                "optional": true
+            },
+            "knownerror": {
+                "optional": true
+            },
+            "development": {
+                "optional": true
+            },
+            "changeseq": {
+                "optional": true
+            },
+            "mailboxid": {
+                "optional": true
+            },
+            "actisbillabledefault": {
+                "optional": true
+            },
+            "chargerate": {
+                "optional": true
+            },
+            "timezonename": {
+                "optional": true
+            },
+            "forwardinboundupdates": {
+                "optional": true
+            },
+            "loggedoutofhdworkinghours": {
+                "optional": true
+            },
+            "acctmaninformedsurvey": {
+                "optional": true
+            },
+            "laststatuschangeinformed": {
+                "optional": true
+            },
+            "loggedonbehalfby": {
+                "optional": true
+            },
+            "auditstatus": {
+                "optional": true
+            },
+            "auditunum": {
+                "optional": true
+            },
+            "auditdate": {
+                "optional": true
+            },
+            "oppdontaddtomailinglist": {
+                "optional": true
+            },
+            "sendprintrequest": {
+                "optional": true
+            },
+            "pagerdutyid": {
+                "optional": true
+            },
+            "pagerdutyincidentidstring": {
+                "optional": true
+            },
+            "pagerdutystatus": {
+                "optional": true
+            },
+            "component_id": {
+                "optional": true
+            },
+            "version_id": {
+                "optional": true
+            },
+            "mailentryid": {
+                "optional": true
+            },
+            "contract_id": {
+                "optional": true
+            },
+            "workflow_stepstarted": {
+                "optional": true
+            },
+            "laststatuschangeinformedmanager": {
+                "optional": true
+            },
+            "currency": {
+                "optional": true
+            },
+            "projectconsignmentheaderid": {
+                "optional": true
+            },
+            "projectconsignmentdetailid": {
+                "optional": true
+            },
+            "servicefailurestid": {
+                "optional": true
+            },
+            "hdid": {
+                "optional": true
+            },
+            "deleted": {
+                "optional": true
+            },
+            "matched_rule_id": {
+                "optional": true
+            },
+            "ignore_kb_match": {
+                "optional": true
+            },
+            "deadlinenotificationhours": {
+                "optional": true
+            },
+            "showonroadmap": {
+                "optional": true
+            },
+            "phonenumberfrom": {
+                "optional": true
+            },
+            "addressfrom": {
+                "optional": true
+            },
+            "changeinformation_html": {
+                "optional": true
+            },
+            "team_department_id": {
+                "optional": true
+            },
+            "newaction_emailfrom": {
+                "optional": true
+            },
+            "_canupdate": {
+                "optional": true
+            },
+            "appointment_count": {
+                "optional": true
+            },
+            "open_chat_count": {
+                "optional": true
+            },
+            "task_count": {
+                "optional": true
+            },
+            "email_start_tag_override": {
+                "optional": true
+            },
+            "email_end_tag_override": {
+                "optional": true
+            },
+            "follower_count": {
+                "optional": true
+            },
+            "todo_count": {
+                "optional": true
+            },
+            "service_count": {
+                "optional": true
+            },
+            "businessapp_count": {
+                "optional": true
+            },
+            "is_opportunity": {
+                "optional": true
+            },
+            "is_project": {
+                "optional": true
+            },
+            "items_issued_count": {
+                "optional": true
+            },
+            "quotation_count": {
+                "optional": true
+            },
+            "salesorder_count": {
+                "optional": true
+            },
+            "purchaseorder_count": {
+                "optional": true
+            },
+            "invoice_line_count": {
+                "optional": true
+            },
+            "budgettype_id": {
+                "optional": true
+            },
+            "azure_tenants_name": {
+                "optional": true
+            },
+            "canbechild": {
+                "optional": true
+            },
+            "locked": {
+                "optional": true
+            },
+            "has_related": {
+                "optional": true
+            },
+            "pagerdutyeragent": {
+                "optional": true
+            },
+            "devops_agent": {
+                "optional": true
+            },
+            "devops_comment_count": {
+                "optional": true
+            },
+            "your_vote": {
+                "optional": true
+            },
+            "your_vote_comment": {
+                "optional": true
+            },
+            "scomalertstate": {
+                "optional": true
+            },
+            "orionalertid": {
+                "optional": true
+            },
+            "orionalertactiveid": {
+                "optional": true
+            },
+            "orionacknowledgestate": {
+                "optional": true
+            },
+            "orionclosestate": {
+                "optional": true
+            },
+            "orionacknowledgedby": {
+                "optional": true
+            },
+            "orionacknowledgedate": {
+                "optional": true
+            },
+            "orionacknowledgenote": {
+                "optional": true
+            },
+            "orionalertname": {
+                "optional": true
+            },
+            "servicenow_id": {
+                "optional": true
+            },
+            "splunkoncall_id": {
+                "optional": true
+            },
+            "splunkoncallurl": {
+                "optional": true
+            },
+            "splunkoncallstatus": {
+                "optional": true
+            },
+            "connectwise_id": {
+                "optional": true
+            },
+            "connectwise_project_id": {
+                "optional": true
+            },
+            "servicenow_number": {
+                "optional": true
+            },
+            "autotask_id": {
+                "optional": true
+            },
+            "autotask_number": {
+                "optional": true
+            },
+            "atera_alert_id": {
+                "optional": true
+            },
+            "laststatuschangestatus": {
+                "optional": true
+            },
+            "laststatuschangestatusdate": {
+                "optional": true
+            },
+            "meraki_device": {
+                "optional": true
+            },
+            "meraki_alert_type": {
+                "optional": true
+            },
+            "powershell_script_count": {
+                "optional": true
+            },
+            "devops_workitem_count": {
+                "optional": true
+            },
+            "ninja_alert_id": {
+                "optional": true
+            },
+            "ninja_device_id": {
+                "optional": true
+            },
+            "isbillable": {
+                "optional": true
+            },
+            "itemsarebillable": {
+                "optional": true
+            },
+            "who": {
+                "optional": true
+            },
+            "resourcetype_id": {
+                "optional": true
+            },
+            "resource_booking_type": {
+                "optional": true
+            },
+            "faultapprovalfailed": {
+                "optional": true
+            },
+            "article_type": {
+                "optional": true
+            },
+            "automate_id": {
+                "optional": true
+            },
+            "device_automate_id": {
+                "optional": true
+            },
+            "auvik_id": {
+                "optional": true
+            },
+            "auvik_url": {
+                "optional": true
+            },
+            "jira_issue_count": {
+                "optional": true
+            },
+            "call_log_count": {
+                "optional": true
+            },
+            "freshdesk_id": {
+                "optional": true
+            },
+            "external_links": {
+                "optional": true
+            },
+            "alluserscanview": {
+                "optional": true
+            },
+            "sync_to_salesforce": {
+                "optional": true
+            },
+            "visible_child_tickets": {
+                "optional": true
+            },
+            "expenses": {
+                "optional": true
+            },
+            "ncentral_details_id": {
+                "optional": true
+            },
+            "supplier_contact_id": {
+                "optional": true
+            },
+            "pagerdutyservice": {
+                "optional": true
+            },
+            "linked_halo_ticket_count": {
+                "optional": true
+            },
+            "whatsappcreatedfromid": {
+                "optional": true
+            },
+            "sms_override": {
+                "optional": true
+            },
+            "thirdpartyreviewscore": {
+                "optional": true
+            },
+            "datto_alert_state": {
+                "optional": true
+            },
+            "reviewed_date": {
+                "optional": true
+            },
+            "is_sensitive": {
+                "optional": true
+            },
+            "contract_schedule_plan_id": {
+                "optional": true
+            },
+            "hide_feedback": {
+                "optional": true
+            },
+            "ola_count": {
+                "optional": true
+            },
+            "ai_suggested_urgency": {
+                "optional": true
+            },
+            "ai_suggested_impact": {
+                "optional": true
+            },
+            "_can_view_att": {
+                "optional": true
+            },
+            "_can_upload_att": {
+                "optional": true
+            },
+            "_can_download_att": {
+                "optional": true
+            },
+            "_can_edit_att": {
+                "optional": true
+            },
+            "_can_view_action_history": {
+                "optional": true
+            },
+            "canbevotedfor": {
+                "optional": true
+            },
+            "opp_region_name": {
+                "optional": true
+            },
+            "billable_time": {
+                "optional": true
+            },
+            "reference": {
+                "optional": true
+            },
+            "targetdate": {
+                "optional": true
+            },
+            "priority": {
+                "optional": true
+            },
+            "first_respond_by_date": {
+                "optional": true
+            },
+            "user": {
+                "optional": true
+            },
+            "tickettype": {
+                "optional": true
+            },
+            "outcomes": {
+                "optional": true
+            },
+            "sla_first_response_state": {
+                "optional": true
+            }
+        },
+        "additional_properties": {
+            "lastnote_date": {
+                "type": "datetime"
+            },
+            "first_respond_by_date": {
+                "type": "datetime"
+            },
+            "guid": {
+                "type": "str"
+            },
+            "priority": {
+                "type": "str"
+            },
+            "sla_first_response_state": {
+                "type": "str"
+            },
+            "tickettype": {
+                "type": "str"
+            },
+            "outcomes": {
+                "type": "list",
+                "comment": "This should be made into its own object"
+            },
+            "viewers": {
+                "type": "list",
+                "comment": "This should be made into its own object"
+            },
+            "user": {
+                "type": "dict",
+                "comment": "This should be made into its own object"
+            }
+        }
+    },
+    "Actions": {
+        "class_name": "Action",
+        "property_rules": {},
+        "additional_properties": {}
+    }
+}

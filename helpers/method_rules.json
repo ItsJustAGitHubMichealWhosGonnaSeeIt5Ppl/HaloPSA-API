@@ -1,0 +1,13 @@
+{
+    "/SalesOrder": {
+        "method_name": "SalesOrder",
+        "dataclass": null,
+        "parameters": [
+            {
+                "name": "",
+                "description": "",
+                "type": "string"
+            }
+        ]
+    }
+}

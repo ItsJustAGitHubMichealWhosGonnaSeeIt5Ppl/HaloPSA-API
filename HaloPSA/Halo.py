@@ -1,7 +1,14 @@
 
-import requests
+# BUILT-IN
 import json
 from typing import Optional, Literal
+
+# EXTERNAL
+import requests
+
+# INTERNAL
+
+# CODE
 
 #TODO create parent/child system for all the classes in here, so API key is not needed each time
 #TODO start documentation
@@ -26,7 +33,7 @@ from typing import Optional, Literal
 
 #TEMPLATE FOR ENDPOINT
 '''
-class EndpointName(HaloBase):
+class _EndpointName:
     """[ENDPOINT NAME] Endpoint.
 
     [Brief description]
@@ -42,9 +49,9 @@ class EndpointName(HaloBase):
     - Update:
     - Delete: 
     """
-    def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:str='psa', log_level:str='Normal'):
-        super().__init__(tenant=tenant, clientid=clientid, secret=secret, scope=scope, tenant_type=tenant_type, log_level=log_level)
-        self.url+='/EndpointLink'
+    def __init__(self, mh:_MethodsHelper):
+        self._mh = mh
+        self.url = mh.url + '/[ENDPOINT]'
         
         
     def get(self, id:int, **others): #TODO test me #TODO Confirm variables
@@ -112,12 +119,12 @@ TENANT_TYPES = Literal['psa', 'itsm']
 
 class Halo:
     def __init__(self, tenant:str, clientid:str, secret:str, scope:str='all', tenant_type:TENANT_TYPES='psa', log_level:str='Normal'):
-        """Halo Base Class
+        """Halo API.
 
         Args:
-            tenant (str): Your Tenant
-            clientid (str): Your API client iD
-            secret (str): Your API secret
+            tenant (str): Your Tenant.
+            clientid (str): Your API client ID.
+            secret (str): Your API secret.
             tenant_type (str, optional): Your tenant type.  Valid options ['psa', 'itsm']. Defaults to psa. 
             scope (str, optional): _description_. Defaults to 'all'.
             logLevel (str, optional): Does nothing. Defaults to 'Normal'.
@@ -147,15 +154,17 @@ class Halo:
         self.TicketTypes = _TicketTypes(mh=self._mh)
         self.Tickets = _Tickets(mh=self._mh)
         self.Users = _Users(mh=self._mh)
+        
         # Undocumented
+        self.AssetChange = _AssetChange(mh=self._mh)
         self.DistributionLists = _DistributionLists(mh=self._mh)
         self.TopLevel = _TopLevel(mh=self._mh)
         self.Currency = _Currency(mh=self._mh)
+        self.SalesOrder = _SalesOrder(mh=self._mh)
         self.SoftwareLicences = _SoftwareLicences(mh=self._mh)
         self.UserRoles = _UserRoles(mh=self._mh)
         self.InvoiceChange = _InvoiceChange(mh=self._mh)
-        
-
+      
 class _MethodsHelper:
     """Halo Method Helper"""
     def _create_token(self, clientid:str, secret:str, scope:str='all'): # Return auth token from Halo.
@@ -172,7 +181,7 @@ class _MethodsHelper:
         return request['access_token']
 
         
-    def _requester(self, method:str, url:str, payload=None,headers=None):
+    def _requester(self, method:str, url:str, payload=None, headers=None):
         #TODO allow method to be set to "Search" and use that rather than adding the ID directly into the main URL. May also require some tweaks to how request formatting is handled
         params = payload if method == 'get' else None # Set params or data depending on what type of request is being done
         data = json.dumps([payload]) if headers == None and method == 'post' else payload if  method == 'post' else None # Why is it this way?
@@ -224,8 +233,18 @@ class _MethodsHelper:
         
         params_to_pop += ['queue_mode','self','others']
         try:
-            unformatted_params = params | params['others'] # Copy params and add any additional items
-        except KeyError: # Not all endpoints have "others" but they should
+            
+            unformatted_params = params
+            while True:
+                if "others" in unformatted_params.keys():
+                    others = unformatted_params["others"]
+                    unformatted_params.pop("others")
+                    unformatted_params = unformatted_params | others # This should allow recursive checking for "others" fields
+                else:
+                    break
+                    
+        except KeyError as e: # Not all endpoints have "others" but they should
+            print(e)
             unformatted_params = params
             
         for param in params_to_pop: # Remove unneeded/unwanted parameters
@@ -323,6 +342,7 @@ class _Actions: #TODO what permissions are required here
     def __init__(self, mh:_MethodsHelper):
         self._mh = mh
         self.url = mh.url + '/Actions'
+        
     def get(self,
             id:int,
             ticket_id:int,
@@ -340,7 +360,7 @@ class _Actions: #TODO what permissions are required here
         return resp
     
     def search(self,
-        count:Optional[int] = None,
+        count:Optional[int] = 50,
         ticket_id:Optional[int] = None,
         startdate:Optional[str] = None,
         enddate:Optional[str] = None,
@@ -357,19 +377,19 @@ class _Actions: #TODO what permissions are required here
         ischildnotes:Optional[bool] = None,
         **others
         ):
-        """Search/filter Actions.  Requires Ticket ID, or start and end date.  If neither are provided, nothing will be returned.
+        """Search/filter Actions.  Requires Ticket ID or start and end date.  If neither are provided, nothing will be returned.
         
         Date range can be 1 day at most.
         
         Last tested: YYYY/MM/DD, V[HALO VERSION]
 
         Args:
-            count (int, optional): Maximum actions to return.
+            count (int, optional): Maximum actions to return. Defaults to 50.
             ticket_id (int, optional): Ticket ID.
-            startdate (str, optional): Start Date (format 2025-03-04T12:53:05) Time is optional.
-            enddate (str, optional): End Date (format 2025-03-04T12:53:05) Time is optional.
+            startdate (str, optional): Start Date (format: YYYY-MM-DDTHH:MM:SS). Time is optional.
+            enddate (str, optional): End Date (format: YYYY-MM-DDTHH:MM:SS). Time is optional.
             agentonly (bool, optional): Only get actions done by Agents. Defaults to False.
-            conversationonly (bool, optional): Only get actions relating to the Agent to End User conversation. Defaults to None.
+            conversationonly (bool, optional): Only get actions relating to the Agent to End User conversation.
             supplieronly (bool, optional): Only get actions relating to Suppliers. Defaults to None.
             importantonly (bool, optional): Only get important actions. Defaults to None.
             slaonly (bool, optional): Only get SLA hold and release actions. Defaults to None.
@@ -378,7 +398,7 @@ class _Actions: #TODO what permissions are required here
             includehtmlnote (bool, optional): _description_. Defaults to None.
             includehtmlemail (bool, optional): _description_. Defaults to None.
             includeattachments (bool, optional): _description_. Defaults to None.
-            ischildnotes (bool, optional): _description_. Defaults to None.
+            ischildnotes (bool, optional): _description_.
 
         Returns:
             list: List of actions.
@@ -517,6 +537,8 @@ class _Assets: # TODO this is the only endpoint that actually works?
     includeactive:Optional[bool] = None,
     includechildren:Optional[bool] = None,
     contract_id:Optional[int] = None,
+    integration_type:Optional[str] = None,
+    integration_id:Optional[str] = None,
     **others
     ) -> dict:
         """
@@ -607,7 +629,9 @@ class _Assets: # TODO this is the only endpoint that actually works?
             response = self._mh._requester('post',self.url,self.formatted_params)
             self.formatted_params = [] # reset queue
             return response
+        
 
+    
 class _Attachments:
     """Attachments Endpoint.
 
@@ -927,7 +951,7 @@ class _Invoices:
         order:Optional[str] = None,
         orderdesc:Optional[bool] = None,
         search:Optional[str] = None,
-        count:Optional[int] = None,
+        count:Optional[int] = 100, # Defaults to 100
         ticket_id:Optional[int] = None,
         client_id:Optional[int] = None,
         site_id:Optional[int] = None,
@@ -936,18 +960,50 @@ class _Invoices:
         notpostedonly:Optional[bool] = None,
         includelines:bool=False,
         **others):
+        # # Order options (incomplete) # #
+        # invoice_date
+        
         
         rawParams = locals().copy()
         
         resp = self._mh._search(url=self.url, others=rawParams)
         return resp
     
-    def get(self, #TODO test Get
+    def get(self,
             id:int,
+            includedetails:Optional[bool]=None, # This defaults to False if not provided
             **others
             ):
+        """Get a single invoice
+
+        Requires _ permission [ONLY INCLUDE IF PERMISSION DIFFERS FROM OVERALL ENDPOINT]
+
+        Last tested: 2025/11/05, V2.212.7
         
-        resp = self._mh._get(url=self.url, id=id, others=others)
+        Args:
+            id (int): Invoice ID.
+            includedetails(bool, optional): Include additional details (see below). Defaults to False (even if not provided).
+        
+        Additional returned fields when `includedetails` is `True`:
+            **currency_code_name** (str, optional)
+            **pdftemplate_name** (str, optional)
+            **payments** (list)
+            **supplier_name** (str, optional)
+            **avalara_details_name** (str, optional)
+            **credit_outstanding_for_customer** (float)
+            **custombuttons** (list)
+            **extratabs** (list)
+            **conversion_rate** (float)
+            **note_count** (int)
+            **xero_default_payment_nominalcode** (str, optional)
+            **external_links** (list)
+            NOTE: There may be more fields, please alert if you find any
+        
+        Returns:
+            dict: Single invoice
+        """ #TODO figure out what fields appear when includedetails is set to true
+        
+        resp = self._mh._get(url=self.url, id=id, includedetails=includedetails, others=others)
         return resp
     
     def update(self,
@@ -1403,6 +1459,8 @@ class _Tickets:
         category_3:Optional[int] = None,
         category_4:Optional[int] = None,
         sla:Optional[int] = None,
+        pending_review:Optional[bool] = None,
+        per_action:Optional[bool] = None,
         priority:Optional[int] = None,
         products:Optional[int] = None,
         flagged:Optional[int] = None,
@@ -1426,8 +1484,10 @@ class _Tickets:
         count:int=50,
         **others
                ):
-
-        rawParams = locals().copy()
+        #TODO docstring!
+        #per_action (bool, optional): Return ticket actions.
+        #pending_review (bool, optional): Return actions that are pending review. `per_action` must also be set to True. 
+        rawParams = locals().copy() # TODO don't use locals copy
         
         resp = self._mh._search(url=self.url, others=rawParams)
         return resp
@@ -1447,7 +1507,7 @@ class _Tickets:
             id (int): Ticket ID
             includedetails (bool, optional): Whether to include extra details (objects) in the response. Defaults to False.
             includelastaction (bool, optional): Whether to include the last action in the response. Defaults to False.
-            ticketidonly (bool, optional): Returns only the ID fields (Ticket ID, SLA ID, Status ID, Client ID and Name and Lastincomingemail date) of the Tickets. Defaults to False.
+            ticketidonly (bool, optional): Returns the ID fields (Ticket ID, SLA ID, Status ID, Client ID and Name and Lastincomingemail date) of the Tickets. Defaults to False.
 
         Returns:
             dict: Ticket information/details
@@ -1616,6 +1676,37 @@ class _Users:
 
 # NON STANDARD
 
+class _AssetChange:
+    """Asset(Device)Change Endpoint.
+
+    Search and create asset change logs
+
+    No official documentation
+
+    Requires _ permission
+
+    Progress (Temporary)
+    - Get:
+    - Search:
+    - Update:
+    """
+    def __init__(self, mh:_MethodsHelper):
+        self._mh = mh
+        self.url = mh.url + '/AssetChange'
+    
+    #TODO maybe this should be actually be called Get and just have the params? IDK
+    def search(self, asset_id:Optional[int] = None, count:Optional[int] = None, idonly:Optional[bool] = None, user_id:Optional[int] = None, search:Optional[str] = None, **others):
+        #TODO confirm what can be searched in the "search" field. Seems like only the old and new value?
+        rawParams = locals().copy()
+        
+        resp = self._mh._search(url=self.url, others=rawParams)
+        return resp
+    
+    def update(self, queue_mode:str='disabled', **others): #TODO test me
+        
+        resp = self._mh._update(url=self.url, queue_mode=queue_mode, others=others)
+        return resp
+
 class _DistributionLists:
     def __init__(self, mh:_MethodsHelper):
         self._mh = mh
@@ -1725,7 +1816,7 @@ class _SoftwareLicences:
 
     Progress (Temporary)
     - Get: Working
-    - Search: Untested
+    - Search: Working
     - Update: Untested
     - Delete: Not implemented
     """
@@ -1747,10 +1838,27 @@ class _SoftwareLicences:
         resp = self._mh._get(url=self.url, id=id, others=others)
         return resp
     
-    def search(self, **others):
+    def search(self, 
+        pageinate:bool=False,
+        page_size:int=50,
+        page_no:int=1,
+        client_id: Optional[int] = None,
+        count: Optional[int] = None,
+        licence_type:Optional[int] = None,
+        includeinactive:Optional[bool] = False,
+        include_licence_usage:Optional[bool] = False,
+        order:Optional[str] = None,
+        orderdesc:Optional[bool] = None,
+        **others
+        ):
         """Search Software Licenses/Subscriptions.
-
-        Last tested: 2025/04/15, V2.188.7
+        
+        If `include_licensc_usage` is True, the following fields are included:
+            licences_in_use (int)
+            licences_in_use_user (int)
+            licences_available (int)
+        
+        Last tested: 2026/02/17, V2.188.7
         """
         resp = self._mh._search(url=self.url, others=others)
         return resp
@@ -1848,3 +1956,65 @@ class _InvoiceChange:
         resp = self._mh._update(url=self.url, queue_mode=queue_mode, others=others)
         return resp
 
+class _SalesOrder:
+    """Sales order Endpoint
+
+    Get, create, and update sales orders.
+
+     No official documentation.
+
+    Requires _ permission.
+
+    Progress (Temporary)
+    - Get:
+    - Search:
+    - Update:
+    - Delete: 
+    """
+    def __init__(self, mh:_MethodsHelper):
+        self._mh = mh
+        self.url = mh.url + '/SalesOrder'
+        
+        
+    def get(self, id:int, **others): #TODO test me #TODO Confirm variables
+        """Get [Brief description]
+
+        Requires _ permission [ONLY INCLUDE IF PERMISSION DIFFERS FROM OVERALL ENDPOINT]
+
+        Last tested: YYYY/MM/DD, V[HALO VERSION]
+        """
+        resp = self._mh._get(url=self.url, id=id, others=others)
+        return resp
+    
+    def search(self, **others): #TODO test me
+        """Search [Brief description]
+
+        Requires _ permission [ONLY INCLUDE IF PERMISSION DIFFERS FROM OVERALL ENDPOINT]
+
+        Last tested: YYYY/MM/DD, V[HALO VERSION]
+        """
+        resp = self._mh._search(url=self.url, others=others)
+        return resp
+    
+    #TODO Should create and update be split?
+    def update(self,
+               id:Optional[int] = None,
+               lines:Optional[list] = None,
+               **others
+               ): #TODO test me
+        """Update or create a sales order.
+        
+        When creating a sales order, a user ID must be provided.
+        
+
+        Requires ? permission
+
+        Last tested: 2026/02/12, V[HALO VERSION]
+        """
+        
+        rawParams = locals().copy()
+        resp = self._mh._requester('post', self.url, self._mh._format_requests(rawParams))
+        return resp
+        
+        
+        

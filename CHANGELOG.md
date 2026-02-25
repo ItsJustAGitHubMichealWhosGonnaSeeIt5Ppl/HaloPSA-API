@@ -15,6 +15,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+## [2.0.1]
+
+### Added
+
+### Fixed
+
+- Cannot create tickets with assets.
+
+### Changed
+
+### Removed
+
 ## [2.0.0]
 
 ### Added
