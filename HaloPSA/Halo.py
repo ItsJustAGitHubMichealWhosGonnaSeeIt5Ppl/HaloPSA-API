@@ -2,7 +2,8 @@
 # BUILT-IN
 import json
 from typing import Optional, Literal
-
+from datetime import datetime
+import base64
 # EXTERNAL
 import requests
 
@@ -164,7 +165,9 @@ class Halo:
         self.SoftwareLicences = _SoftwareLicences(mh=self._mh)
         self.UserRoles = _UserRoles(mh=self._mh)
         self.InvoiceChange = _InvoiceChange(mh=self._mh)
-      
+        self.Timesheets = _Timesheet(mh=self._mh)
+        self.EmailStore = _EmailStore(mh=self._mh)
+
 class _MethodsHelper:
     """Halo Method Helper"""
     def _create_token(self, clientid:str, secret:str, scope:str='all'): # Return auth token from Halo.
@@ -195,12 +198,12 @@ class _MethodsHelper:
         if code in [403]: # Forbidden
             raise PermissionError(f'{reason} - You do not have permission to do this. If this is unexpected, make sure you have set the right permissions in Halo.')
         elif code in [404]:# Invalid URL
-           raise Exception(f'{code} - The specified URL is invalid. URL: {self.url}')
+            raise Exception(f'{code} - The specified URL is invalid. URL: {self.url}')
         elif code in [500]: # Internal Server Error
             raise Exception(f'{code} - {reason}.  Is your Tenant ID right?') # Got this when I gave it a bad tenant #TODO make this a custom error?
         
         try: # Hopefully the data is JSON now
-            content:dict = json.loads(response.content)
+            content = json.loads(response.content)
         except UnicodeDecodeError: # bytes resposne.
             content: bytes = response.content
             return content
@@ -591,7 +594,7 @@ class _Assets: # TODO this is the only endpoint that actually works?
         fields:Optional[list] = None,
         queue_mode:str='disabled',
         **others
-               ):
+        ):
         """Add or update asset(s).  If ID is included, asset(s) will be updated, if ID is not included asset(s) will be added.
         
         QUEUE MODE CURRENTLY NOT WORKING
@@ -687,9 +690,12 @@ class _Attachments:
             id:Optional[int] = None,
             filename:Optional[str] = None,
             ticket_id:Optional[int] = None,
-            data_base64:Optional[str] = None,
+            #file_base64:Optional[str] = None,
+            data:Optional[bytes] = None,
             **others):
-        
+        if data:
+            filesize = len(data)
+            data = base64.b64encode(data).decode("utf-8")
         rawParams = locals().copy()
         response = self._mh._requester('post',self.url,self._mh._format_requests(rawParams))
         return response
@@ -730,7 +736,7 @@ class _Clients:
         includeactive:Optional[bool] = None,
         count:int=50,
         **others
-               ):
+        ):
         """Search clients. Supports unlisted parameters.
         By default, only the first 50 results are returned.  If more than 50 are needed, you must explicitely set count variable.  Leaving count blank will still return 50.
 
@@ -747,7 +753,7 @@ class _Clients:
             toplevel_id (int, optional): Filter by Customers belonging to a particular top level.
             includeinactive (bool, optional): Include inactive Customers in the response. Defaults to False.
             includeactive (bool, optional): Include active Customers in the response. Defaults to True.     
-                   
+        
         Returns:
             dict: Results and record count
             
@@ -846,7 +852,7 @@ class _Contracts:
         
         resp = self._mh._update(url=self.url, queue_mode=queue_mode, others=others)
         return resp
-    
+
 
 class _Items:
     def __init__(self, mh:_MethodsHelper):
@@ -872,7 +878,6 @@ class _Items:
             orderdesc (bool, optional): _description_. Defaults to None.
             search (str, optional): _description_. Defaults to None.
             count (int, optional): _description_. Defaults to None.
-
 
         Returns:
             list: List of currency items
@@ -902,7 +907,7 @@ class _Items:
         update_recurring_invoice_cost:Optional[bool] = None,
         queue_mode:str='disabled',
         **others
-               ):
+        ):
         """Creates or updates one or more assets.  If ID is included, asset(s) will be updated.  If ID is not included new asset(s) will be created.
 
         Args:
@@ -1007,10 +1012,10 @@ class _Invoices:
         return resp
     
     def update(self,
-               id:Optional[int] = None,
-               lines:Optional[list] = None,
-               **others
-               ):
+        id:Optional[int] = None,
+        lines:Optional[list] = None,
+        **others
+        ):
         
         rawParams = locals().copy()
         response = self._mh._requester('post',self.url,self._mh._format_requests(rawParams))
@@ -1316,7 +1321,12 @@ class _TicketTypes:
         resp = self._mh._get(url=self.url, id=id, includedetails=includedetails, others=others)
         return resp
     
-    def search(self, client_id:Optional[int] = None, showcounts:Optional[bool] = None, domain:Optional[str] = None, view_id:Optional[int] = None, showinactive:Optional[bool] = None, **others):
+    def search(self, 
+        access_control_level: Optional[int] = None, 
+        showall:Optional[bool] = None, 
+        showinactive:Optional[bool] = None, 
+        include_defaults:Optional[bool] = None, 
+        **others):
 
         rawParams = locals().copy()
         
@@ -1483,7 +1493,7 @@ class _Tickets:
         search_oppcompanyname:Optional[str] = None,
         count:int=50,
         **others
-               ):
+        ):
         #TODO docstring!
         #per_action (bool, optional): Return ticket actions.
         #pending_review (bool, optional): Return actions that are pending review. `per_action` must also be set to True. 
@@ -1961,7 +1971,7 @@ class _SalesOrder:
 
     Get, create, and update sales orders.
 
-     No official documentation.
+    No official documentation.
 
     Requires _ permission.
 
@@ -1998,10 +2008,10 @@ class _SalesOrder:
     
     #TODO Should create and update be split?
     def update(self,
-               id:Optional[int] = None,
-               lines:Optional[list] = None,
-               **others
-               ): #TODO test me
+        id:Optional[int] = None,
+        lines:Optional[list] = None,
+        **others
+        ): #TODO test me
         """Update or create a sales order.
         
         When creating a sales order, a user ID must be provided.
@@ -2015,6 +2025,134 @@ class _SalesOrder:
         rawParams = locals().copy()
         resp = self._mh._requester('post', self.url, self._mh._format_requests(rawParams))
         return resp
+
+class _Timesheet:
+    """Timesheet Endpoint
+
+    Get, create, and update timesheet entries.
+
+    No official documentation.
+
+    Requires _ permission.
+
+    Progress (Temporary)
+    - Get:
+    - Search:
+    - Update:
+    - Delete: 
+    """
+    def __init__(self, mh:_MethodsHelper):
+        self._mh = mh
+        self.url = mh.url + '/Timesheet'
         
         
+    def get(self, 
+            id:int,
+            date: datetime,
+            agent_id: int, 
+            **others): #TODO test me #TODO Confirm variables
+        """Get a Timesheet
+
+        Requires _ permission [ONLY INCLUDE IF PERMISSION DIFFERS FROM OVERALL ENDPOINT]
+
+        Last tested: YYYY/MM/DD, V[HALO VERSION]
+        """
+        resp = self._mh._get(url=self.url, id=id, others=others)
+        return resp
+    
+    
+    def search(self, 
+        # Tell me why the fuck we're now using camelCase?
+        selectedTeam: Optional[int] = None, 
+        showholidays: Optional[bool] = None,
+        selectedAgents: Optional[list[int]] = None,
+        selectedTypes: Optional[list[int]] = None,
+        showchanges: Optional[bool] = None,
+        showprojects: Optional[bool] = None,
+        selectedStatuses: Optional[list[int]] = None,
+        selectedLocations: Optional[list[int]] = None,
+        start_date: Optional[datetime] = None,
+        end_date: Optional[datetime] = None,
+        agents: Optional[list[int]] = None, # Is this the same as selectedAgents?
+        showalldays: Optional[bool] = None,
+        includetimesheetfields: Optional[bool] = None,
+        inclusive_start: Optional[bool] = None,
+        utcoffset: Optional[int] = None,
+        ticket_id: Optional[int] = None,
+        **others): #TODO test me
+        """Search Timesheet entries
+
+        Requires _ permission [ONLY INCLUDE IF PERMISSION DIFFERS FROM OVERALL ENDPOINT]
+
+        Last tested: YYYY/MM/DD, V[HALO VERSION]
+        """
+        resp = self._mh._search(url=self.url, others=others)
+        return resp
+    
+    #TODO Should create and update be split?
+    def update(self,
+        id:Optional[int] = None,
+        lines:Optional[list] = None,
+        **others
+        ): #TODO test me
+        """U
         
+
+        Requires ? permission
+
+        Last tested: 2026/02/12, V[HALO VERSION]
+        """
+        
+        rawParams = locals().copy()
+        resp = self._mh._requester('post', self.url, self._mh._format_requests(rawParams))
+        return resp
+
+class _EmailStore:
+    """EmailStore Endpoint.
+
+    [Brief description]
+
+    No official documentation
+
+    Requires _ permission
+
+    Progress (Temporary)
+    - Get:
+    - get_all: (should this be removed?)
+    - Search:
+    - Update:
+    - Delete: 
+    """
+    def __init__(self, mh:_MethodsHelper):
+        self._mh = mh
+        self.url = mh.url + '/EmailStore'
+        
+        
+    def get(self, id:int, **others): #TODO test me #TODO Confirm variables
+        """Get [Brief description]
+
+        Requires _ permission [ONLY INCLUDE IF PERMISSION DIFFERS FROM OVERALL ENDPOINT]
+
+        Last tested: YYYY/MM/DD, V[HALO VERSION]
+        """
+        #resp = self._mh._get(id=id, others=others)
+        #return resp
+    
+    def send_email(self,
+        mailbox_id: int,
+        emailsubject:str, 
+        emailbody_html:str, 
+        emailto:str, 
+        is_stand_alone_email:bool=True,
+        emailcc:Optional[str]= None,
+        emailbcc:Optional[str] = None,
+        attachments: Optional[list] = None
+        
+        
+        ):
+        
+        rawParams = locals().copy()
+        resp:dict = self._mh._requester('post', self.url, self._mh._format_requests(rawParams))
+        return resp
+        #TODO it looks like creating timesheet items actually uses "TimesheetEvent?"
+
